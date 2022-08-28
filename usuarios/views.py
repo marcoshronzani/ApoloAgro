@@ -5,7 +5,8 @@ from django.shortcuts import redirect
 from hashlib import sha256
 
 def login(request):
-    return render(request, 'login.html')
+    status = request.GET.get('status')
+    return render(request, 'login.html', {'status': status})
 
 def cadastro(request):
     status = request.GET.get('status')
@@ -50,6 +51,10 @@ def validar_login(request):
         return redirect('/login/?status=1')
     elif len(usuario) > 0:
         request.session['usuario'] = usuario[0].id
-        return redirect('/clientes')
+        return redirect(f'/home/?id_usuario={request.session["usuario"]}')
 
     return HttpResponse(f"{email} {senha}")
+
+def sair(request):
+    request.session.flush()
+    return redirect('/login/')

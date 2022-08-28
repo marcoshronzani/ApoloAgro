@@ -7,6 +7,16 @@
 
 <div class="container">
     <br>
+    {% if status == '1' %}
+        <div class="alert alert-danger" role="alert">
+            Nome e Email não podem ser vazios.
+        </div>
+    {% endif %}
+    {% if status == '2' %}
+        <div class="alert alert-danger" role="alert">
+            Faça login antes de tentar acessar o sistema.
+        </div>
+    {% endif %}
     <div class="row">
 
         <div class="col-md-3">
