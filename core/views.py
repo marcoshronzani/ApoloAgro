@@ -8,7 +8,7 @@ from usuarios.models import Usuario
 def home(request):
     if request.session.get('usuario'):
         contexto = {'nome': 'Apolo Agro'}
-        #usuario = Usuario.objects.get(id = request.session['usuario']).nome
+        usuario = Usuario.objects.get(id = request.session['usuario'])
         return render(request, 'home.html', context=contexto)
     else:
         return redirect('/login/?status=2')

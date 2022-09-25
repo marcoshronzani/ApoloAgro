@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Usuario
+from usuarios.models import Usuario
 from django.shortcuts import redirect
 from hashlib import sha256
 
@@ -26,7 +26,7 @@ def valida_cadastro(request):
         return redirect('/cadastro/?status=2')
 
     if len(usuario) > 0:
-        return redirect('/cadastro/?status=3')
+        return redirect('/cadastro/?status=3'
 
     try:
         senha = sha256(senha.encode()).hexdigest()

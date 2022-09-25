@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %} Edita Categoria {% endblock %}
+
+{% block 'conteudo' %}
+    <div style="text-align: center" class="container">
+        <h1>Editar Categoria</h1>
+    </div>
+    <br><br>
+    <div class="container">
+        <p>
+            <labe>Descrição:</labe>
+            <inpu style="width: 40%;" class="form-control" type="text" value="{{categoria.descricao}}"></inpu>
+        </p>
+
+    </div>
+
+{% endblock %}
