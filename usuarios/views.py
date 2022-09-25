@@ -26,7 +26,7 @@ def valida_cadastro(request):
         return redirect('/cadastro/?status=2')
 
     if len(usuario) > 0:
-        return redirect('/cadastro/?status=3'
+        return redirect('/cadastro/?status=3')
 
     try:
         senha = sha256(senha.encode()).hexdigest()
