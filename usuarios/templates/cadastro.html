@@ -41,23 +41,22 @@
 
       </div>
 
-
-        <div class="col-md">
-                <h1>Cadastre-se</h1>
-                <hr>
-                <form method="POST" action="{% url 'valida_cadastro' %}">{% csrf_token %}
-                    <label>Nome</label>
-                    <input name="nome" class="form-control" type="text" placeholder="Nome">
-                    <br>
-                    <label>Email</label>
-                    <input name="email" class="form-control" type="text" placeholder="Email">
-                    <br>
-                    <label>Senha</label>
-                    <input name="senha" class="form-control" type="password" placeholder="Senha">
-                    <br>
-                    <input class="btn btn-info btn-lg" type="Submit" value="Salvar">
-                </form>
-        </div>
+      <div class="col-md">
+        <h1 style="text-align: center">Cadastre-se</h1>
+        <hr>
+        <form method="POST" action="{% url 'valida_cadastro' %}">{% csrf_token %}
+            <label>Nome</label>
+            <input name="nome" class="form-control" type="text" placeholder="Nome">
+            <br>
+            <label>Email</label>
+            <input name="email" class="form-control" type="text" placeholder="Email">
+            <br>
+            <label>Senha</label>
+            <input name="senha" class="form-control" type="password" placeholder="Senha">
+            <br>
+            <input class="btn btn-info btn-lg" type="Submit" value="Salvar">
+        </form>
+      </div>
 
 
         <div class="col-md-3">
