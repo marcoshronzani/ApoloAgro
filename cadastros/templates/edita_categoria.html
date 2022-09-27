@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %} Edita Categoria {% endblock %}
+
+{% block 'conteudo' %}
+    <div class="container">
+        <div style="text-align: center">
+            <h1>Editar Categoria</h1>
+        </div>
+        <br><br>
+
+            <p>
+                <labe>Descrição:</labe>
+                <input style="width: 40%;" class="form-control" type="text" value="{{categoria.descricao}}"></input>
+            </p>
+
+            <p>
+                {% if categoria.produto %}
+                    <input type="checkbox" checked name="produto" id="produto">
+                    <label for="produto">Produto</label>
+                {% else %}
+                    <input type="checkbox" name="produto">
+                    <label for="produto">Produto</label>
+                {% endif %}
+            </p>
+
+            <p>
+                {% if categoria.servico %}
+                    <input type="checkbox" checked name="servico" id="servico">
+                    <label for="servico">Serviço</label>
+                {% else %}
+                    <input type="checkbox" checked name="servico">
+                    <label for="servico">Serviço</label>
+                {% endif %}
+            </p>
+
+            <div class="col-md-6">
+
+                <div class="col-md">
+                    <a href="{% url 'categorias' %}" class="btn btn-primary btn-sm">Voltar</a>
+                </div>
+            </div>
+    </div>
+
+{% endblock %}

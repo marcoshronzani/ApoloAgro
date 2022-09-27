@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Testando HOME</h1>
+{% extends 'base.html' %}
+
+
+{% block 'conteudo' %}
+
 <h2>{{ nome }}</h2>
 
-<a href="{% url 'cadastro' %}" class="btn btn-primary btn-lg">Cadastre-se</a>
-</body>
-</html>
+{% endblock %}
