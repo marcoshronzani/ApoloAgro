@@ -8,7 +8,7 @@
             <h1>Editar Categoria</h1>
         </div>
         <br><br>
-
+        <form action="#" method="POST">{% csrf_token %}
             <p>
                 <labe>Descrição:</labe>
                 <input style="width: 40%;" class="form-control" type="text" value="{{categoria.descricao}}"></input>
@@ -33,13 +33,9 @@
                     <label for="servico">Serviço</label>
                 {% endif %}
             </p>
-
-            <div class="col-md-6">
-
-                <div class="col-md">
-                    <a href="{% url 'categorias' %}" class="btn btn-primary btn-sm">Voltar</a>
-                </div>
-            </div>
+            <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'categorias' %}" class="btn btn-primary btn-sm">Voltar</a>
+        </form>
     </div>
 
 {% endblock %}

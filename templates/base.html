@@ -34,6 +34,9 @@
           </li>
         </ul>
       </div>
+      {% if usuario_logado %}
+        <a class="btn btn-danger btn-sm" href="{% url 'sair' %}" >Sair</a>
+      {% endif %}
     </nav>
     {% block 'conteudo' %} {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
