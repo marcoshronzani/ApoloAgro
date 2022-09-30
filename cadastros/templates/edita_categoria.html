@@ -3,39 +3,59 @@
 {% block 'titulo' %} Edita Categoria {% endblock %}
 
 {% block 'conteudo' %}
-    <div class="container">
-        <div style="text-align: center">
-            <h1>Editar Categoria</h1>
-        </div>
-        <br><br>
-        <form action="#" method="POST">{% csrf_token %}
-            <p>
-                <labe>Descrição:</labe>
-                <input style="width: 40%;" class="form-control" type="text" value="{{categoria.descricao}}"></input>
-            </p>
 
-            <p>
-                {% if categoria.produto %}
-                    <input type="checkbox" checked name="produto" id="produto">
-                    <label for="produto">Produto</label>
-                {% else %}
-                    <input type="checkbox" name="produto">
-                    <label for="produto">Produto</label>
-                {% endif %}
-            </p>
-
-            <p>
-                {% if categoria.servico %}
-                    <input type="checkbox" checked name="servico" id="servico">
-                    <label for="servico">Serviço</label>
-                {% else %}
-                    <input type="checkbox" checked name="servico">
-                    <label for="servico">Serviço</label>
-                {% endif %}
-            </p>
-            <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="{% url 'categorias' %}" class="btn btn-primary btn-sm">Voltar</a>
-        </form>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirma a Exclusão ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div style="text-align: center" class="modal-body">
+          <a class="btn btn-danger btn-sm" href="{% url 'excluir_categoria' categoria.id %}">Excluir</a>
+      </div>
     </div>
+  </div>
+</div>
+<div class="container">
+    <div style="text-align: center">
+        <h1>Editar Categoria</h1>
+    </div>
+    <br><br>
+    <form action="#" method="POST">{% csrf_token %}
+        <p>
+            <labe>Descrição:</labe>
+            <input style="width: 40%;" class="form-control" type="text" value="{{categoria.descricao}}"></input>
+        </p>
+
+        <p>
+            {% if categoria.produto %}
+                <input type="checkbox" checked name="produto" id="produto">
+                <label for="produto">Produto</label>
+            {% else %}
+                <input type="checkbox" name="produto">
+                <label for="produto">Produto</label>
+            {% endif %}
+        </p>
+
+        <p>
+            {% if categoria.servico %}
+                <input type="checkbox" checked name="servico" id="servico">
+                <label for="servico">Serviço</label>
+            {% else %}
+                <input type="checkbox" checked name="servico">
+                <label for="servico">Serviço</label>
+            {% endif %}
+        </p>
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{% url 'categorias' %}" class="btn btn-primary btn-sm">Voltar</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+            Excluir
+        </button>
+    </form>
+
+</div>
 
 {% endblock %}

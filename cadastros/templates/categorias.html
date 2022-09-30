@@ -3,6 +3,7 @@
 {% block 'titulo' %} Categorias {% endblock %}
 
 {% block 'conteudo' %}
+
 <div class="container">
     <div class="row">
         <div class="col-md-4">
@@ -34,7 +35,7 @@
               <th scope="col">Produto</th>
               <th scope="col">Serviço</th>
               <th scope="col"></th>
-                <th scope="col"></th>
+
             </tr>
           </thead>
           <tbody>
@@ -63,8 +64,7 @@
                        {% endif%}
 
                   </td>
-                  <td><a href="{% url 'edita_categoria' cat.id %}" type="button" class="btn btn-info btn-sm">Editar</a></td>
-                  <td><button type="button" class="btn btn-danger btn-sm">Excluir</button></td>
+                  <td><a href="{% url 'edita_categoria' cat.id %}" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
                 </tr>
             {% endfor %}
           </tbody>

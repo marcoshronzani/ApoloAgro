@@ -58,3 +58,7 @@ def valida_categoria(request):
 def edita_categoria(request, id):
     categoria = Categorias.objects.get(id = id)
     return render(request, 'edita_categoria.html', {'categoria': categoria})
+
+def excluir_categoria(request, id):
+    categoria = Categorias.objects.get(id = id).delete()
+    return redirect('/categorias')
