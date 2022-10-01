@@ -71,11 +71,15 @@
         </table>
         <nav aria-label="Navegação de página exemplo">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Anterior</a></li>
+      {% if categoria.has_previous %}
+        <li class="page-item"><a class="page-link" href="{% url 'categorias' %}?p={{ page.previous_page}}">Anterior</a></li>
+      {% endif %}
       {% for pagina in categoria.paginator.page_range %}
         <li class="page-item"><a class="page-link" href="?p={{pagina}}">{{pagina}}</a></li>
       {% endfor %}
-    <li class="page-item"><a class="page-link" href="#">Próximo</a></li>
+      {% if categoria.has_next %}
+        <li class="page-item"><a class="page-link" href="{% url 'categorias' %}?p={{ page.next_page}}">Próximo</a></li>
+      {% endif %}
   </ul>
 </nav>
     </div>

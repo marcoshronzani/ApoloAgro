@@ -15,9 +15,9 @@ def clientes(request):
 def categorias(request):
     if request.session.get('usuario'):
         usuario = Usuario.objects.get(id = request.session['usuario'])
-        categoria = Categorias.objects.all()
+        categoria = Categorias.objects.order_by('-id')
 
-        paginator = Paginator(categoria, 5)
+        paginator = Paginator(categoria, 10)
         page = request.GET.get('p')
         categoria = paginator.get_page(page)
 
