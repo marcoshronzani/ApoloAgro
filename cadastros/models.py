@@ -40,3 +40,8 @@ class Produtos(models.Model):
 
     def __str__(self):
         return self.descricao
+
+
+class Clientes(models.Model):
+    nome_completo = models.CharField(max_length=100)
+    nome_fantasia = models.CharField(max_length=100)
