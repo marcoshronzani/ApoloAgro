@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from usuarios.models import Usuario
-from .models import Categorias
+from .models import Categorias, Produtos, Servicos
 from django.core.paginator import Paginator
 
 
@@ -62,3 +62,10 @@ def edita_categoria(request, id):
 def excluir_categoria(request, id):
     categoria = Categorias.objects.get(id = id).delete()
     return redirect('/categorias')
+
+def produtos(request):
+    if request.session.get('usuario'):
+        produto = Produtos.objects.order_by('-id')
+        return render(request, 'produtos.html', {'produtos': produto})
+    else:
+        return redirect('/login/?status=2')

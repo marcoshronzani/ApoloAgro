@@ -1,12 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Produtos</title>
-</head>
-<body>
-    <h1>
-        Produtos
-    </h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block 'titulo' %} Produtos {% endblock %}
+
+{% block 'conteudo' %}
+
+<div class="container">
+      <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md">
+            <h2>Produtos</h2>
+        </div>
+      </div>
+    <br>
+        <div class="row">
+            <div class="col-md"></div>
+            <div class="col-md"></div>
+            <div class="col-md"></div>
+            <div class="col-md">
+                <a href="#" type="button" class="btn btn-success">Cadastrar novo Produto</a>
+            </div>
+
+</div>
+{% for prod in produtos %}
+
+    {{prod}}
+
+{% endfor %}
+
+{% endblock %}
