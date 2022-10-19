@@ -1,12 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Produtos</title>
-</head>
-<body>
-    <h1>
-        Produtos
-    </h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block 'titulo' %} Produtos {% endblock %}
+
+{% block 'conteudo' %}
+
+{% for prod in produtos %}
+
+    {{prod}}
+
+{% endfor %}
+
+{% endblock %}
