@@ -28,7 +28,6 @@ class Servicos(models.Model):
 
 class Produtos(models.Model):
     descricao = models.CharField(max_length=50)
-    fabricante = models.CharField(max_length=50)
     preco_venda = models.DecimalField(max_digits=10, decimal_places=2)
     quantidade = models.IntegerField()
     observacao = models.TextField(blank=True, null=True)

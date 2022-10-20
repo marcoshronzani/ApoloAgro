@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %} Cria Produto {% endblock %}
+
+{% block 'conteudo' %}
+
+<div class="container">
+    <div style="text-align: center">
+        <h2>Cadastro de Produtos</h2>
+    </div>
+    <br>
+    <br>
+
+    <form method="POST" action="#">{% csrf_token %}
+        <label>Descrição:</label>
+        <input style="width: 40%" name="descricao" class="form-control" type="text" placeholder="Digite a descrição">
+        <br>
+        <label>Preço</label>
+        <input style="width: 40%" name="fabricante" class="form-control" type="text" placeholder="Digite o fabricante">
+        <br>
+        <input type="checkbox" name="servico" id="servico">
+        <label for="servico">Serviço</label>
+        <br>
+        <br>
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
+
+    </form>
+</div>
+
+{% endblock %}
