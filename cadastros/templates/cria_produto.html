@@ -6,6 +6,7 @@
 
 <div class="container">
     <div style="text-align: center">
+        <br>
         <h2>Cadastro de Produtos</h2>
     </div>
     <br>
@@ -13,14 +14,22 @@
 
     <form method="POST" action="#">{% csrf_token %}
         <label>Descrição:</label>
-        <input style="width: 40%" name="descricao" class="form-control" type="text" placeholder="Digite a descrição">
+        <input style="width: 50%" name="descricao" class="form-control" type="text" placeholder="Digite a descrição">
         <br>
-        <label>Preço</label>
-        <input style="width: 40%" name="fabricante" class="form-control" type="text" placeholder="Digite o fabricante">
+        <label>Preço Venda:</label>
+        <input type="number" name="preco" style="width: 15%" class="form-control">
         <br>
-        <input type="checkbox" name="servico" id="servico">
-        <label for="servico">Serviço</label>
+        <label>Quantidade:</label>
+        <input type="number" name="quantidade" style="width: 8%" class="form-control">
         <br>
+        <label>Observação:</label>
+        <textarea style="width: 50%" class="form-control" name="observacao" rows="5"></textarea>
+        <br>
+        <label>Categoria:</label>
+        <select style="width: 40%" id="categoria" class="form-control">
+        <option selected>Escolher...</option>
+        <option>...</option>
+      </select>
         <br>
         <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
 

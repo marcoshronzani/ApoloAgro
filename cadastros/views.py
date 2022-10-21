@@ -69,3 +69,10 @@ def produtos(request):
         return render(request, 'produtos.html', {'produtos': produto})
     else:
         return redirect('/login/?status=2')
+
+
+def cria_produto(request):
+    if request.session.get('usuario'):
+        return render(request, 'cria_produto.html')
+    else:
+        return redirect('/login/?status=2')
