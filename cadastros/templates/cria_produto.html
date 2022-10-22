@@ -11,28 +11,35 @@
     </div>
     <br>
     <br>
-
     <form method="POST" action="#">{% csrf_token %}
         <label>Descrição:</label>
         <input style="width: 50%" name="descricao" class="form-control" type="text" placeholder="Digite a descrição">
         <br>
-        <label>Preço Venda:</label>
-        <input type="number" name="preco" style="width: 15%" class="form-control">
-        <br>
-        <label>Quantidade:</label>
-        <input type="number" name="quantidade" style="width: 8%" class="form-control">
-        <br>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label>Preço Venda:</label>
+                <input type="number" name="preco" class="form-control">
+            </div>
+            <div class="form-group col-md-2">
+                <label>Quantidade:</label>
+                <input type="number" name="quantidade" class="form-control">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Categoria:</label>
+                <select id="categoria" class="form-control">
+                <option selected>Escolher...</option>
+                <option>...</option>
+                </select>
+            </div>
+        </div>
         <label>Observação:</label>
         <textarea style="width: 50%" class="form-control" name="observacao" rows="5"></textarea>
         <br>
-        <label>Categoria:</label>
-        <select style="width: 40%" id="categoria" class="form-control">
-        <option selected>Escolher...</option>
-        <option>...</option>
-      </select>
         <br>
-        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
-
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp
+        <a href="{% url 'produtos' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
 </div>
 

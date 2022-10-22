@@ -76,3 +76,18 @@ def cria_produto(request):
         return render(request, 'cria_produto.html')
     else:
         return redirect('/login/?status=2')
+
+
+def servicos(request):
+    if request.session.get('usuario'):
+        servico = Servicos.objects.order_by('-id')
+        return render(request, 'servicos.html', {'servicos': servico})
+    else:
+        return redirect('/login/?status=2')
+
+
+def cria_servico(request):
+    if request.session.get('usuario'):
+        return render(request, 'cria_servico.html')
+    else:
+        return redirect('/login/?status=2')

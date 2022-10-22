@@ -1,13 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Serviços</title>
-</head>
-<body>
-    <h1>
-        Serviços
-    </h1>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block 'titulo' %} Servicos {% endblock %}
+
+{% block 'conteudo' %}
+
+<div class="container">
+      <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md">
+            <br>
+            <h2>Serviços</h2>
+        </div>
+      </div>
+    <br>
+        <div class="row">
+            <div class="col-md"></div>
+            <div class="col-md"></div>
+            <div class="col-md"></div>
+            <div class="col-md">
+                <a href="{% url 'cria_servico' %}" type="button" class="btn btn-success">Cadastrar novo Serviço</a>
+            </div>
+        </div>
+    <br>
+    <div class="row">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Descrição</th>
+              <th scope="col">Valor</th>
+              <th scope="col">Categoria</th>
+              <th scope="col">  </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for serv in servicos %}
+                <tr>
+                  <td>{{ serv.descricao }}</td>
+                  <td>{{ serv.valor}}</td>
+                  <td>{{ prod.categoria}}</td>
+                  <td><a href="#" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
