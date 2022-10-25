@@ -4,6 +4,37 @@
 
 {% block 'conteudo' %}
 
-
+<div class="container">
+    <div style="text-align: center">
+        <br>
+        <h2>Cadastro de Serviços</h2>
+    </div>
+    <br>
+    <br>
+    <form action="#" method="POST" >{% csrf_token %}
+        <label>Descrição:</label>
+        <input style="width: 50%" type="text" name="descricao" class="form-control" placeholder="Digite a descrição">
+        <br>
+        <label>Valor:</label>
+        <input style="width: 10%" type="number" name="valor" class="form-control">
+        <br>
+        <label>Categoria:</label>
+        <select style="width: 30%" name="categoria" class="form-control">
+            <option selected>Escolher...</option>
+            {% for cat in categorias %}
+                {% if cat.servico %}
+                    <option>{{cat}}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <br>
+        <label>Observação:</label>
+        <textarea style="width: 50%" class="form-control" name="observacao" rows="5"></textarea>
+        <br>
+        <br>
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp
+        <a href="{% url 'servicos' %}" class="btn btn-primary btn-sm">Cancelar</a>
+    </form>
+</div>
 
 {% endblock %}

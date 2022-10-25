@@ -73,9 +73,14 @@ def produtos(request):
 
 def cria_produto(request):
     if request.session.get('usuario'):
-        return render(request, 'cria_produto.html')
+        categorias = Categorias.objects.all()
+        return render(request, 'cria_produto.html', {'categorias': categorias})
     else:
         return redirect('/login/?status=2')
+
+
+def valida_produto(request):
+    return redirect('/produtos')
 
 
 def servicos(request):
@@ -88,6 +93,11 @@ def servicos(request):
 
 def cria_servico(request):
     if request.session.get('usuario'):
-        return render(request, 'cria_servico.html')
+        categorias = Categorias.objects.all()
+        return render(request, 'cria_servico.html', {'categorias': categorias})
     else:
         return redirect('/login/?status=2')
+
+
+def valida_servico(request):
+    return redirect('/servicos')

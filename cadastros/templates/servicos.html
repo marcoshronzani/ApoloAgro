@@ -29,8 +29,8 @@
           <thead>
             <tr>
               <th scope="col">Descrição</th>
-              <th scope="col">Valor</th>
               <th scope="col">Categoria</th>
+              <th scope="col">Valor</th>
               <th scope="col">  </th>
             </tr>
           </thead>
@@ -38,8 +38,8 @@
             {% for serv in servicos %}
                 <tr>
                   <td>{{ serv.descricao }}</td>
+                  <td>{{ serv.categoria}}</td>
                   <td>{{ serv.valor}}</td>
-                  <td>{{ prod.categoria}}</td>
                   <td><a href="#" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
                 </tr>
             {% endfor %}

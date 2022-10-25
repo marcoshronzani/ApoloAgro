@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block 'titulo' %} Cria Produto {% endblock %}
+{% block 'titulo' %} Criar Produto {% endblock %}
 
 {% block 'conteudo' %}
 
@@ -11,7 +11,7 @@
     </div>
     <br>
     <br>
-    <form method="POST" action="#">{% csrf_token %}
+    <form method="POST" action="{% url 'valida_produto' %}">{% csrf_token %}
         <label>Descrição:</label>
         <input style="width: 50%" name="descricao" class="form-control" type="text" placeholder="Digite a descrição">
         <br>
@@ -28,9 +28,13 @@
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label>Categoria:</label>
-                <select id="categoria" class="form-control">
-                <option selected>Escolher...</option>
-                <option>...</option>
+                <select name="categoria" class="form-control">
+                    <option selected>Escolher...</option>
+                    {% for cat in categorias %}
+                        {% if cat.produto %}
+                            <option>{{cat}}</option>
+                        {% endif %}
+                    {% endfor %}
                 </select>
             </div>
         </div>
