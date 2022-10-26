@@ -21,14 +21,14 @@ def categorias(request):
         page = request.GET.get('p')
         categoria = paginator.get_page(page)
 
-        return render(request, 'categorias.html', {'categoria': categoria})
+        return render(request, 'categorias.html', {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
 def cria_categoria(request):
     if request.session.get('usuario'):
         usuario = Usuario.objects.get(id = request.session['usuario'])
-        return render(request, 'cria_categoria.html')
+        return render(request, 'cria_categoria.html', {'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
@@ -57,7 +57,7 @@ def valida_categoria(request):
 
 def edita_categoria(request, id):
     categoria = Categorias.objects.get(id = id)
-    return render(request, 'edita_categoria.html', {'categoria': categoria})
+    return render(request, 'edita_categoria.html', {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
 
 def excluir_categoria(request, id):
     categoria = Categorias.objects.get(id = id).delete()
@@ -66,7 +66,7 @@ def excluir_categoria(request, id):
 def produtos(request):
     if request.session.get('usuario'):
         produto = Produtos.objects.order_by('-id')
-        return render(request, 'produtos.html', {'produtos': produto})
+        return render(request, 'produtos.html', {'produtos': produto, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
@@ -74,7 +74,7 @@ def produtos(request):
 def cria_produto(request):
     if request.session.get('usuario'):
         categorias = Categorias.objects.all()
-        return render(request, 'cria_produto.html', {'categorias': categorias})
+        return render(request, 'cria_produto.html', {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
@@ -86,7 +86,7 @@ def valida_produto(request):
 def servicos(request):
     if request.session.get('usuario'):
         servico = Servicos.objects.order_by('-id')
-        return render(request, 'servicos.html', {'servicos': servico})
+        return render(request, 'servicos.html', {'servicos': servico, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
@@ -94,7 +94,7 @@ def servicos(request):
 def cria_servico(request):
     if request.session.get('usuario'):
         categorias = Categorias.objects.all()
-        return render(request, 'cria_servico.html', {'categorias': categorias})
+        return render(request, 'cria_servico.html', {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
