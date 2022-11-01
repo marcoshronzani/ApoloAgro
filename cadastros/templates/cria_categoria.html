@@ -10,7 +10,6 @@
     </div>
     <br>
     <br>
-
     <form method="POST" action="{% url 'valida_categoria' %}">{% csrf_token %}
         <label>Descrição:</label>
         <input style="width: 40%" name="descricao" class="form-control" type="text" placeholder="Digite a descrição">
@@ -22,8 +21,8 @@
         <label for="servico">Serviço</label>
         <br>
         <br>
-        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
-
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp &nbsp
+        <a href="{% url 'categorias' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
 </div>
 

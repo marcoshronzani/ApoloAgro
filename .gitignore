@@ -104,6 +104,9 @@ celerybeat.pid
 # Environments
 .env
 .venv
+<<<<<<< HEAD
+.idea
+=======
 env/
 venv/
 ENV/
