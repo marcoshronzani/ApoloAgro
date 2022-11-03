@@ -11,7 +11,7 @@
     </div>
     <br>
     <br>
-    <form action="#" method="POST" >{% csrf_token %}
+    <form action="{% url 'valida_servico' %}" method="POST" >{% csrf_token %}
         <label>Descrição:</label>
         <input style="width: 50%" type="text" name="descricao" class="form-control" placeholder="Digite a descrição">
         <br>
@@ -23,7 +23,7 @@
             <option selected>Escolher...</option>
             {% for cat in categorias %}
                 {% if cat.servico %}
-                    <option>{{cat}}</option>
+                    <option value="{{cat.id}}">{{cat}}</option>
                 {% endif %}
             {% endfor %}
         </select>

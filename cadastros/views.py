@@ -117,10 +117,10 @@ def valida_servico(request):
     observacao = request.POST.get('observacao')
     categoria = request.POST.get('categoria')
 
-    cat = Categorias.objects.get(descricao = categoria)
+    #cat = Categorias.objects.get(descricao = categoria)
 
     servico = Servicos(descricao = descricao, valor = valor,
-                       observacao = observacao, categoria = cat)
+                       observacao = observacao, categoria_id = categoria)
     servico.save()
 
     return redirect('/servicos')
