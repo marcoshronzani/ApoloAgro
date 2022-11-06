@@ -37,14 +37,14 @@ def valida_categoria(request):
     produto = request.POST.get('produto')
     servico = request.POST.get('servico')
     if produto:
-        produto = 1
+        produto = True
     else:
-        produto = 0
+        produto = False
 
     if servico:
-        servico = 1
+        servico = True
     else:
-        servico = 0
+        servico = False
 
     try:
         categoria = Categorias(descricao = descricao,
@@ -56,8 +56,28 @@ def valida_categoria(request):
         return HttpResponse('Falhou')
 
 def edita_categoria(request, id):
-    categoria = Categorias.objects.get(id = id)
-    return render(request, 'edita_categoria.html', {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
+    if request.session.get('usuario'):
+        categoria = Categorias.objects.get(id=id)
+        if request.method == 'POST':
+            descricao = request.POST.get('descricao')
+            produto = request.POST.get('produto')
+            servico = request.POST.get('servico')
+            if produto:
+                produto = True
+            else:
+                produto = False
+
+            if servico:
+                servico = True
+            else:
+                servico = False
+
+            categoria.descricao = descricao
+            categoria.produto = produto
+            categoria.servico = servico
+            categoria.save()
+            return redirect('/categorias')
+        return render(request, 'edita_categoria.html', {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
 
 def excluir_categoria(request, id):
     categoria = Categorias.objects.get(id = id).delete()
@@ -105,7 +125,7 @@ def servicos(request):
 
 def cria_servico(request):
     if request.session.get('usuario'):
-        categorias = Categorias.objects.all()
+        categorias = Categorias.objects.filter(servico=True)
         return render(request, 'cria_servico.html', {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
@@ -124,3 +144,27 @@ def valida_servico(request):
     servico.save()
 
     return redirect('/servicos')
+
+
+def edita_produto(request, id):
+    if request.session.get('usuario'):
+        produto = Produtos.objects.get(id=id)
+        categorias = Categorias.objects.filter(produto=True)
+        if request.method == 'POST':
+
+            return redirect('/produtos')
+    return render(request, 'edita_produto.html', {'produto': produto, 'categorias': categorias,
+                                                  'usuario_logado': request.session.get('usuario')})
+
+
+def edita_servico(request, id):
+    pass
+
+
+def excluir_produto(request, id):
+    produto = Produtos.objects.get(id=id).delete()
+    return redirect('/produtos')
+
+
+def excluir_servico(request, id):
+    pass

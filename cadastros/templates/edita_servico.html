@@ -1,17 +1,31 @@
 {% extends 'base.html' %}
 
-{% block 'titulo' %} Criar Servico {% endblock %}
+{% block 'titulo' %} Editar Servico {% endblock %}
 
 {% block 'conteudo' %}
-
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirma a Exclusão ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div style="text-align: center" class="modal-body">
+          <a class="btn btn-danger btn-sm" href="{% url 'excluir_servico' servico.id %}">Excluir</a>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container">
     <div style="text-align: center">
         <br>
-        <h2>Cadastro de Serviços</h2>
+        <h2>Editar Serviço</h2>
     </div>
     <br>
     <br>
-    <form action="{% url 'valida_servico' %}" method="POST" >{% csrf_token %}
+    <form action="{% url 'edita_servico' %}" method="POST" >{% csrf_token %}
         <label>Descrição:</label>
         <input style="width: 50%" type="text" name="descricao" class="form-control" placeholder="Digite a descrição">
         <br>

@@ -24,10 +24,10 @@
         <h1>Editar Categoria</h1>
     </div>
     <br><br>
-    <form action="#" method="POST">{% csrf_token %}
+    <form action="{% url 'edita_categoria' categoria.id %}" method="POST">{% csrf_token %}
         <p>
             <label>Descrição:</label>
-            <input style="width: 40%;" class="form-control" type="text" value="{{categoria.descricao}}">
+            <input style="width: 40%;" class="form-control" type="text" value="{{categoria.descricao}}" name="descricao">
         </p>
 
         <p>
@@ -45,7 +45,7 @@
                 <input type="checkbox" checked name="servico" id="servico">
                 <label for="servico">Serviço</label>
             {% else %}
-                <input type="checkbox" checked name="servico">
+                <input type="checkbox" name="servico">
                 <label for="servico">Serviço</label>
             {% endif %}
         </p>

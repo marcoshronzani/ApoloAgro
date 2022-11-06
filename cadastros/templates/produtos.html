@@ -43,7 +43,7 @@
                   <td>{{ prod.categoria}}</td>
                   <td>{{ prod.preco_venda}}</td>
                   <td>{{ prod.quantidade }}</td>
-                  <td><a href="#" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
+                  <td><a href="{% url 'edita_produto' prod.id %}" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
                 </tr>
             {% endfor %}
           </tbody>
