@@ -37,8 +37,11 @@
         <select style="width: 30%" name="categoria" class="form-control">
             <option selected>Escolher...</option>
             {% for cat in categorias %}
-
-                <option value="{{cat.id}}">{{cat}}</option>
+                {% if servico.categoria == cat %}
+                    <option value="{{cat.id}}" selected>{{cat}}</option>
+                {% else %}
+                    <option value="{{cat.id}}">{{cat}}</option>
+                {% endif %}
             {% endfor %}
         </select>
         <br>
@@ -48,6 +51,9 @@
         <br>
         <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp
         <a href="{% url 'servicos' %}" class="btn btn-primary btn-sm">Cancelar</a>
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+            Excluir
+        </button>
     </form>
 </div>
 

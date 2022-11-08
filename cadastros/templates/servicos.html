@@ -16,14 +16,18 @@
       </div>
     <br>
         <div class="row">
-            <div class="col-md"></div>
-            <div class="col-md"></div>
+            <div class="col-md-6">
+                <form action="" method="GET">
+                    <div class="form-group row">
+                        <input class="form-control" type="search" id="search-input" placeholder="Buscar" name="termo">
+                    </div>
+                </form>
+            </div>
             <div class="col-md"></div>
             <div class="col-md">
                 <a href="{% url 'cria_servico' %}" type="button" class="btn btn-success">Cadastrar novo Serviço</a>
             </div>
         </div>
-    <br>
     <div class="row">
         <table class="table table-striped table-sm">
           <thead>

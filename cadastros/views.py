@@ -183,6 +183,18 @@ def edita_servico(request, id):
         servico = Servicos.objects.get(id=id)
         categorias = Categorias.objects.filter(servico=True)
         if request.method == 'POST':
+            descricao = request.POST.get('descricao')
+            valor = request.POST.get('valor')
+            categoria = request.POST.get('categoria')
+            observacao = request.POST.get('observacao')
+            try:
+                servico.descricao = descricao
+                servico.valor = valor
+                servico.categoria_id = categoria
+                servico.observacao = observacao
+                servico.save()
+            except:
+                return HttpResponse('Erro')
             return redirect('/servicos')
         return render(request, 'edita_servico.html', {'servico': servico, 'categorias': categorias,
                                                       'usuario_logado': request.session.get('usuario')})
@@ -194,4 +206,5 @@ def excluir_produto(request, id):
 
 
 def excluir_servico(request, id):
-    pass
+    servico = Servicos.objects.get(id=id).delete()
+    return redirect('/servicos')
