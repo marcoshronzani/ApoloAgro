@@ -16,13 +16,6 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-6">
-            <form action="" method="GET">
-                <div class="form-group row">
-                    <input class="form-control" type="search" id="search-input" placeholder="Buscar" name="termo">
-                </div>
-            </form>
-        </div>
         <div class="col-md">
         </div>
         <div class="col-md">
@@ -71,19 +64,6 @@
             {% endfor %}
           </tbody>
         </table>
-        <nav aria-label="Navegação de página exemplo">
-  <ul class="pagination">
-      {% if categoria.has_previous %}
-        <li class="page-item"><a class="page-link" href="{% url 'categorias' %}?p={{ page.previous_page}}">Anterior</a></li>
-      {% endif %}
-      {% for pagina in categoria.paginator.page_range %}
-        <li class="page-item"><a class="page-link" href="?p={{pagina}}">{{pagina}}</a></li>
-      {% endfor %}
-      {% if categoria.has_next %}
-        <li class="page-item"><a class="page-link" href="{% url 'categorias' %}?p={{ page.next_page}}">Próximo</a></li>
-      {% endif %}
-  </ul>
-</nav>
     </div>
 </div>
 {% endblock %}

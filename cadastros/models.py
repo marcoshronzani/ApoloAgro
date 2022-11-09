@@ -42,5 +42,11 @@ class Produtos(models.Model):
 
 
 class Clientes(models.Model):
-    nome_completo = models.CharField(max_length=100)
-    nome_fantasia = models.CharField(max_length=100)
+    nome_completo = models.CharField(max_length=100, null=True)
+    nome_fantasia = models.CharField(max_length=100, null=True)
+    razao_social = models.CharField(max_length=100, null=True)
+    cnpj = models.CharField(max_length=14, null=True)
+    cpf = models.CharField(max_length=11, null=True)
+    rg = models.CharField(max_length=9, null=True)
+    inscricao_est = models.CharField(max_length=9, null=True)
+

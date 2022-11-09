@@ -17,11 +17,6 @@ def categorias(request):
     if request.session.get('usuario'):
         usuario = Usuario.objects.get(id=request.session['usuario'])
         categoria = Categorias.objects.order_by('-id')
-
-        paginator = Paginator(categoria, 10)
-        page = request.GET.get('p')
-        categoria = paginator.get_page(page)
-
         return render(request, 'categorias.html',
                       {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
     else:
@@ -208,3 +203,12 @@ def excluir_produto(request, id):
 def excluir_servico(request, id):
     servico = Servicos.objects.get(id=id).delete()
     return redirect('/servicos')
+
+
+def busca_cat(request):
+    if request.session.get('usuario'):
+        categoria = Categorias.objects.order_by('-id')
+        return render(request, '/bsuca_cat.html',
+                      {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
+    else:
+        return redirect('/login/?status=2')
