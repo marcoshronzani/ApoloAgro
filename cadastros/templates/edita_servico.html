@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load format_decimal %}
 
 {% block 'titulo' %} Editar Servico {% endblock %}
 
@@ -25,27 +26,34 @@
     </div>
     <br>
     <br>
-    <form action="{% url 'edita_servico' %}" method="POST" >{% csrf_token %}
+    <form action="{% url 'edita_servico' servico.id %}" method="POST" >{% csrf_token %}
         <label>Descrição:</label>
-        <input style="width: 50%" type="text" name="descricao" class="form-control" placeholder="Digite a descrição">
+        <input style="width: 50%" type="text" name="descricao" class="form-control" value="{{servico.descricao}}" placeholder="Digite a descrição">
         <br>
         <label>Valor:</label>
-        <input style="width: 10%" type="number" name="valor" class="form-control">
+        <input style="width: 10%" type="number" step="any" name="valor" value="{{servico.valor|format_decimal}}" class="form-control">
         <br>
         <label>Categoria:</label>
         <select style="width: 30%" name="categoria" class="form-control">
             <option selected>Escolher...</option>
             {% for cat in categorias %}
-                <option value="{{cat.id}}">{{cat}}</option>
+                {% if servico.categoria == cat %}
+                    <option value="{{cat.id}}" selected>{{cat}}</option>
+                {% else %}
+                    <option value="{{cat.id}}">{{cat}}</option>
+                {% endif %}
             {% endfor %}
         </select>
         <br>
         <label>Observação:</label>
-        <textarea style="width: 50%" class="form-control" name="observacao" rows="5"></textarea>
+        <textarea style="width: 50%" class="form-control" name="observacao" rows="5">{{servico.observacao}}</textarea>
         <br>
         <br>
         <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp
         <a href="{% url 'servicos' %}" class="btn btn-primary btn-sm">Cancelar</a>
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+            Excluir
+        </button>
     </form>
 </div>
 

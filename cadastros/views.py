@@ -18,11 +18,6 @@ def categorias(request):
     if request.session.get('usuario'):
         usuario = Usuario.objects.get(id=request.session['usuario'])
         categoria = Categorias.objects.order_by('-id')
-
-        paginator = Paginator(categoria, 10)
-        page = request.GET.get('p')
-        categoria = paginator.get_page(page)
-
         return render(request, 'categorias.html',
                       {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
     else:
@@ -47,6 +42,16 @@ def criar_categoria(request):
         return render(request, 'cria_categoria.html', context=contexto)
 
     return redirect('/login/?status=2')
+
+    try:
+        categoria = Categorias(descricao=descricao,
+                               produto=produto,
+                               servico=servico)
+        categoria.save()
+        return redirect('/categorias/')
+    except:
+        return HttpResponse('Falhou')
+
 
 
 def edita_categoria(request, id):
@@ -150,13 +155,43 @@ def edita_produto(request, id):
         produto = Produtos.objects.get(id=id)
         categorias = Categorias.objects.filter(produto=True)
         if request.method == 'POST':
+            descricao = request.POST.get('descricao')
+            preco_venda = request.POST.get('preco_venda')
+            quantidade = request.POST.get('quantidade')
+            categoria = request.POST.get('categoria')
+            observacao = request.POST.get('observacao')
+
+            produto.descricao = descricao
+            produto.preco_venda = preco_venda
+            produto.quantidade = quantidade
+            produto.categoria_id = categoria
+            produto.observacao = observacao
+            produto.save()
             return redirect('/produtos')
-    return render(request, 'edita_produto.html', {'produto': produto, 'categorias': categorias,
-                                                  'usuario_logado': request.session.get('usuario')})
+        contexto = {'produto': produto, 'categorias': categorias, 'usuario_logado': request.session.get('usuario')}
+        return render(request, 'edita_produto.html', contexto)
 
 
 def edita_servico(request, id):
-    pass
+    if request.session.get('usuario'):
+        servico = Servicos.objects.get(id=id)
+        categorias = Categorias.objects.filter(servico=True)
+        if request.method == 'POST':
+            descricao = request.POST.get('descricao')
+            valor = request.POST.get('valor')
+            categoria = request.POST.get('categoria')
+            observacao = request.POST.get('observacao')
+            try:
+                servico.descricao = descricao
+                servico.valor = valor
+                servico.categoria_id = categoria
+                servico.observacao = observacao
+                servico.save()
+            except:
+                return HttpResponse('Erro')
+            return redirect('/servicos')
+        return render(request, 'edita_servico.html', {'servico': servico, 'categorias': categorias,
+                                                      'usuario_logado': request.session.get('usuario')})
 
 
 def excluir_produto(request, id):
@@ -165,4 +200,15 @@ def excluir_produto(request, id):
 
 
 def excluir_servico(request, id):
-    pass
+    servico = Servicos.objects.get(id=id).delete()
+    return redirect('/servicos')
+
+
+def busca_cat(request):
+    if request.session.get('usuario'):
+        categoria = Categorias.objects.order_by('-id')
+        return render(request, '/bsuca_cat.html',
+                      {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
+    else:
+        return redirect('/login/?status=2')
+

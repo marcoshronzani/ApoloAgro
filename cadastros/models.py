@@ -41,5 +41,28 @@ class Produtos(models.Model):
 
 
 class Clientes(models.Model):
-    nome_completo = models.CharField(max_length=100)
-    nome_fantasia = models.CharField(max_length=100)
+    nome_completo = models.CharField(max_length=100, blank=True)
+    nome_fantasia = models.CharField(max_length=100, blank=True)
+    razao_social = models.CharField(max_length=100, blank=True)
+    cnpj = models.CharField(max_length=14, blank=True)
+    cpf = models.CharField(max_length=11, blank=True)
+    rg = models.CharField(max_length=9, blank=True)
+    inscricao_est = models.CharField(max_length=9, blank=True)
+    telefone = models.CharField(max_length=15, blank=True)
+    telefone_2 = models.CharField(max_length=15, blank=True)
+    contato = models.CharField(max_length=30, blank=True)
+    celular = models.CharField(max_length=15, blank=True)
+    email = models.CharField(max_length=100, blank=True)
+    site = models.CharField(max_length=60, blank=True)
+    cep = models.CharField(max_length=10, blank=True)
+    logradouro = models.CharField(max_length=100, blank=True)
+    numero = models.CharField(max_length=10, blank=True)
+    complemento = models.CharField(max_length=30, blank=True)
+    bairro = models.CharField(max_length=30, blank=True)
+    cidade = models.CharField(max_length=30, blank=True)
+    estado = models.CharField(max_length=2, blank=True)
+    fisica = models.BooleanField
+
+
+
+
