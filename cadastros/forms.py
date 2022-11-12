@@ -19,6 +19,6 @@ class CategoriaForm(forms.ModelForm):
     def clean_descricao(self):
         descricao = self.cleaned_data.get('descricao')
         if Categorias.objects.filter(descricao=descricao).exists():
-            raise ValidationError('Já existe essa descrição porra!')
+            raise ValidationError('Já existe essa descrição, faça outra!')
 
         return descricao
