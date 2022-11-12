@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from usuarios.models import Usuario
-from .models import Categorias, Produtos, Servicos
 from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+
+from usuarios.models import Usuario
+from .forms import CategoriaForm
+from .models import Categorias, Produtos, Servicos
 
 
 def clientes(request):
@@ -14,46 +16,38 @@ def clientes(request):
 
 def categorias(request):
     if request.session.get('usuario'):
-        usuario = Usuario.objects.get(id = request.session['usuario'])
+        usuario = Usuario.objects.get(id=request.session['usuario'])
         categoria = Categorias.objects.order_by('-id')
 
         paginator = Paginator(categoria, 10)
         page = request.GET.get('p')
         categoria = paginator.get_page(page)
 
-        return render(request, 'categorias.html', {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
+        return render(request, 'categorias.html',
+                      {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
-def cria_categoria(request):
-    if request.session.get('usuario'):
-        usuario = Usuario.objects.get(id = request.session['usuario'])
-        return render(request, 'cria_categoria.html', {'usuario_logado': request.session.get('usuario')})
-    else:
-        return redirect('/login/?status=2')
 
-def valida_categoria(request):
-    descricao = request.POST.get('descricao')
-    produto = request.POST.get('produto')
-    servico = request.POST.get('servico')
-    if produto:
-        produto = True
-    else:
-        produto = False
+def criar_categoria(request):
+    id_usuario = request.session.get('usuario')
 
-    if servico:
-        servico = True
-    else:
-        servico = False
+    if id_usuario:
+        form = CategoriaForm()
 
-    try:
-        categoria = Categorias(descricao = descricao,
-                               produto = produto,
-                               servico = servico)
-        categoria.save()
-        return redirect('/categorias/')
-    except:
-        return HttpResponse('Falhou')
+        if request.method == 'POST':
+            form = CategoriaForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+
+                return redirect('/categorias/')
+
+        contexto = {'usuario_logado': id_usuario, 'form': form}
+        return render(request, 'cria_categoria.html', context=contexto)
+
+    return redirect('/login/?status=2')
+
 
 def edita_categoria(request, id):
     if request.session.get('usuario'):
@@ -77,11 +71,14 @@ def edita_categoria(request, id):
             categoria.servico = servico
             categoria.save()
             return redirect('/categorias')
-        return render(request, 'edita_categoria.html', {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
+        return render(request, 'edita_categoria.html',
+                      {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
+
 
 def excluir_categoria(request, id):
-    categoria = Categorias.objects.get(id = id).delete()
+    categoria = Categorias.objects.get(id=id).delete()
     return redirect('/categorias')
+
 
 def produtos(request):
     if request.session.get('usuario'):
@@ -94,7 +91,8 @@ def produtos(request):
 def cria_produto(request):
     if request.session.get('usuario'):
         categorias = Categorias.objects.all()
-        return render(request, 'cria_produto.html', {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
+        return render(request, 'cria_produto.html',
+                      {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
@@ -106,9 +104,9 @@ def valida_produto(request):
     categoria = request.POST.get('categoria')
     observacao = request.POST.get('observacao')
     try:
-        cat = Categorias.objects.get(descricao = categoria)
-        produto = Produtos(descricao = descricao, preco_venda = preco_venda, quantidade = quantidade,
-                           categoria = cat, observacao = observacao)
+        cat = Categorias.objects.get(descricao=categoria)
+        produto = Produtos(descricao=descricao, preco_venda=preco_venda, quantidade=quantidade,
+                           categoria=cat, observacao=observacao)
         produto.save()
         return redirect('/produtos/')
     except:
@@ -126,7 +124,8 @@ def servicos(request):
 def cria_servico(request):
     if request.session.get('usuario'):
         categorias = Categorias.objects.filter(servico=True)
-        return render(request, 'cria_servico.html', {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
+        return render(request, 'cria_servico.html',
+                      {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
@@ -137,10 +136,10 @@ def valida_servico(request):
     observacao = request.POST.get('observacao')
     categoria = request.POST.get('categoria')
 
-    #cat = Categorias.objects.get(descricao = categoria)
+    # cat = Categorias.objects.get(descricao = categoria)
 
-    servico = Servicos(descricao = descricao, valor = valor,
-                       observacao = observacao, categoria_id = categoria)
+    servico = Servicos(descricao=descricao, valor=valor,
+                       observacao=observacao, categoria_id=categoria)
     servico.save()
 
     return redirect('/servicos')
@@ -151,7 +150,6 @@ def edita_produto(request, id):
         produto = Produtos.objects.get(id=id)
         categorias = Categorias.objects.filter(produto=True)
         if request.method == 'POST':
-
             return redirect('/produtos')
     return render(request, 'edita_produto.html', {'produto': produto, 'categorias': categorias,
                                                   'usuario_logado': request.session.get('usuario')})
