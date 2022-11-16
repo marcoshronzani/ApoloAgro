@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from usuarios.models import Usuario
+from .forms import CategoriaForm
 from .models import Categorias, Produtos, Servicos
 
 
@@ -23,27 +24,24 @@ def categorias(request):
         return redirect('/login/?status=2')
 
 
-def cria_categoria(request):
-    if request.session.get('usuario'):
-        usuario = Usuario.objects.get(id=request.session['usuario'])
-        return render(request, 'cria_categoria.html', {'usuario_logado': request.session.get('usuario')})
-    else:
-        return redirect('/login/?status=2')
+def criar_categoria(request):
+    id_usuario = request.session.get('usuario')
 
+    if id_usuario:
+        form = CategoriaForm()
 
-def valida_categoria(request):
-    descricao = request.POST.get('descricao')
-    produto = request.POST.get('produto')
-    servico = request.POST.get('servico')
-    if produto:
-        produto = True
-    else:
-        produto = False
+        if request.method == 'POST':
+            form = CategoriaForm(request.POST)
 
-    if servico:
-        servico = True
-    else:
-        servico = False
+            if form.is_valid():
+                form.save()
+
+                return redirect('/categorias/')
+
+        contexto = {'usuario_logado': id_usuario, 'form': form}
+        return render(request, 'cria_categoria.html', context=contexto)
+
+    return redirect('/login/?status=2')
 
     try:
         categoria = Categorias(descricao=descricao,
@@ -53,6 +51,7 @@ def valida_categoria(request):
         return redirect('/categorias/')
     except:
         return HttpResponse('Falhou')
+
 
 
 def edita_categoria(request, id):
@@ -212,3 +211,4 @@ def busca_cat(request):
                       {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
+
