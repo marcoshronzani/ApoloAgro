@@ -1,4 +1,3 @@
-from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -42,16 +41,6 @@ def criar_categoria(request):
         return render(request, 'cria_categoria.html', context=contexto)
 
     return redirect('/login/?status=2')
-
-    try:
-        categoria = Categorias(descricao=descricao,
-                               produto=produto,
-                               servico=servico)
-        categoria.save()
-        return redirect('/categorias/')
-    except:
-        return HttpResponse('Falhou')
-
 
 
 def edita_categoria(request, id):
@@ -211,4 +200,8 @@ def busca_cat(request):
                       {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
+
+
+def terceiros(request):
+    pass
 

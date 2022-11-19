@@ -41,6 +41,10 @@ class Produtos(models.Model):
 
 
 class Clientes(models.Model):
+    choices = (
+        ('F', 'Física'),
+        ('J', 'Jurídica')
+    )
     nome_completo = models.CharField(max_length=100, blank=True)
     nome_fantasia = models.CharField(max_length=100, blank=True)
     razao_social = models.CharField(max_length=100, blank=True)
@@ -49,7 +53,6 @@ class Clientes(models.Model):
     rg = models.CharField(max_length=9, blank=True)
     inscricao_est = models.CharField(max_length=9, blank=True)
     telefone = models.CharField(max_length=15, blank=True)
-    telefone_2 = models.CharField(max_length=15, blank=True)
     contato = models.CharField(max_length=30, blank=True)
     celular = models.CharField(max_length=15, blank=True)
     email = models.CharField(max_length=100, blank=True)
@@ -61,7 +64,7 @@ class Clientes(models.Model):
     bairro = models.CharField(max_length=30, blank=True)
     cidade = models.CharField(max_length=30, blank=True)
     estado = models.CharField(max_length=2, blank=True)
-    fisica = models.BooleanField
+    tipo = models.CharField(max_length=1, choices=choices, null=True)
 
 
 
