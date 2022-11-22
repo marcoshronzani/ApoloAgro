@@ -1,14 +1,23 @@
 {% extends 'base.html' %}
 
-{% block 'titulo' %} Cadastro Clientes {% endblock %}
+{% block 'titulo' %} Clientes {% endblock %}
 
 {% block 'conteudo' %}
 
 <div class="container">
     <div class="row">
+      <div class="col-md-4">
 
+      </div>
+      <div class="col-md">
+          <br>
+          <h2>Clientes</h2>
+          {% for cli in clientes %}
+            {{cli.nome_completo}}
+          {% endfor %}
+      </div>
     </div>
-
+ 
 </div>
 
 {% endblock %}

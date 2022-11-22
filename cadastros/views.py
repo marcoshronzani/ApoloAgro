@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 from usuarios.models import Usuario
 from .forms import CategoriaForm
-from .models import Categorias, Produtos, Servicos
+from .models import Categorias, Produtos, Servicos, Clientes
 
 
 def clientes(request):
@@ -184,12 +184,12 @@ def edita_servico(request, id):
 
 
 def excluir_produto(request, id):
-    produto = Produtos.objects.get(id=id).delete()
+    Produtos.objects.get(id=id).delete()
     return redirect('/produtos')
 
 
 def excluir_servico(request, id):
-    servico = Servicos.objects.get(id=id).delete()
+    Servicos.objects.get(id=id).delete()
     return redirect('/servicos')
 
 
@@ -204,4 +204,12 @@ def busca_cat(request):
 
 def terceiros(request):
     pass
+
+
+def clientes(request):
+    if request.session.get('usuario'):
+        clientes = Clientes.objects.order_by('-id')
+        return render(request, 'clientes.html', {'clientes': clientes, 'usuario_logado': request.session.get('usuario')})
+    else:
+        return redirect('/login/?status=2')
 

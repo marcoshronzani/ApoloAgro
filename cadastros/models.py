@@ -66,6 +66,10 @@ class Clientes(models.Model):
     estado = models.CharField(max_length=2, blank=True)
     tipo = models.CharField(max_length=1, choices=choices, null=True)
 
+    class Meta:
+        verbose_name = 'Cliente'
 
+    def __str__(self):
+        return self.nome_fantasia
 
 
