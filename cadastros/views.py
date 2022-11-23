@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from usuarios.models import Usuario
-from .forms import CategoriaForm
+from .forms import CategoriaForm, ClienteForm
 from .models import Categorias, Produtos, Servicos, Clientes
 
 
@@ -213,3 +213,21 @@ def clientes(request):
     else:
         return redirect('/login/?status=2')
 
+def cria_cliente(request):
+    if request.session.get('usuario'):
+        form = ClienteForm()
+
+        if request.method == 'POST':
+            form = ClienteForm(request.POST)
+            
+
+            return()
+        return()
+
+
+def excluir_cliente(request):
+    pass
+
+
+def edita_cliente(request, id):
+    pass

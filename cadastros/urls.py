@@ -19,4 +19,7 @@ urlpatterns = [
     path('excluir_servico/<int:id>', views.excluir_servico, name='excluir_servico'),
     path('busca_cat/', views.busca_cat, name='busca_cat'),
     path('clientes/', views.clientes, name='clientes'),
+    path('cria_cliente/', views.cria_cliente, name="cria_cliente"),
+    path('exclui_cliente/<int:id>', views.excluir_cliente, name="excluir_cliente"),
+    path('edita_cliente/<int:id>', views.edita_cliente, name="edita_cliente"),
 ]

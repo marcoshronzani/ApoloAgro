@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from cadastros.models import Categorias
+from cadastros.models import Categorias, Clientes
 
 
 class CategoriaForm(forms.ModelForm):
@@ -22,3 +22,10 @@ class CategoriaForm(forms.ModelForm):
             raise ValidationError('Já existe essa descrição, faça outra!')
 
         return descricao
+
+
+class ClienteForm(forms.ModelForm):
+    class Meta:
+        model = Clientes
+        fields = "__all__"
+        
