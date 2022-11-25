@@ -215,14 +215,21 @@ def clientes(request):
 
 def cria_cliente(request):
     if request.session.get('usuario'):
+
         form = ClienteForm()
 
         if request.method == 'POST':
             form = ClienteForm(request.POST)
-            
 
-            return()
-        return()
+            if form.is_valid():
+                form.save()
+
+            return redirect('/clientes/')
+            
+        contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
+        return render(request, 'cria_cliente.html', context=contexto)
+
+    return redirect('/login/?status=2')
 
 
 def excluir_cliente(request):

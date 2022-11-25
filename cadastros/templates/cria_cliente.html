@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %} {% endblock %}
+
+{%block 'conteudo' %} 
+
+<form method="POST">{% csrf_token %}
+    <table>
+    {{form}}
+
+    </table>
+    <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
+</form>
+{% endblock%}
