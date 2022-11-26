@@ -28,4 +28,13 @@ class ClienteForm(forms.ModelForm):
     class Meta:
         model = Clientes
         fields = "__all__"
+
+    
+    def clean_razao_social(self):
+        razao_social = self.cleaned_data.get('razao_social')
+        print(razao_social)
+        if razao_social == None:
+            raise ValidationError('Campo Obrigatório')
+        
+        return razao_social
         

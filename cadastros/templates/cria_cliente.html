@@ -6,7 +6,8 @@
 
 <form method="POST">{% csrf_token %}
     <table>
-    {{form}}
+        {{form.as_table}}
+        <p>{{form.razao_social.errors}}</p>
 
     </table>
     <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
