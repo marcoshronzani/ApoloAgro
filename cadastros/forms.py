@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from cadastros.models import Categorias, Clientes
+from cadastros.models import Categorias, Clientes, Terceiros
 
 
 class CategoriaForm(forms.ModelForm):
@@ -27,14 +27,31 @@ class CategoriaForm(forms.ModelForm):
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Clientes
-        fields = "__all__"
+        fields = '__all__'
 
-    
-    def clean_razao_social(self):
-        razao_social = self.cleaned_data.get('razao_social')
-        print(razao_social)
-        if razao_social == None:
-            raise ValidationError('Campo Obrigatório')
-        
-        return razao_social
-        
+
+class TerceiroForm(forms.ModelForm):
+    class Meta:
+        model = Terceiros
+        fields = (
+            'nome_completo',
+            'nome_fantasia',
+            'razao_social',
+            'cnpj',
+            'cpf',
+            'rg',
+            'inscricao_est',
+            'telefone',
+            'contato',
+            'celular',
+            'email',
+            'site',
+            'cep',
+            'logradouro',
+            'numero',
+            'complemento',
+            'bairro',
+            'cidade',
+            'estado',
+            'tipo'
+        )

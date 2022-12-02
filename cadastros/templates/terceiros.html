@@ -1,12 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Terceiros</title>
-</head>
-<body>
-    <h1>
-       Terceiros
-    </h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block 'titulo' %} Terceiros {% endblock %}
+
+{% block 'conteudo' %}
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-4">
+  
+      </div>
+      <div class="col-md">
+          <br>
+          <h2>Terceiros</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="" method="GET">
+                <div class="form-group row">
+                    <input class="form-control" type="search" id="search-input" placeholder="Buscar" name="termo">
+                </div>
+            </form>
+        </div>
+        <div class="col-md"></div>
+        <div class="col-md">
+            <a href="{% url 'cria_terceiro' %}" type="button" class="btn btn-success">Cadastrar novo Terceiro</a>
+        </div>
+    </div>
+    <div class="row">
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Razão Social</th>
+            <th scope="col">CNPJ</th>
+            <th scope="col">CPF</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Contato</th>
+            <th scope="col">Celular</th>
+            <th scope="col">Cidade</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in terceiros %}
+              <tr>
+                <td>{{ i.nome_completo }}</td>
+                <td>{{ i.razao_social }}</td>
+                <td>{{ i.cnpj }}</td>
+                <td>{{ i.cpf }}</td>
+                <td>{{ i.telefone }}</td>
+                <td>{{ i.contato }}</td>
+                <td>{{ i.celular }}</td>
+                <td>{{ i.cidade }}</td>
+                <td><a href="#" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+</div>
+
+{% endblock%}

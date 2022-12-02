@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from usuarios.models import Usuario
-from .forms import CategoriaForm, ClienteForm
-from .models import Categorias, Produtos, Servicos, Clientes
+from .forms import CategoriaForm, ClienteForm, TerceiroForm
+from .models import Categorias, Produtos, Servicos, Clientes, Terceiros
 
 
 def clientes(request):
@@ -202,10 +202,6 @@ def busca_cat(request):
         return redirect('/login/?status=2')
 
 
-def terceiros(request):
-    pass
-
-
 def clientes(request):
     if request.session.get('usuario'):
         clientes = Clientes.objects.order_by('-id')
@@ -224,7 +220,7 @@ def cria_cliente(request):
             if form.is_valid():
                 form.save()
 
-            return redirect('/clientes/')
+                return redirect('/clientes/')
             
         contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
         return render(request, 'cria_cliente.html', context=contexto)
@@ -232,9 +228,36 @@ def cria_cliente(request):
     return redirect('/login/?status=2')
 
 
-def excluir_cliente(request):
+def excluir_cliente(request, id):
     pass
 
 
 def edita_cliente(request, id):
+    pass
+
+
+def terceiros(request):
+    if request.session.get('usuario'):
+        terceiros = Terceiros.objects.order_by('-id')
+        return render(request, 'terceiros.html', {'terceiros': terceiros, 'usuario_logado': request.session.get('usuario')})
+
+
+def cria_terceiro(request):
+    if request.session.get('usuario'):
+        form = TerceiroForm()
+
+        if request.method == 'POST':
+            form = TerceiroForm(request.POST)
+
+        contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
+        return render(request, 'cria_terceiro.html', context=contexto)
+
+    return redirect('/login/?status=2')
+
+
+def edita_terceiro(request, id):
+    pass
+
+
+def excluir_terceiro(request, id):
     pass
