@@ -11,24 +11,24 @@
       </div>
       <div class="col-md">
           <br>
-          <h2>Unidade  de Medidas</h2>
+          <h2>Unidade de Medidas</h2>
       </div>
     </div>
-  <br>
-      <div class="row">
-          <div class="col-md-6">
-              <form action="" method="GET">
-                  <div class="form-group row">
-                      <input class="form-control" type="search" id="search-input" placeholder="Buscar" name="termo">
-                  </div>
-              </form>
-          </div>
-          <div class="col-md"></div>
-          <div class="col-md">
-              <a href="{% url 'cria_und' %}" type="button" class="btn btn-success">Cadastrar Unidade Medida</a>
-          </div>
-      </div>
-  <div class="row">
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="" method="GET">
+                <div class="form-group row">
+                    <input class="form-control" type="search" id="search-input" placeholder="Buscar" name="termo">
+                </div>
+            </form>
+        </div>
+        <div class="col-md"></div>
+        <div class="col-md">
+            <a href="{% url 'cria_und' %}" type="button" class="btn btn-success">Cadastrar Unidade Medida</a>
+        </div>
+    </div>
+    <div class="row">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
@@ -42,7 +42,7 @@
                 <tr>
                   <td>{{ und.descricao }}</td>
                   <td>{{ und.sigla }}</td>
-                  <td><a href="#" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
+                  <td><a href="{% url 'edita_und_medida' und.id %}" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
                 </tr>
             {% endfor %}
           </tbody>

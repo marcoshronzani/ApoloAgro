@@ -4,11 +4,40 @@
 
 {% block 'conteudo' %}
 
-<form method='POST'>{% csrf_token %}
-    <table>
-        {{form.as_table}}   
-    </table>
-    <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
-</form>
+<div class="container">
+    <div style="text-align: enter">
+        <h2> Criar Unidade Medida </h2>
+    </div>
+    <br>
+    <br>
+    <form method='POST'>{% csrf_token %}
+
+        <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
+        <input style="width: 40%" name="{{ form.descricao.html_name }}" class="form-control" type="text" 
+            placeholder="Digite a descrição" id="{{ form.descricao.id_for_label }}">
+
+        <br>
+
+        <label for="{{ form.sigla.id_for_label }}">{{ form.sigla.label }}</label>
+        <input style="width: 20%" name="{{ form.sigla.html_name }}" type="text" class="form-control"
+                placeholder="Ex: M²" id="{{ form.sigla.id_for_label }}">
+        
+        <br>
+        <br>
+
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
+    </form>
+
+</div>
 
 {% endblock  %}
+
+<label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
+<input style="width: 40%" name="{{ form.descricao.html_name }}" class="form-control" type="text" 
+    placeholder="Digite a descrição" id="{{ form.descricao.id_for_label }}">
+<p>{{ form.descricao.errors }}</p>
+
+<label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
+<inpupt style="width: 40%" name="{{ form.descricao.html_name}}" class="form-control" type="text"   
+    placeholder="Digite a descrição" id="{{form.descricao.id_for_label}}">
+<p>{{ form.descricao.errors }}</p>

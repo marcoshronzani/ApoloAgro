@@ -14,18 +14,21 @@
         {% csrf_token %}
 
         <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
-        <input style="width: 40%" name="{{ form.descricao.html_name }}" class="form-control" type="text" placeholder="Digite a descrição" id="{{ form.descricao.id_for_label }}"
-               value="{% if form.descricao.value %}{{ form.descricao.value }}{% endif %}">
+        <input style="width: 40%" name="{{ form.descricao.html_name }}" class="form-control" type="text" 
+                placeholder="Digite a descrição" id="{{ form.descricao.id_for_label }}"
+                value="{% if form.descricao.value %}{{ form.descricao.value }}{% endif %}">
         <p>{{ form.descricao.errors }}</p>
 
         <br>
 
-        <input type="checkbox" name="{{ form.produto.html_name }}" id="{{ form.produto.id_for_label }}" {% if form.produto.value %}checked{% endif %}>
+        <input type="checkbox" name="{{ form.produto.html_name }}" id="{{ form.produto.id_for_label }}" 
+                {% if form.produto.value %}checked{% endif %}>
         <label for="{{ form.produto.id_for_label }}">{{ form.produto.label }}</label>
 
         <br>
 
-        <input type="checkbox" name="{{ form.servico.html_name }}" id="{{ form.servico.id_for_label }}"  {% if form.servico.value %}checked{% endif %}>
+        <input type="checkbox" name="{{ form.servico.html_name }}" id="{{ form.servico.id_for_label }}"  
+                {% if form.servico.value %}checked{% endif %}>
         <label for="{{ form.servico.id_for_label }}">{{ form.servico.label }}</label>
 
         <br>

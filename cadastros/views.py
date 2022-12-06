@@ -288,5 +288,9 @@ def cria_und_medida(request):
     return redirect('/login/?status=2')
 
 
+def edita_und_medida(request, id):
+    pass
+
+
 def excluir_und_medida(request, id):
     pass
