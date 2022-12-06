@@ -2,8 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from usuarios.models import Usuario
-from .forms import CategoriaForm, ClienteForm, TerceiroForm
-from .models import Categorias, Produtos, Servicos, Clientes, Terceiros
+from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm
+from .models import Categorias, Produtos, Servicos, Clientes, Terceiros, UnidadeMedida
 
 
 def clientes(request):
@@ -260,4 +260,33 @@ def edita_terceiro(request, id):
 
 
 def excluir_terceiro(request, id):
+    pass
+
+
+def unidade_medida(request):
+    if request.session.get('usuario'):
+        und_medidas = UnidadeMedida.objects.order_by('-id')
+
+    return render(request, 'und_medidas.html', {'und_medidas': und_medidas, 'usuario_logado': request.session.get('usuario')})
+
+
+def cria_und_medida(request):
+    if request.session.get('usuario'):
+        form = UndMedidaForm()
+
+        if request.method =='POST':
+            form = UndMedidaForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+            
+                return redirect('/unidade_medida/')
+
+        contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
+        return render(request, 'cria_und_medida.html', context=contexto)
+    
+    return redirect('/login/?status=2')
+
+
+def excluir_und_medida(request, id):
     pass

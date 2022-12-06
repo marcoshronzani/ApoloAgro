@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block 'titulo' %} Cria Unidade Medida {% endblock %}
+
+{% block 'conteudo' %}
+
+<form method='POST'>{% csrf_token %}
+    <table>
+        {{form.as_table}}   
+    </table>
+    <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
+</form>
+
+{% endblock  %}

@@ -26,5 +26,8 @@ urlpatterns = [
     path('cria_terceiro/', views.cria_terceiro, name='cria_terceiro'),
     path('edita_terceiro/<int:id>', views.edita_terceiro, name='edita_terceiro'),
     path('exclui_terceiro/<int:id>', views.excluir_terceiro, name='excluir_terceiro'),
+    path('unidade_medida/', views.unidade_medida, name="und_medidas"),
+    path('cria_und_medida/', views.cria_und_medida,name="cria_und"),
+    path('excluir_und_medida/<int:id>',views.excluir_und_medida, name="excluir_und"),
 
 ]
