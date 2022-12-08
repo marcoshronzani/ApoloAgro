@@ -25,19 +25,10 @@
         <br>
         <br>
 
-        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp
+        <a href="{% url 'und_medidas' %}" class="btn btn-primary btn-sm">Cancelar</a>&nbsp&nbsp&nbsp
     </form>
 
 </div>
 
 {% endblock  %}
-
-<label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
-<input style="width: 40%" name="{{ form.descricao.html_name }}" class="form-control" type="text" 
-    placeholder="Digite a descrição" id="{{ form.descricao.id_for_label }}">
-<p>{{ form.descricao.errors }}</p>
-
-<label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
-<inpupt style="width: 40%" name="{{ form.descricao.html_name}}" class="form-control" type="text"   
-    placeholder="Digite a descrição" id="{{form.descricao.id_for_label}}">
-<p>{{ form.descricao.errors }}</p>

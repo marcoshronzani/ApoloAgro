@@ -289,7 +289,20 @@ def cria_und_medida(request):
 
 
 def edita_und_medida(request, id):
-    pass
+    if request.session.get('usuario'):
+        und = UnidadeMedida.objects.get(id=id)
+        form = UndMedidaForm(instance=und)
+        
+        if request.method == 'POST':
+            form = UndMedidaForm(request.POST, instance=und)
+            if form.is_valid():
+                form.save()
+
+                return redirect('/unidade_medida/')
+
+    contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
+    return render(request, 'edita_und_medidas.html', context=contexto)
+
 
 
 def excluir_und_medida(request, id):
