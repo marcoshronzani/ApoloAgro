@@ -35,6 +35,7 @@
               <th scope="col">Descrição</th>
               <th scope="col">Categoria</th>
               <th scope="col">Valor</th>
+              <th scope="col">Und.Medida</th>
               <th scope="col">  </th>
             </tr>
           </thead>
@@ -43,7 +44,8 @@
                 <tr>
                   <td>{{ serv.descricao }}</td>
                   <td>{{ serv.categoria}}</td>
-                  <td>{{ serv.valor}}</td>
+                  <td>{{ serv.valor }}</td>
+                  <td>{{ serv.und.sigla }}</td>
                   <td><a href="{% url 'edita_servico' serv.id %}" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
                 </tr>
             {% endfor %}

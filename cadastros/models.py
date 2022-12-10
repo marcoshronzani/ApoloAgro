@@ -15,7 +15,7 @@ class Categorias(models.Model):
 
 class UnidadeMedida(models.Model):
     descricao = models.CharField(max_length=30)
-    sigla = models.CharField(max_length=6)
+    sigla = models.CharField(max_length=4)
 
     class Meta:
         verbose_name = 'UnidadeMedida'
@@ -29,6 +29,7 @@ class Servicos(models.Model):
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     observacao = models.TextField(blank=True, null=True)
     categoria = models.ForeignKey(Categorias, on_delete=models.DO_NOTHING)
+    und = models.ForeignKey(UnidadeMedida, on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name = 'Servico'
@@ -43,6 +44,7 @@ class Produtos(models.Model):
     quantidade = models.IntegerField()
     observacao = models.TextField(blank=True, null=True)
     categoria = models.ForeignKey(Categorias, on_delete=models.DO_NOTHING)
+    und = models.ForeignKey(UnidadeMedida, on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name = 'Produto'

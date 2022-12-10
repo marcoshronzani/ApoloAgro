@@ -84,9 +84,11 @@ def produtos(request):
 
 def cria_produto(request):
     if request.session.get('usuario'):
-        categorias = Categorias.objects.all()
+        categorias = Categorias.objects.filter(produto=True)
+        und_medidas = UnidadeMedida.objects.all()
         return render(request, 'cria_produto.html',
-                      {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
+                      {'categorias': categorias, 'usuario_logado': request.session.get('usuario'),
+                        'und_medidas':und_medidas})
     else:
         return redirect('/login/?status=2')
 
@@ -97,10 +99,12 @@ def valida_produto(request):
     quantidade = request.POST.get('quantidade')
     categoria = request.POST.get('categoria')
     observacao = request.POST.get('observacao')
+    und_medida = request.POST.get('und_medida')
     try:
         cat = Categorias.objects.get(descricao=categoria)
+        und_m = UnidadeMedida.objects.get(sigla=und_medida)
         produto = Produtos(descricao=descricao, preco_venda=preco_venda, quantidade=quantidade,
-                           categoria=cat, observacao=observacao)
+                           categoria=cat, observacao=observacao, und=und_m)
         produto.save()
         return redirect('/produtos/')
     except:
@@ -118,8 +122,9 @@ def servicos(request):
 def cria_servico(request):
     if request.session.get('usuario'):
         categorias = Categorias.objects.filter(servico=True)
+        und_medidas = UnidadeMedida.objects.all()
         return render(request, 'cria_servico.html',
-                      {'categorias': categorias, 'usuario_logado': request.session.get('usuario')})
+                      {'categorias': categorias, 'und_medidas': und_medidas, 'usuario_logado': request.session.get('usuario')})
     else:
         return redirect('/login/?status=2')
 
@@ -129,11 +134,12 @@ def valida_servico(request):
     valor = request.POST.get('valor')
     observacao = request.POST.get('observacao')
     categoria = request.POST.get('categoria')
+    und_medida = request.POST.get('und_medida')
 
     # cat = Categorias.objects.get(descricao = categoria)
 
     servico = Servicos(descricao=descricao, valor=valor,
-                       observacao=observacao, categoria_id=categoria)
+                       observacao=observacao, categoria_id=categoria, und_id=und_medida)
     servico.save()
 
     return redirect('/servicos')
@@ -143,21 +149,26 @@ def edita_produto(request, id):
     if request.session.get('usuario'):
         produto = Produtos.objects.get(id=id)
         categorias = Categorias.objects.filter(produto=True)
+        und_medidas = UnidadeMedida.objects.all()
         if request.method == 'POST':
             descricao = request.POST.get('descricao')
             preco_venda = request.POST.get('preco_venda')
             quantidade = request.POST.get('quantidade')
             categoria = request.POST.get('categoria')
             observacao = request.POST.get('observacao')
+            und_medida = request.POST.get('und_medida')
 
             produto.descricao = descricao
             produto.preco_venda = preco_venda
             produto.quantidade = quantidade
             produto.categoria_id = categoria
             produto.observacao = observacao
+            produto.und_id = und_medida
+
             produto.save()
             return redirect('/produtos')
-        contexto = {'produto': produto, 'categorias': categorias, 'usuario_logado': request.session.get('usuario')}
+        contexto = {'produto': produto, 'categorias': categorias, 'usuario_logado': request.session.get('usuario'),
+                    'und_medidas':und_medidas}
         return render(request, 'edita_produto.html', contexto)
 
 
@@ -165,22 +176,26 @@ def edita_servico(request, id):
     if request.session.get('usuario'):
         servico = Servicos.objects.get(id=id)
         categorias = Categorias.objects.filter(servico=True)
+        und_medidas = UnidadeMedida.objects.all()
         if request.method == 'POST':
             descricao = request.POST.get('descricao')
             valor = request.POST.get('valor')
             categoria = request.POST.get('categoria')
             observacao = request.POST.get('observacao')
+            und_medida = request.POST.get('und_medida')
             try:
                 servico.descricao = descricao
                 servico.valor = valor
                 servico.categoria_id = categoria
                 servico.observacao = observacao
+                servico.und_id = und_medida
                 servico.save()
             except:
                 return HttpResponse('Erro')
             return redirect('/servicos')
         return render(request, 'edita_servico.html', {'servico': servico, 'categorias': categorias,
-                                                      'usuario_logado': request.session.get('usuario')})
+                                                      'usuario_logado': request.session.get('usuario'),
+                                                      'und_medidas': und_medidas})
 
 
 def excluir_produto(request, id):

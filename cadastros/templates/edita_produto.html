@@ -52,6 +52,16 @@
                         {% endif %}
                     {% endfor %}
                 </select>
+                <label>Unidade de Medida:</label>
+                <select name="und_medida" class="form-control">
+                    {% for und in und_medidas %}
+                        {% if produto.und == und %}
+                            <option value="{{und.id}}" selected>{{und.sigla}}</option>
+                        {% else %}
+                            <option value="{{und.id}}">{{und.sigla}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <label>Observação:</label>
