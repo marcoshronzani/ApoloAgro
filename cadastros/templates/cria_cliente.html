@@ -3,13 +3,27 @@
 {% block 'titulo' %} {% endblock %}
 
 {%block 'conteudo' %} 
-
-<form method="POST">{% csrf_token %}
-    <table>
-        {{form.as_table}}
-        <p>{{form.razao_social.errors}}</p>
-
-    </table>
-    <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
-</form>
+<div class="container">
+    <div style="text-align: center">
+        <br>
+        <h2>Cadastro de Cliente</h2>
+    </div>
+    <br>
+    <br>
+    {{form.tipo}}
+    <form method="POST">{% csrf_token %}
+        <label for="{{form.tipo.id_for_label}}">{{form.tipo.label}}</label>
+        <select name="" class="form-control">
+            <option>{{form.tipo}}</option>
+        </select>
+       
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
+    </form>
+<div>
 {% endblock%}
+
+<table>
+    {{form.as_table}}
+    <p>{{form.razao_social.errors}}</p>
+
+</table>
