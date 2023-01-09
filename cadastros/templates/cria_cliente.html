@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block 'titulo' %} {% endblock %}
+{% block 'titulo' %} Cria Cliente {% endblock %}
 
 {%block 'conteudo' %} 
 <div class="container">
@@ -12,21 +12,18 @@
     <br>
 
     <form method="POST">{% csrf_token %}
-        <label for="{{form.tipo.id_for_label}}">{{form.tipo.label}}</label>
-        {{form.tipo}}
-
         <div class="form-row">
-            <div class="form-group col-md-7">
-                <label for="{{ form.razao_social.id_for_label }}">{{ form.razao_social.label }}</label>
-                <input class="form-control" type="text" name="{{ form.razao_social.html_name }}" id="{{ form.razao_social.id_for_label }}"
-                    value="{% if form.razao_social.value %} {{ form.razao_social.value }} {% endif %}">
-            </div>
-            <div class="form-group col-md-5">
-                <label for="{{ form.nome_fantiasia.id_for_label }}">{{ form.nome_fantasia.label }}</label>
-                <input class="form-control" type="text" id="{{ form.nome_fantasia.id_for_label }}" name="{{ form.nome_fantasia.html_name }}"
-                    value="{% if form.nome_fantasia.value %} {{ form.nome_fantasia.value }} {% endif %}">
+            <div class="form.group col-md-2">
+                <label for="{{form.tipo.id_for_label}}">{{form.tipo.label}}</label>
+                <select name="tipo" class="form-control">
+                    {% for i in form.tipo %}
+                        {{i}}
+                    {% endfor %}
+                </select>
             </div>
         </div>
+        <br>
+        <br>
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="{{ form.cnpj.id_for_label }}">{{ form.cnpj.label }}</label>
@@ -39,6 +36,19 @@
                     value="{% if form.inscricao_est.value %} {{ form.inscricao_est.value }} {% endif %}">
             </div>
         </div>
+        <div class="form-row">
+            <div class="form-group col-md-7">
+                <label for="{{ form.razao_social.id_for_label }}">{{ form.razao_social.label }}</label>
+                <input class="form-control" type="text" name="{{ form.razao_social.html_name }}" id="{{ form.razao_social.id_for_label }}"
+                    value="{% if form.razao_social.value %} {{ form.razao_social.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-5">
+                <label for="{{ form.nome_fantiasia.id_for_label }}">{{ form.nome_fantasia.label }}</label>
+                <input class="form-control" type="text" id="{{ form.nome_fantasia.id_for_label }}" name="{{ form.nome_fantasia.html_name }}"
+                    value="{% if form.nome_fantasia.value %} {{ form.nome_fantasia.value }} {% endif %}">
+            </div>
+        </div>
+        <br>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="{{ form.nome_completo.id_for_label }}">{{ form.nome_completo.label }}</label>
@@ -56,14 +66,75 @@
                     value="{% if form.cpf.value %} {{ form.cpf.value }} {% endif %}">
             </div>
         </div>
+        <br>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="{{ form.contato.id_for_label }}">{{ form.contato.label }}</label>
+                <input class="form-control" type="text" id="{{ form.contato.id_for_label }}" name="{{ form.contato.html_name }}"
+                    value="{% if form.cpf.value %} {{ form.contato.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="{{ form.telefone.id_for_label }}">{{ form.telefone.label }}</label>
+                <input class="form-control" type="text" id="{{ form.telefone.id_for_label }}" name="{{ form.telefone.html_name}}"
+                    value="{% if form.telefone.value %} {{ form.telefone.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="{{ form.celular.id_for_label }}">{{ form.celular.label }}</label>
+                <input class="form-control" type="text" id="{{ form.celular.id_for_label }}" name="{{ form.celular.html_name }}"
+                    value="{% if form.celular.value %} {{ form.celular.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                <input class="form-control" type="text" id="{{ form.email.id_for_label}}" name="{{ form.email.html_name }}"
+                    value="{% if form.email.value %} {{ form.email.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.site.id_for_label }}">{{ form.site.label }}</label>
+                <input class="form-control" type="text" id="{{ form.site.id_for_label }}" name="{{ form.site.html_name }}"
+                    value="{% if form.site.value %} {{ form.site.value }} {% endif %}">
+            </div>
+        </div>
+        <br>
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label for="{{ form.cep.id_for_label }}">{{ form.cep.label }}</label>
+                <input class="form-control" type="text" id="{{ form.cep.id_for_label }}" name="{{ form.cep.html_name }}"
+                    value="{% if form.cep.value %} {{ form.cep.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.logradouro.id_for_label }}">{{ form.logradouro.label }}</label>
+                <input class="form-control" type="text" id="{{ form.logradouro.id_for_label }}" name="{{ form.logradouro.html_name }}"
+                    value="{% if form.logradouro.value %}{{ form.logradouro.value}} {% endif %}">
+            </div>
+            <div class="form-group col-md-1">
+                <label for="{{ form.numero.id_for_label}}">{{ form.numero.label }}</label>
+                <input class="form-control" type="text" id="{{ form.numero.id_for_label}}" name="{{ form.numero.html_name }}"
+                    value="{% if form.numero.value %} {{ form.numero.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="{{ form.complemento.id_for_label }}">{{ form.complemento.label }}</label>
+                <input class="form-control" type="text" id="{{ form.complemento.id_for_label }}" name="{{ form.complemento.html_name }}"
+                    value="{% if form.complemento.value %} {{ form.complemento.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.bairro.id_for_label }}">{{ form.bairro.label }}</label>
+                <input class="form-control" type="text" id="{{ form.bairro.id_for_label }}" name="{{ form.bairro.html_name }}"
+                    value="{% if form.bairro.value %} {{ form.bairro.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="{{ form.cidade.id_for_label}}">{{ form.cidade.label }}</label>
+                <input class="form-control" type="text" id="{{ form.cidade.id_for_label }}" name="{{ form.cidade.html_name }}"
+                    value="{% if form.cidade.value %} {{ form.cidade.value }} {% endif %}">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
+                <input class="form-control" type="text" id="{{ form.estado.id_for_label}}" name="{{ form.estado.html_name }}"
+                    value="{% if form.estado.value %} {{ form.estado.value }} {% endif %}">
+            </div>
+        </div>
        
-        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp 
+        <a href="{% url 'clientes' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
 <div>
 {% endblock%}
-
-<table>
-    {{form.as_table}}
-    <p>{{form.razao_social.errors}}</p>
-
-</table>

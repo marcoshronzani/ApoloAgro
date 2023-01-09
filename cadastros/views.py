@@ -248,7 +248,22 @@ def excluir_cliente(request, id):
 
 
 def edita_cliente(request, id):
-    pass
+    if request.session.get('usuario'):
+        cliente = Clientes.objects.get(id=id)
+        form = ClienteForm(instance=cliente)
+
+        if request.method == 'POST':
+            form = ClienteForm(request.POST, instance=cliente)
+
+            if form.is_valid():
+                form.save()
+
+                return redirect('/clientes/')
+
+        contexto = {'usuario_logado':request.session.get('usuario'), 'form': form}
+        return render(request, 'edita_cliente.html', context=contexto)
+
+    return redirect('/login/?status=2')
 
 
 def terceiros(request):
@@ -256,6 +271,7 @@ def terceiros(request):
         terceiros = Terceiros.objects.order_by('-id')
         return render(request, 'terceiros.html', {'terceiros': terceiros, 'usuario_logado': request.session.get('usuario')})
 
+    return redirect('/login/?status=2')
 
 def cria_terceiro(request):
     if request.session.get('usuario'):
@@ -282,7 +298,9 @@ def unidade_medida(request):
     if request.session.get('usuario'):
         und_medidas = UnidadeMedida.objects.order_by('-id')
 
-    return render(request, 'und_medidas.html', {'und_medidas': und_medidas, 'usuario_logado': request.session.get('usuario')})
+        return render(request, 'und_medidas.html', {'und_medidas': und_medidas, 'usuario_logado': request.session.get('usuario')})
+    
+    return redirect('/login/?status=2')
 
 
 def cria_und_medida(request):
@@ -315,8 +333,10 @@ def edita_und_medida(request, id):
 
                 return redirect('/unidade_medida/')
 
-    contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
-    return render(request, 'edita_und_medidas.html', context=contexto)
+        contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
+        return render(request, 'edita_und_medidas.html', context=contexto)
+        
+    return redirect('/login/?status=2')
 
 
 
