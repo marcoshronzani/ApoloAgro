@@ -54,7 +54,7 @@
                 <td>{{ i.contato }}</td>
                 <td>{{ i.celular }}</td>
                 <td>{{ i.cidade }}</td>
-                <td><a href="#" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
+                <td><a href="{% url 'edita_terceiro' i.id %}" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
               </tr>
           {% endfor %}
         </tbody>

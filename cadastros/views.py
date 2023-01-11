@@ -244,7 +244,8 @@ def cria_cliente(request):
 
 
 def excluir_cliente(request, id):
-    pass
+    Clientes.objects.get(id=id).delete()
+    return redirect('/clientes')
 
 
 def edita_cliente(request, id):
@@ -260,7 +261,7 @@ def edita_cliente(request, id):
 
                 return redirect('/clientes/')
 
-        contexto = {'usuario_logado':request.session.get('usuario'), 'form': form}
+        contexto = {'usuario_logado':request.session.get('usuario'), 'form': form, 'cliente':cliente}
         return render(request, 'edita_cliente.html', context=contexto)
 
     return redirect('/login/?status=2')
@@ -280,6 +281,11 @@ def cria_terceiro(request):
         if request.method == 'POST':
             form = TerceiroForm(request.POST)
 
+            if form.is_valid():
+                form.save()
+
+                return redirect('/terceiros/')
+
         contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
         return render(request, 'cria_terceiro.html', context=contexto)
 
@@ -287,11 +293,27 @@ def cria_terceiro(request):
 
 
 def edita_terceiro(request, id):
-    pass
+    if request.session.get('usuario'):
+        terceiro = Terceiros.objects.get(id=id)
+        form = TerceiroForm(instance=terceiro)
+
+        if request.method == 'POST':
+            form = ClienteForm(request.POST, instance=terceiro)
+
+            if form.is_valid():
+                form.save()
+
+                return redirect('/terceiros/')
+
+        contexto = {'usuario_logado': request.session.get('usuario'), 'form': form, 'terceiro': terceiro}
+        return render(request, 'edita_terceiro.html', context=contexto)
+    
+    return redirect('/login/?status=2')
 
 
 def excluir_terceiro(request, id):
-    pass
+    Terceiros.objects.get(id=id).delete()
+    return redirect('/terceiros/')
 
 
 def unidade_medida(request):
@@ -333,12 +355,12 @@ def edita_und_medida(request, id):
 
                 return redirect('/unidade_medida/')
 
-        contexto = {'usuario_logado': request.session.get('usuario'), 'form': form}
+        contexto = {'usuario_logado': request.session.get('usuario'), 'form': form, 'und': und}
         return render(request, 'edita_und_medidas.html', context=contexto)
         
     return redirect('/login/?status=2')
 
 
-
 def excluir_und_medida(request, id):
-    pass
+    UnidadeMedida.objects.get(id=id).delete()
+    return redirect('/unidade_medida')
