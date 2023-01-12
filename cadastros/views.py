@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 
 from usuarios.models import Usuario
 from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm
@@ -15,12 +16,26 @@ def clientes(request):
 
 def categorias(request):
     if request.session.get('usuario'):
-        usuario = Usuario.objects.get(id=request.session['usuario'])
         categoria = Categorias.objects.order_by('-id')
-        return render(request, 'categorias.html',
-                      {'categoria': categoria, 'usuario_logado': request.session.get('usuario')})
-    else:
-        return redirect('/login/?status=2')
+
+        param_pagina = request.GET.get('pagina', '1')
+        param_limite = request.GET.get('limite', '10')
+
+        if not (param_limite.isdigit() and int(param_limite) > 0):
+            param_limite = '10'
+
+        cat_paginator = Paginator(categoria, param_limite)
+        try:
+            pagina = cat_paginator.page(param_pagina)
+        except:
+            pagina = cat_paginator.page(1)
+        
+        contexto = {'categoria': pagina, 'usuario_logado': request.session.get('usuario'), 
+                    'opcoes_qnt_por_pagina': ['10', '30', '50', '100'], 'qnt_por_pagina': param_limite }
+
+        return render(request, 'categorias.html', context=contexto)
+
+    return redirect('/login/?status=2')
 
 
 def criar_categoria(request):
@@ -220,9 +235,25 @@ def busca_cat(request):
 def clientes(request):
     if request.session.get('usuario'):
         clientes = Clientes.objects.order_by('-id')
-        return render(request, 'clientes.html', {'clientes': clientes, 'usuario_logado': request.session.get('usuario')})
-    else:
-        return redirect('/login/?status=2')
+
+        param_pagina = request.GET.get('pagina', '1')
+        param_limite = request.GET.get('limite', '10')
+
+        if not (param_limite.isdigit() and int(param_limite) > 0):
+            param_limite = '10'
+        
+        cli_paginator = Paginator(clientes, param_limite)
+        try:
+            pagina = cli_paginator.page(param_pagina)
+        except:
+            pagina = cli_paginator.page(1)
+
+        contexto = {'clientes': clientes, 'usuario_logado': request.session.get('usuario'),
+                    'opcoes_qnt_por_pagina': ['10', '30', '50', '100'], 'qnt_por_pagina': param_limite}
+
+        return render(request, 'clientes.html', context=contexto)
+    
+    return redirect('/login/?status=2')
 
 def cria_cliente(request):
     if request.session.get('usuario'):

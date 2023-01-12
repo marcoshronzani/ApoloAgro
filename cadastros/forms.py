@@ -34,6 +34,27 @@ class ClienteForm(forms.ModelForm):
     class Meta:
         model = Clientes
         fields = '__all__'
+            
+    def clean(self):
+
+        super(ClienteForm, self).clean()
+
+        if 'tipo' in self.cleaned_data:
+            tipo_cliente = self.cleaned_data['tipo']
+            cnpj = self.cleaned_data.get('cnpj')
+            cpf = self.cleaned_data.get('cpf')
+
+            if tipo_cliente == 'J' and cnpj == '':
+                raise ValidationError('CNPJ Obrigatório')
+
+            elif not cnpj.isdigit():
+                raise ValidationError('Somente Números')
+            
+            elif tipo_cliente == 'F' and cpf == '':
+                raise ValidationError('CPF Obrigatório')
+            
+            elif not cpf.isdigit():
+                raise ValidationError('Somente Números')
 
     def clean_cnpj(self):
         cnpj = self.cleaned_data.get('cnpj')
@@ -46,9 +67,7 @@ class ClienteForm(forms.ModelForm):
         cpf = self.cleaned_data.get('cpf')
         if Clientes.objects.filter(cpf=cpf).exists():
             raise ValidationError('CPF já Cadastrado.')
-        
         return cpf
-
 
 class TerceiroForm(forms.ModelForm):
     class Meta:
