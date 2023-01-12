@@ -35,6 +35,20 @@ class ClienteForm(forms.ModelForm):
         model = Clientes
         fields = '__all__'
 
+    def clean_cnpj(self):
+        cnpj = self.cleaned_data.get('cnpj')
+        if Clientes.objects.filter(cnpj=cnpj).exists():
+            raise ValidationError('CNPJ já Cadastrado.')
+
+        return cnpj
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get('cpf')
+        if Clientes.objects.filter(cpf=cpf).exists():
+            raise ValidationError('CPF já Cadastrado.')
+        
+        return cpf
+
 
 class TerceiroForm(forms.ModelForm):
     class Meta:
@@ -61,3 +75,17 @@ class TerceiroForm(forms.ModelForm):
             'estado',
             'tipo'
         )
+    
+        def clean_cnpj(self):
+            cnpj = self.cleaned_data.get('cnpj')
+            if Clientes.objects.filter(cnpj=cnpj).exists():
+                raise ValidationError('CNPJ já Cadastrado.')
+
+            return cnpj
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get('cpf')
+        if Clientes.objects.filter(cpf=cpf).exists():
+            raise ValidationError('CPF já Cadastrado.')
+        
+        return cpf
