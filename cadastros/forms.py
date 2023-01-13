@@ -43,21 +43,24 @@ class ClienteForm(forms.ModelForm):
             tipo_cliente = self.cleaned_data['tipo']
             cnpj = self.cleaned_data.get('cnpj')
             cpf = self.cleaned_data.get('cpf')
+            #print(self.cleaned_data)
 
-            if tipo_cliente == 'J' and cnpj == '':
-                raise ValidationError('CNPJ Obrigatório')
 
-            elif not cnpj.isdigit():
-                raise ValidationError('Somente Números')
             
-            elif tipo_cliente == 'F' and cpf == '':
+            if tipo_cliente == 'F' and cpf == '':
                 raise ValidationError('CPF Obrigatório')
             
             elif not cpf.isdigit():
                 raise ValidationError('Somente Números')
+        
+        return self.cleaned_data
 
     def clean_cnpj(self):
         cnpj = self.cleaned_data.get('cnpj')
+ 
+        print(self.cleaned_data)
+        if not cnpj:
+            raise ValidationError('CNPJ Obrigatório.')
         if Clientes.objects.filter(cnpj=cnpj).exists():
             raise ValidationError('CNPJ já Cadastrado.')
 
