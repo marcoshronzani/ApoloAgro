@@ -34,6 +34,17 @@ class ClienteForm(forms.ModelForm):
     class Meta:
         model = Clientes
         fields = '__all__'
+        labels = {
+            'nome_completo': 'Nome Completo',
+            'nome_fantasia': 'Nome Fantasia',
+            'razao_social': 'Razão Social',
+            'cnpj': 'CNPJ',
+            'cpf': 'CPF',
+            'rg': 'RG',
+            'inscricao_est': 'Inscrição Estadual',
+            'cep': 'CEP',
+            'numero': 'Número'
+        }
             
     def clean(self):
 
@@ -43,71 +54,107 @@ class ClienteForm(forms.ModelForm):
             tipo_cliente = self.cleaned_data['tipo']
             cnpj = self.cleaned_data.get('cnpj')
             cpf = self.cleaned_data.get('cpf')
-            #print(self.cleaned_data)
-
-
             
-            if tipo_cliente == 'F' and cpf == '':
-                raise ValidationError('CPF Obrigatório')
-            
-            elif not cpf.isdigit():
+            if tipo_cliente == 'J' and cnpj == '':
+                self.add_error(
+                    'cnpj', 'CNPJ Obrigatório'
+                )
+                raise ValidationError('CNPJ Obrigatório')
+                
+            if not cnpj.isdigit() and tipo_cliente =='J':
+                self.add_error(
+                'cnpj', 'Somente Números'
+                )
                 raise ValidationError('Somente Números')
+            
+            if Clientes.objects.filter(cnpj=cnpj).exists():
+                self.add_error(
+                    'cnpj', 'CNPJ já Cadastrado'
+                )
+                raise ValidationError('CNPJ já Cadastrado.')
+
+            if tipo_cliente == 'F' and cpf == '':
+                self.add_error(
+                    'cpf', 'CPF Obrigatório'
+                )
+                raise ValidationError('CPF Obrigatório')
+                
+            if not cpf.isdigit() and tipo_cliente =='F':
+                self.add_error(
+                'cpf', 'Somente Números'
+                )
+                raise ValidationError('Somente Números')
+            
+            if Clientes.objects.filter(cpf=cpf).exists():
+                self.add_error(
+                    'cpf', 'CPF já Cadastrado'
+                )
+                raise ValidationError('CPF já Cadastrado.')
+            
         
         return self.cleaned_data
 
-    def clean_cnpj(self):
-        cnpj = self.cleaned_data.get('cnpj')
- 
-        print(self.cleaned_data)
-        if not cnpj:
-            raise ValidationError('CNPJ Obrigatório.')
-        if Clientes.objects.filter(cnpj=cnpj).exists():
-            raise ValidationError('CNPJ já Cadastrado.')
-
-        return cnpj
-
-    def clean_cpf(self):
-        cpf = self.cleaned_data.get('cpf')
-        if Clientes.objects.filter(cpf=cpf).exists():
-            raise ValidationError('CPF já Cadastrado.')
-        return cpf
 
 class TerceiroForm(forms.ModelForm):
     class Meta:
         model = Terceiros
-        fields = (
-            'nome_completo',
-            'nome_fantasia',
-            'razao_social',
-            'cnpj',
-            'cpf',
-            'rg',
-            'inscricao_est',
-            'telefone',
-            'contato',
-            'celular',
-            'email',
-            'site',
-            'cep',
-            'logradouro',
-            'numero',
-            'complemento',
-            'bairro',
-            'cidade',
-            'estado',
-            'tipo'
-        )
+        fields = '__all__'
+        labels = {
+            'nome_completo': 'Nome Completo',
+            'nome_fantasia': 'Nome Fantasia',
+            'razao_social': 'Razão Social',
+            'cnpj': 'CNPJ',
+            'cpf': 'CPF',
+            'rg': 'RG',
+            'inscricao_est': 'Inscrição Estadual',
+            'cep': 'CEP',
+            'numero': 'Número'
+        }
     
-        def clean_cnpj(self):
+    def clean(self):
+
+        super(TerceiroForm, self).clean()
+
+        if 'tipo' in self.cleaned_data:
+            tipo_terceiro = self.cleaned_data['tipo']
             cnpj = self.cleaned_data.get('cnpj')
+            cpf = self.cleaned_data.get('cpf')
+            
+            if tipo_terceiro == 'J' and cnpj == '':
+                self.add_error(
+                    'cnpj', 'CNPJ Obrigatório'
+                )
+                raise ValidationError('CNPJ Obrigatório')
+                
+            if not cnpj.isdigit() and tipo_terceiro =='J':
+                self.add_error(
+                'cnpj', 'Somente Números'
+                )
+                raise ValidationError('Somente Números')
+            
             if Clientes.objects.filter(cnpj=cnpj).exists():
+                self.add_error(
+                    'cnpj', 'CNPJ já Cadastrado'
+                )
                 raise ValidationError('CNPJ já Cadastrado.')
 
-            return cnpj
-
-    def clean_cpf(self):
-        cpf = self.cleaned_data.get('cpf')
-        if Clientes.objects.filter(cpf=cpf).exists():
-            raise ValidationError('CPF já Cadastrado.')
+            if tipo_terceiro == 'F' and cpf == '':
+                self.add_error(
+                    'cpf', 'CPF Obrigatório'
+                )
+                raise ValidationError('CPF Obrigatório')
+                
+            if not cpf.isdigit() and tipo_terceiro =='F':
+                self.add_error(
+                'cpf', 'Somente Números'
+                )
+                raise ValidationError('Somente Números')
+            
+            if Clientes.objects.filter(cpf=cpf).exists():
+                self.add_error(
+                    'cpf', 'CPF já Cadastrado'
+                )
+                raise ValidationError('CPF já Cadastrado.')
+            
         
-        return cpf
+        return self.cleaned_data
