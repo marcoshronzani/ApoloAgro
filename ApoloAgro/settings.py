@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'ApoloAgro.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '1UiP2R8VYS0zOB46xCef',
+        'HOST': 'containers-us-west-39.railway.app',
+        'PORT': '6414',
     }
 }
 
