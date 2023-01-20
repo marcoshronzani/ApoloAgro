@@ -1,1 +1,1 @@
-web: gunicorn ApoloAgro.wsgi --log-file -
+web: python manage.py migrate && gunicorn ApoloAgro.wsgi
