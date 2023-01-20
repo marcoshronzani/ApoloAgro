@@ -11,9 +11,9 @@ def login(request):
     return render(request, 'login.html', {'status': status})
 
 def cadastro(request):
-    if request.session.get('usuario'):
-        status = request.GET.get('status')
-        return render(request, 'cadastro.html', {'status': status})
+    #if request.session.get('usuario'):
+        #status = request.GET.get('status')
+    return render(request, 'cadastro.html')
 
 def valida_cadastro(request):
     nome = request.POST.get('nome')
