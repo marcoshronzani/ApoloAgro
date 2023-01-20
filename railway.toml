@@ -1,7 +1,0 @@
-[build]
-builder = "NIXPACKS"
-
-[deploy]
-startCommand = "pip install -r requirements.txt"
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 5
