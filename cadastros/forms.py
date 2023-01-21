@@ -67,7 +67,7 @@ class ClienteForm(forms.ModelForm):
                 )
                 raise ValidationError('Somente Números')
             
-            if Clientes.objects.filter(cnpj=cnpj).exists():
+            if Clientes.objects.filter(cnpj=cnpj).exists() and not cnpj == '':
                 self.add_error(
                     'cnpj', 'CNPJ já Cadastrado'
                 )
