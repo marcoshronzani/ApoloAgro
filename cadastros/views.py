@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 
 from usuarios.models import Usuario
-from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm
+from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm, ClienteEdtForm
 from .models import Categorias, Produtos, Servicos, Clientes, Terceiros, UnidadeMedida
 
 
@@ -327,10 +327,10 @@ def excluir_cliente(request, id):
 def edita_cliente(request, id):
     if request.session.get('usuario'):
         cliente = Clientes.objects.get(id=id)
-        form = ClienteForm(instance=cliente)
+        form = ClienteEdtForm(instance=cliente)
 
         if request.method == 'POST':
-            form = ClienteForm(request.POST, instance=cliente)
+            form = ClienteEdtForm(request.POST, instance=cliente)
 
             if form.is_valid():
                 form.save()
