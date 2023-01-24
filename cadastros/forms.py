@@ -67,7 +67,8 @@ class ClienteForm(forms.ModelForm):
                 )
                 raise ValidationError('Somente Números')
             
-            if Clientes.objects.filter(cnpj=cnpj).exists() and not cnpj == '':
+            if cnpj != '':
+                Clientes.objects.filter(cnpj=cnpj).exists()
                 self.add_error(
                     'cnpj', 'CNPJ já Cadastrado'
                 )
@@ -85,7 +86,8 @@ class ClienteForm(forms.ModelForm):
                 )
                 raise ValidationError('Somente Números')
             
-            if Clientes.objects.filter(cpf=cpf).exists():
+            if cpf != '':
+                Clientes.objects.filter(cpf=cpf).exists()
                 self.add_error(
                     'cpf', 'CPF já Cadastrado'
                 )
@@ -93,6 +95,11 @@ class ClienteForm(forms.ModelForm):
             
         
         return self.cleaned_data
+
+
+class ClienteEdtForm(ClienteForm):
+    def clean(self):
+        pass
 
 
 class TerceiroForm(forms.ModelForm):
