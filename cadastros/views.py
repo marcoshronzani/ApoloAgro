@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 
 from usuarios.models import Usuario
-from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm, ClienteEdtForm
+from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm, ClienteEdtForm, TerceiroEdtForm
 from .models import Categorias, Produtos, Servicos, Clientes, Terceiros, UnidadeMedida
 
 
@@ -391,10 +391,10 @@ def cria_terceiro(request):
 def edita_terceiro(request, id):
     if request.session.get('usuario'):
         terceiro = Terceiros.objects.get(id=id)
-        form = TerceiroForm(instance=terceiro)
+        form = TerceiroEdtForm(instance=terceiro)
 
         if request.method == 'POST':
-            form = ClienteForm(request.POST, instance=terceiro)
+            form = TerceiroEdtForm(request.POST, instance=terceiro)
 
             if form.is_valid():
                 form.save()
