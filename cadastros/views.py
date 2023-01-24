@@ -1,22 +1,21 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.db.models import Q
+from django.core.exceptions import ValidationError
 
 from usuarios.models import Usuario
-from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm
+from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm, ClienteEdtForm
 from .models import Categorias, Produtos, Servicos, Clientes, Terceiros, UnidadeMedida
-
-
-def clientes(request):
-    if request.session.get('usuario'):
-        return HttpResponse('Ola')
-    else:
-        return redirect('/login/?status=2')
 
 
 def categorias(request):
     if request.session.get('usuario'):
-        categoria = Categorias.objects.order_by('-id')
+        termo = request.GET.get('termo')
+        if termo:
+            categoria = Categorias.objects.order_by('-id').filter(descricao__icontains=termo)
+        else:
+            categoria = Categorias.objects.order_by('-id')
 
         param_pagina = request.GET.get('pagina', '1')
         param_limite = request.GET.get('limite', '10')
@@ -91,8 +90,27 @@ def excluir_categoria(request, id):
 
 def produtos(request):
     if request.session.get('usuario'):
-        produto = Produtos.objects.order_by('-id')
-        return render(request, 'produtos.html', {'produtos': produto, 'usuario_logado': request.session.get('usuario')})
+        termo = request.GET.get('termo')
+
+        if termo:
+            produto = Produtos.objects.order_by('-id').filter(descricao__icontains=termo)
+        else:
+            produto = Produtos.objects.order_by('-id')
+        
+        param_pagina = request.GET.get('pagina', '1')
+        param_limite = request.GET.get('limite', '10')
+
+        if not (param_limite.isdigit() and int(param_limite) > 0):
+            param_limite = '10'
+
+        prd_paginator = Paginator(produto, param_limite)
+        try:
+            pagina = prd_paginator.page(param_pagina)
+        except:
+            pagina = prd_paginator.page(1)
+
+        return render(request, 'produtos.html', {'produtos': pagina, 'usuario_logado': request.session.get('usuario'),
+                                                    'opcoes_qnt_por_pagina': ['10', '30', '50', '100'], 'qnt_por_pagina': param_limite})
     else:
         return redirect('/login/?status=2')
 
@@ -128,8 +146,27 @@ def valida_produto(request):
 
 def servicos(request):
     if request.session.get('usuario'):
-        servico = Servicos.objects.order_by('-id')
-        return render(request, 'servicos.html', {'servicos': servico, 'usuario_logado': request.session.get('usuario')})
+        termo = request.GET.get('termo')
+
+        if termo:
+            servico = Servicos.objects.order_by('-id').filter(descricao__icontains=termo)
+        else:
+            servico = Servicos.objects.order_by('-id')
+        
+        param_pagina = request.GET.get('pagina', '1')
+        param_limite = request.GET.get('limite', '10')
+
+        if not (param_limite.isdigit() and int(param_limite) > 0):
+            param_limite = '10'
+
+        srv_paginator = Paginator(servico, param_limite)
+        try:
+            pagina = srv_paginator.page(param_pagina)
+        except:
+            pagina = srv_paginator.page(1)
+
+        return render(request, 'servicos.html', {'servicos': pagina, 'usuario_logado': request.session.get('usuario'),
+                                                    'opcoes_qnt_por_pagina': ['10', '30', '50', '100'], 'qnt_por_pagina': param_limite})
     else:
         return redirect('/login/?status=2')
 
@@ -155,6 +192,7 @@ def valida_servico(request):
 
     servico = Servicos(descricao=descricao, valor=valor,
                        observacao=observacao, categoria_id=categoria, und_id=und_medida)
+
     servico.save()
 
     return redirect('/servicos')
@@ -234,7 +272,14 @@ def busca_cat(request):
 
 def clientes(request):
     if request.session.get('usuario'):
-        clientes = Clientes.objects.order_by('-id')
+        termo = request.GET.get('termo')
+
+        if termo:
+            clientes = Clientes.objects.order_by('-id').filter(Q(razao_social__icontains=termo) | 
+                                                                Q(cnpj__icontains=termo) |
+                                                                Q(cpf__icontains=termo))
+        else:
+            clientes = Clientes.objects.order_by('-id')
 
         param_pagina = request.GET.get('pagina', '1')
         param_limite = request.GET.get('limite', '10')
@@ -248,7 +293,7 @@ def clientes(request):
         except:
             pagina = cli_paginator.page(1)
 
-        contexto = {'clientes': clientes, 'usuario_logado': request.session.get('usuario'),
+        contexto = {'clientes': pagina, 'usuario_logado': request.session.get('usuario'),
                     'opcoes_qnt_por_pagina': ['10', '30', '50', '100'], 'qnt_por_pagina': param_limite}
 
         return render(request, 'clientes.html', context=contexto)
@@ -282,10 +327,10 @@ def excluir_cliente(request, id):
 def edita_cliente(request, id):
     if request.session.get('usuario'):
         cliente = Clientes.objects.get(id=id)
-        form = ClienteForm(instance=cliente)
+        form = ClienteEdtForm(instance=cliente)
 
         if request.method == 'POST':
-            form = ClienteForm(request.POST, instance=cliente)
+            form = ClienteEdtForm(request.POST, instance=cliente)
 
             if form.is_valid():
                 form.save()
@@ -300,8 +345,28 @@ def edita_cliente(request, id):
 
 def terceiros(request):
     if request.session.get('usuario'):
-        terceiros = Terceiros.objects.order_by('-id')
-        return render(request, 'terceiros.html', {'terceiros': terceiros, 'usuario_logado': request.session.get('usuario')})
+        termo = request.GET.get('termo')
+
+        if termo:
+            terceiros = Terceiros.objects.order_by('-id').filter(Q(razao_social__icontains=termo) | 
+                                                                    Q(cnpj__icontains=termo) |
+                                                                    Q(cpf__icontains=termo))
+        else:
+            terceiros = Terceiros.objects.order_by('-id')
+        
+        param_pagina = request.GET.get('pagina', '1')
+        param_limite = request.GET.get('limite', '10')
+
+        if not (param_limite.isdigit() and int(param_limite) > 0):
+            param_limite = '10'
+        
+        ter_paginator = Paginator(terceiros, param_limite)
+        try:
+            pagina = ter_paginator.page(param_pagina)
+        except:
+            pagina = ter_paginator.page(1)
+        return render(request, 'terceiros.html', {'terceiros': pagina, 'usuario_logado': request.session.get('usuario'),
+                                                    'opcoes_qnt_por_pagina': ['10', '30', '50', '100'], 'qnt_por_pagina': param_limite})
 
     return redirect('/login/?status=2')
 
@@ -349,7 +414,12 @@ def excluir_terceiro(request, id):
 
 def unidade_medida(request):
     if request.session.get('usuario'):
-        und_medidas = UnidadeMedida.objects.order_by('-id')
+        termo = request.GET.get('termo')
+
+        if termo:
+            und_medidas = UnidadeMedida.objects.order_by('-id').filter(descricao__icontains=termo)
+        else:
+            und_medidas = UnidadeMedida.objects.order_by('-id')
 
         return render(request, 'und_medidas.html', {'und_medidas': und_medidas, 'usuario_logado': request.session.get('usuario')})
     

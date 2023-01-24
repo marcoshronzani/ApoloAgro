@@ -19,7 +19,8 @@
             <div class="col-md-6">
                 <form action="" method="GET">
                     <div class="form-group row">
-                        <input class="form-control" type="search" id="search-input" placeholder="Buscar" name="termo">
+                        <input class="form-control" type="search" id="search-input" placeholder="Buscar" name="termo"
+                          value="{{ rquest.GET.termo }}">
                     </div>
                 </form>
             </div>
@@ -55,8 +56,60 @@
           </tbody>
         </table>
     </div>
-
-
+    <div>
+      <nav>
+          <ul class="pagination">
+              {% if produtos.has_previous %}
+                  <li class="page-item">
+                      <a class="page-link" href="{% url 'produtos' %}?limite={{qnt_por_pagina}}&pagina={{ produtos.previous_page_number }}" tabindex="-1">Anterior</a>
+                  </li>
+              {% else %}
+                  <li class="page-item disabled">
+                      <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                  </li>
+              {% endif %}
+  
+              {% for num in produtos.paginator.page_range %}
+                  {% if num == produtos.number %}
+                      <li class="page-item active">
+                          <a class="page-link" href="#">{{num}}</a>
+                      </li>
+                  {% else %}
+                      <li class="page-item">
+                          <a class="page-link" href="{% url 'produtos' %}?limite={{qnt_por_pagina}}&pagina={{ num }}">{{num}}</a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+              
+              {% if produtos.has_next %}
+                  <li class="page-item">
+                      <a class="page-link" href="{% url 'produtos' %}?limite={{qnt_por_pagina}}&pagina={{ produtos.next_page_number }}">Próximo</a>
+                  </li>
+              {% else %}
+                  <li class="page-item disabled">
+                      <a class="page-link" href="#">Próximo</a>
+                  </li>
+              {% endif %}
+          </ul>
+        </nav>
+    </div>
+    <div>
+      <nav>
+          <ul class="pagination pagination-sm">
+              {% for qnt in opcoes_qnt_por_pagina %}
+                  {% if qnt == qnt_por_pagina %}
+                      <li class="page-item active">
+                          <a class="page-link" href="#">{{ qnt }}</a>
+                      </li>
+                  {% else %}
+                      <li class="page-item">
+                          <a class="page-link" href="{% url 'produtos' %}?limite={{ qnt }}">{{ qnt }}</a>
+                      </li>
+                  {% endif %}
+              {% endfor %}
+          </ul>
+      </nav>
+    </div>
 </div>
 
 {% endblock %}
