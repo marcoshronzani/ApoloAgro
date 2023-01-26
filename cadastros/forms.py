@@ -68,10 +68,10 @@ class ClienteForm(forms.ModelForm):
                 raise ValidationError('Somente Números')
             
             if cnpj != '':
-                Clientes.objects.filter(cnpj=cnpj).exists()
-                self.add_error(
-                    'cnpj', 'CNPJ já Cadastrado'
-                )
+                if Clientes.objects.filter(cnpj=cnpj).exists():
+                    self.add_error(
+                        'cnpj', 'CNPJ já Cadastrado'
+                    )
                 raise ValidationError('CNPJ já Cadastrado.')
 
             if tipo_cliente == 'F' and cpf == '':
@@ -87,10 +87,10 @@ class ClienteForm(forms.ModelForm):
                 raise ValidationError('Somente Números')
             
             if cpf != '':
-                Clientes.objects.filter(cpf=cpf).exists()
-                self.add_error(
-                    'cpf', 'CPF já Cadastrado'
-                )
+                if Clientes.objects.filter(cpf=cpf).exists():
+                    self.add_error(
+                        'cpf', 'CPF já Cadastrado'
+                    )
                 raise ValidationError('CPF já Cadastrado.')
             
         
@@ -140,10 +140,10 @@ class TerceiroForm(forms.ModelForm):
                 raise ValidationError('Somente Números')
             
             if cnpj != '':
-                Clientes.objects.filter(cnpj=cnpj).exists()
-                self.add_error(
-                    'cnpj', 'CNPJ já Cadastrado'
-                )
+                if Clientes.objects.filter(cnpj=cnpj).exists():
+                    self.add_error(
+                        'cnpj', 'CNPJ já Cadastrado'
+                    )
                 raise ValidationError('CNPJ já Cadastrado.')
 
             if tipo_terceiro == 'F' and cpf == '':
@@ -159,10 +159,10 @@ class TerceiroForm(forms.ModelForm):
                 raise ValidationError('Somente Números')
             
             if cpf != '':
-                Clientes.objects.filter(cpf=cpf).exists()
-                self.add_error(
-                    'cpf', 'CPF já Cadastrado'
-                )
+                if Clientes.objects.filter(cpf=cpf).exists():
+                    self.add_error(
+                        'cpf', 'CPF já Cadastrado'
+                    )
                 raise ValidationError('CPF já Cadastrado.')
             
         
