@@ -1,4 +1,5 @@
 from django.db import models
+from .choices import EstadosBr
 
 
 class Categorias(models.Model):
@@ -76,7 +77,7 @@ class Clientes(models.Model):
     complemento = models.CharField(max_length=30, blank=True)
     bairro = models.CharField(max_length=30, blank=True)
     cidade = models.CharField(max_length=30, blank=True)
-    estado = models.CharField(max_length=2, blank=True)
+    estado = models.CharField(max_length=2, blank=True, null=True, choices=EstadosBr.choices)
     tipo = models.CharField(max_length=1, choices=choices, null=True)
     cord_geografica = models.CharField(max_length=30, blank=True, null=True)
 
@@ -110,7 +111,7 @@ class Terceiros(models.Model):
     complemento = models.CharField(max_length=30, blank=True)
     bairro = models.CharField(max_length=30, blank=True)
     cidade = models.CharField(max_length=30, blank=True)
-    estado = models.CharField(max_length=2, blank=True)
+    estado = models.CharField(max_length=2, blank=True, null=True, choices=EstadosBr.choices)
     tipo = models.CharField(max_length=1, choices=choices, null=True)
     cord_geografica = models.CharField(max_length=30, blank=True, null=True)
 

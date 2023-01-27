@@ -22,6 +22,7 @@
                     {% endfor %}
                 </select>
                 <p>{{ form.tipo.errors }}</p>
+                <p>{{ form.errors }}</p>
             </div>
         </div>
         <br>
@@ -139,8 +140,13 @@
             </div>
             <div class="form-group col-md-2">
                 <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
-                <input class="form-control" type="text" id="{{ form.estado.id_for_label}}" name="{{ form.estado.html_name }}"
-                    value="{% if form.estado.value %} {{ form.estado.value }} {% endif %}">
+                <select id="id_estado" name="estado" class="form-control">
+                    <option>
+                        {% for est in form.estado %}
+                            {{est}}
+                        {% endfor %}
+                    </option>
+            </select>
             </div>
         </div>
        
