@@ -43,7 +43,8 @@ class ClienteForm(forms.ModelForm):
             'rg': 'RG',
             'inscricao_est': 'Inscrição Estadual',
             'cep': 'CEP',
-            'numero': 'Número'
+            'numero': 'Número',
+            'cord_geografica': 'Coordenada Geográfica'
         }
             
     def clean(self):
@@ -115,7 +116,8 @@ class TerceiroForm(forms.ModelForm):
             'rg': 'RG',
             'inscricao_est': 'Inscrição Estadual',
             'cep': 'CEP',
-            'numero': 'Número'
+            'numero': 'Número',
+            'cord_geografica': 'Coordenada Geográfica'
         }
     
     def clean(self):

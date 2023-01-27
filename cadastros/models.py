@@ -78,6 +78,7 @@ class Clientes(models.Model):
     cidade = models.CharField(max_length=30, blank=True)
     estado = models.CharField(max_length=2, blank=True)
     tipo = models.CharField(max_length=1, choices=choices, null=True)
+    cord_geografica = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Cliente'
@@ -111,6 +112,7 @@ class Terceiros(models.Model):
     cidade = models.CharField(max_length=30, blank=True)
     estado = models.CharField(max_length=2, blank=True)
     tipo = models.CharField(max_length=1, choices=choices, null=True)
+    cord_geografica = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Terceiro'
