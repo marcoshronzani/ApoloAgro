@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block 'head' %}
-    <link rel="stylesheet" href="{% static 'css/usuarios/login.css' %}">
+    <link rel="stylesheet" href="{% static 'static/css/usuarios/login.css' %}">
 {% endblock %}
 
 {% block 'conteudo' %}
@@ -10,7 +10,7 @@
 <section class="area-login">
     <div class="login">
         <div>
-            <img src="{% static 'media/logo.png' %}" alt="">
+            <img src="{% static 'static/media/logo.png' %}" alt="">
         </div>
 
         <form method="POST" action="{% url 'validar_login' %}"> {% csrf_token %}
