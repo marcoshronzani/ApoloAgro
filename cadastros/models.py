@@ -1,6 +1,7 @@
+from datetime import date
 from django.db import models
 from .choices import EstadosBr
-
+from usuarios.models import Usuario
 
 class Categorias(models.Model):
     descricao = models.CharField(max_length=50)
@@ -120,3 +121,22 @@ class Terceiros(models.Model):
 
     def __str__(self):
         return self.nome_fantasia
+
+
+class Orcamentos(models.Model):
+    data_criacao = models.DateField(default= date.today)
+    observacao = models.TextField(null=True, blank=True)
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    cliente = models.ForeignKey(Clientes, on_delete=models.DO_NOTHING)
+    terceiro = models.ForeignKey(Terceiros, on_delete=models.DO_NOTHING)
+    
+    class Meta:
+        verbose_name = 'Orçamento'
+
+    def __str__(self):
+        return self.observacao
+
+
+class ItemOrcamento(models.Model):
+    orcamento = models.ForeignKey(Orcamentos, on_delete=models.PROTECT)

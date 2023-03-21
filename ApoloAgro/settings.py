@@ -71,6 +71,18 @@ WSGI_APPLICATION = 'ApoloAgro.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+        }
+}
+
+"""
+DATABASES = {
+    'default': {
     'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
@@ -79,6 +91,7 @@ DATABASES = {
         'PORT': '6414',
     }
 }
+"""
 
 
 # Password validation

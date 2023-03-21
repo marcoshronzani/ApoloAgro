@@ -466,3 +466,7 @@ def edita_und_medida(request, id):
 def excluir_und_medida(request, id):
     UnidadeMedida.objects.get(id=id).delete()
     return redirect('/unidade_medida')
+
+
+def orcamentos(request):
+    pass
