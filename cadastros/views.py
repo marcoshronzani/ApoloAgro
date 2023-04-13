@@ -469,4 +469,9 @@ def excluir_und_medida(request, id):
 
 
 def orcamentos(request):
-    pass
+    if request.session.get('usuario'):
+        if request.method == 'GET':
+            
+            return render(request, 'orcamentos.html', {'usuario_logado': request.session.get('usuario')})
+
+    return redirect('/login/?status=2')    
