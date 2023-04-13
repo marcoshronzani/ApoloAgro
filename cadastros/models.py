@@ -140,3 +140,5 @@ class Orcamentos(models.Model):
 
 class ItemOrcamento(models.Model):
     orcamento = models.ForeignKey(Orcamentos, on_delete=models.PROTECT)
+    item_produto = models.ForeignKey(Produtos, on_delete=models.PROTECT)
+    item_valor = models.DecimalField(max_digits=10, decimal_places=2)
