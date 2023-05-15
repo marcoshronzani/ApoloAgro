@@ -1,4 +1,5 @@
 {% load static %}
+
 <!doctype html>
 <html lang="pt-BR">
   <head>
@@ -33,6 +34,7 @@
                 <a class="dropdown-item" href="{% url 'produtos' %}">Produtos</a>
                 <a class="dropdown-item" href="{% url 'servicos' %}">Serviços</a>
                 <a class="dropdown-item" href="{% url 'orcamentos' %}">Orçamentos</a>
+              
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'cadastro' %}">Usuários</a>
               </div>
@@ -46,6 +48,7 @@
     {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src={% static 'static/jquery.formset.js' %}></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <!--
@@ -53,5 +56,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
     -->
+    {% block 'scripts' %}
+    {% endblock 'scripts' %}
   </body>
 </html>

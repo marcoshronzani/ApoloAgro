@@ -86,7 +86,7 @@ class Clientes(models.Model):
         verbose_name = 'Cliente'
 
     def __str__(self):
-        return self.nome_fantasia
+        return self.razao_social
 
 
 class Terceiros(models.Model):
@@ -120,25 +120,36 @@ class Terceiros(models.Model):
         verbose_name = 'Terceiro'
 
     def __str__(self):
-        return self.nome_fantasia
+        return self.razao_social
 
 
 class Orcamentos(models.Model):
     data_criacao = models.DateField(default= date.today)
     observacao = models.TextField(null=True, blank=True)
-    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    valor = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     cliente = models.ForeignKey(Clientes, on_delete=models.DO_NOTHING)
     terceiro = models.ForeignKey(Terceiros, on_delete=models.DO_NOTHING)
     
     class Meta:
-        verbose_name = 'Orçamento'
+        verbose_name = 'Orcamento'
 
     def __str__(self):
-        return self.observacao
+        return f'Orçamento: {self.id}'
 
 
 class ItemOrcamento(models.Model):
-    orcamento = models.ForeignKey(Orcamentos, on_delete=models.PROTECT)
-    item_produto = models.ForeignKey(Produtos, on_delete=models.PROTECT)
+    orcamento = models.ForeignKey(Orcamentos, on_delete=models.CASCADE, related_name='itens')
+    item_produto = models.ForeignKey(Produtos, on_delete=models.DO_NOTHING)
     item_valor = models.DecimalField(max_digits=10, decimal_places=2)
+    quantidade = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'itemOrcamento'
+    
+    def __str__(self):
+        return f'Orçamento: {self.orcamento.id} | Valor: {self.item_valor}'
+    
+
+
+

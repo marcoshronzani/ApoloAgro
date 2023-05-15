@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from cadastros.models import Categorias, Clientes, Terceiros, UnidadeMedida
+from cadastros.models import Categorias, Clientes, Terceiros, UnidadeMedida, Orcamentos, ItemOrcamento
 
 
 class CategoriaForm(forms.ModelForm):
@@ -174,3 +174,26 @@ class TerceiroForm(forms.ModelForm):
 class TerceiroEdtForm(TerceiroForm):
     def clean(self):
         pass
+
+
+class OrcamentoForm(forms.ModelForm):
+
+    class Meta:
+        model = Orcamentos
+        fields = '__all__'
+        widgets = {
+            'data_criacao': forms.DateInput(attrs={'readonly': 'readonly', 'class': 'form-control'}),
+        }
+
+
+class ItemOrcaForm(forms.ModelForm):
+    
+    class Meta:
+        model = ItemOrcamento
+        fields = '__all__'
+        widgets = {
+            'item_produto': forms.Select(attrs={'class': 'form-control col-md-3 '}),
+            'item_valor': forms.NumberInput(attrs={'class': 'form-control col-md-2'}),
+            'quantidade': forms.NumberInput(attrs={'class': 'form-control col-md-2'})
+        }
+

@@ -1,3 +1,4 @@
+from django.forms import inlineformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
@@ -5,8 +6,8 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 
 from usuarios.models import Usuario
-from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm, ClienteEdtForm, TerceiroEdtForm
-from .models import Categorias, Produtos, Servicos, Clientes, Terceiros, UnidadeMedida
+from .forms import CategoriaForm, ClienteForm, TerceiroForm, UndMedidaForm, ClienteEdtForm, TerceiroEdtForm, OrcamentoForm, ItemOrcaForm
+from .models import Categorias, Produtos, Servicos, Clientes, Terceiros, UnidadeMedida, Orcamentos, ItemOrcamento
 
 
 def categorias(request):
@@ -470,8 +471,62 @@ def excluir_und_medida(request, id):
 
 def orcamentos(request):
     if request.session.get('usuario'):
-        if request.method == 'GET':
+        orcamento = Orcamentos.objects.all()
             
-            return render(request, 'orcamentos.html', {'usuario_logado': request.session.get('usuario')})
+        return render(request, 'orcamentos.html', {'usuario_logado': request.session.get('usuario'), 'orcamentos': orcamento})
 
-    return redirect('/login/?status=2')    
+    return redirect('/login/?status=2')
+
+
+def cria_orcamento(request):
+    usuario_logado = request.session.get('usuario')
+
+    if usuario_logado:
+        busca_cliente = request.GET.get('busca_cliente')
+        busca_terceiro = request.GET.get('busca_terceiro')
+        form = OrcamentoForm()
+        form_item_factory = inlineformset_factory(Orcamentos, ItemOrcamento, form=ItemOrcaForm, extra=1, can_delete=True)
+        form_item = form_item_factory()
+        
+        if busca_cliente:
+            cliente = Clientes.objects.filter(Q(razao_social__icontains=busca_cliente) | 
+                                                                    Q(cnpj__icontains=busca_cliente) |
+                                                                    Q(cpf__icontains=busca_cliente)).first()
+            form['cliente'].value = cliente
+        
+        if busca_terceiro:
+            terceiro = Terceiros.objects.filter(Q(razao_social__icontains=busca_terceiro) | 
+                                                                    Q(cnpj__icontains=busca_terceiro) |
+                                                                    Q(cpf__icontains=busca_terceiro)).first()
+            form['terceiro'].value = terceiro
+        
+        usuario = Usuario.objects.filter(id=usuario_logado).first()
+        form['usuario'].value = usuario
+
+        if request.method == 'POST':
+            form = OrcamentoForm(request.POST)
+            form_item_factory = inlineformset_factory(Orcamentos, ItemOrcamento, form=ItemOrcaForm)
+            form_item = form_item_factory(request.POST)
+
+            total_form = request.POST.get('itens-TOTAL_FORMS')
+            i =  0
+            valor_total_item = 0
+
+            while i < int(total_form):
+                valor_total_item += float(form_item[i]['item_valor'].value()) * float(form_item[i]['quantidade'].value())
+                i += 1
+            
+            if form.is_valid() and form_item.is_valid():
+                orcamento = form.save(commit=False)
+                orcamento.valor = valor_total_item
+                orcamento.save()
+                form_item.instance = orcamento
+                form_item.save()
+                return redirect('/orcamentos/')
+            
+            else:
+                print(form.errors)
+                print(form_item.errors)
+   
+        contexto = {'usuario_logado':usuario_logado, 'form': form, 'form_item': form_item}
+        return render(request, 'cria_orcamento.html', context=contexto)

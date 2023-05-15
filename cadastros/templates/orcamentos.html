@@ -3,5 +3,33 @@
 {% block 'titulo' %} Orçamentos {% endblock %}
 
 {% block 'conteudo' %}
-    orçamentos
+
+<div class="container">
+    <div class="col-md">
+        <h2>Orçamentos</h2>
+    </div>
+    <a href="{% url 'cria_orcamento' %}" type="button" class="btn btn-success">Novo Orçamento</a>
+    <br>
+    <br>
+    <hr>
+
+    <table class="table table-striped">
+        {% for i in orcamentos %}
+            <tr>
+                <td>
+                    {{ i }} -
+                    {{i.cliente}} - 
+                    Valor Total: {{i.valor}}
+                    <ul>
+                        {% for j in i.itens.all %}
+                            <li>{{j.item_produto}} | Quantidade: {{j.quantidade}} | Valor: {{j.item_valor}}</li>
+                        {% endfor %}
+                        
+                    </ul>
+                </td>
+            </tr>
+
+        {% endfor %}
+        </table>
+</div>
 {% endblock %}
