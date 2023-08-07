@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Categorias, Produtos, Servicos, Clientes, Terceiros, UnidadeMedida, Orcamentos, ItemOrcamento
+from .models import (
+    Categorias,
+    Produtos,
+    Servicos,
+    Clientes,
+    Terceiros,
+    UnidadeMedida,
+    Orcamentos,
+    ItemOrcamento,
+)
 
 admin.site.register(Categorias)
 admin.site.register(Produtos)

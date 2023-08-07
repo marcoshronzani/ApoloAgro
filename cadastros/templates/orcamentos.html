@@ -26,7 +26,14 @@
                         {% endfor %}
                         
                     </ul>
+                    <ul>
+                        {% for q in i.itens_servicos.all %}
+                            <li>{{q.item_servico}} | Quantidade: {{q.quantidade}} | Valor: {{q.item_valor_servico}}</li>
+                        {% endfor %}
+                        
+                    </ul>
                 </td>
+                <td><a href="{% url 'edita_orcamento' i.id %}" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
             </tr>
 
         {% endfor %}

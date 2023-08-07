@@ -36,7 +36,7 @@
         <label for="{{ form.sigla.id_for_label }}">{{ form.sigla.label }}</label>
         <input style="width: 20%" name="{{ form.sigla.html_name }}" type="text" class="form-control"
                 placeholder="Ex: M²" id="{{ form.sigla.id_for_label }}"
-                value="{% if form.descricao.value %} {{ form.descricao.value}} {% endif %}">
+                value="{% if form.sigla.value %} {{ form.sigla.value}} {% endif %}">
         
         <br>
         <br>

@@ -6,7 +6,7 @@
 <div class="container">
     <div style="text-align: center">
         <br>
-        <h2>Cadastro de Orçamento</h2>
+        <h2>Edição de Orçamento</h2>
     </div>
     <br>
     <br>
@@ -50,7 +50,7 @@
             <div class="form-group col-md-4">
                 <label for="{{ form.observacao.id_for_label }}">{{ form.observacao.label }}</label>
                 <textarea class="form-control" id="{{ form.observacao.id_for_label }}" name="{{ form.observacao.html_name }}"
-                    rows="5"></textarea>
+                    rows="5">{{form.observacao.value}}</textarea>
             </div>
         </div>
 
@@ -93,21 +93,12 @@
         <br>
         <br>
         <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp 
-        <a href="{% url 'cria_orcamento' %}" class="btn btn-primary btn-sm">Cancelar</a>
+        <a href="{% url 'orcamentos' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
 <div>
 {% endblock %}
 
 {% block 'scripts' %}
-<script>
-
-    $(document).ready(function(){
-
-        alert("importação ok!");
-
-    });
-
-</script>
 
 <script type="text/javascript">
     $(function() {
