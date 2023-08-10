@@ -77,7 +77,7 @@ def criar_categoria(request):
 
             if form.is_valid():
                 form.save()
-                messages.add_message(request, messages.SUCCESS, "Categoria cadastrada com Sucesso!")
+                messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
 
                 return redirect("/categorias/")
 
@@ -108,6 +108,7 @@ def edita_categoria(request, id):
             categoria.produto = produto
             categoria.servico = servico
             categoria.save()
+            messages.add_message(request, messages.SUCCESS, "Edição realizada!")
             return redirect("/categorias")
         return render(
             request,
@@ -119,6 +120,7 @@ def edita_categoria(request, id):
 def excluir_categoria(request, id):
     try:
         Categorias.objects.get(id=id).delete()
+        messages.add_message(request, messages.SUCCESS, "Exclusão realizada!")
         return redirect("/categorias")
     except:
         messages.add_message(
@@ -202,6 +204,7 @@ def valida_produto(request):
             und=und_m,
         )
         produto.save()
+        messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
         return redirect("/produtos/")
     except:
         messages.add_message(request, messages.ERROR, "Erro ao Validar Produto")
@@ -280,7 +283,7 @@ def valida_servico(request):
     )
 
     servico.save()
-
+    messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
     return redirect("/servicos")
 
 
@@ -304,6 +307,7 @@ def edita_produto(request, id):
                 produto.observacao = observacao
                 produto.und_id = und_medida
                 produto.save()
+                messages.add_message(request, messages.SUCCESS, "Edição realizada!")
             except:
                 messages.add_message(request, messages.ERROR, "Erro ao editar Produto")
                 return redirect(f"/edita_produto/{id}")
@@ -335,6 +339,7 @@ def edita_servico(request, id):
                 servico.observacao = observacao
                 servico.und_id = und_medida
                 servico.save()
+                messages.add_message(request, messages.SUCCESS, "Edição realizada!")
             except:
                 messages.add_message(request, messages.ERROR, "Erro ao editar Serviço")
                 return redirect(f"/edita_servico/{id}")
@@ -354,6 +359,7 @@ def edita_servico(request, id):
 def excluir_produto(request, id):
     try:
         Produtos.objects.get(id=id).delete()
+        messages.add_message(request, messages.SUCCESS, "Exclusão realizada!")
         return redirect("/produtos")
     except:
         messages.add_message(
@@ -365,6 +371,7 @@ def excluir_produto(request, id):
 def excluir_servico(request, id):
     try:
         Servicos.objects.get(id=id).delete()
+        messages.add_message(request, messages.SUCCESS, "Exclusão realizada!")
         return redirect("/servicos")
     except:
         messages.add_message(
@@ -431,7 +438,7 @@ def cria_cliente(request):
 
             if form.is_valid():
                 form.save()
-
+                messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
                 return redirect("/clientes/")
 
         contexto = {"usuario_logado": request.session.get("usuario"), "form": form}
@@ -443,6 +450,7 @@ def cria_cliente(request):
 def excluir_cliente(request, id):
     try:
         Clientes.objects.get(id=id).delete()
+        messages.add_message(request, messages.SUCCESS, "Exclusão realizada!")
         return redirect("/clientes")
 
     except:
@@ -462,7 +470,7 @@ def edita_cliente(request, id):
 
             if form.is_valid():
                 form.save()
-
+                messages.add_message(request, messages.SUCCESS, "Edição realizada!")
                 return redirect("/clientes/")
 
         contexto = {
@@ -522,7 +530,7 @@ def cria_terceiro(request):
 
             if form.is_valid():
                 form.save()
-
+                messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
                 return redirect("/terceiros/")
 
         contexto = {"usuario_logado": request.session.get("usuario"), "form": form}
@@ -541,7 +549,7 @@ def edita_terceiro(request, id):
 
             if form.is_valid():
                 form.save()
-
+                messages.add_message(request, messages.SUCCESS, "Edição realizada!")
                 return redirect("/terceiros/")
 
         contexto = {
@@ -557,11 +565,13 @@ def edita_terceiro(request, id):
 def excluir_terceiro(request, id):
     try:
         Terceiros.objects.get(id=id).delete()
+        messages.add_message(request, messages.SUCCESS, "Exclusão realizada!")
         return redirect("/terceiros/")
     except:
         messages.add_message(
             request,
-            messages.ERROR, "Exclusão não permitida, Terceiro em uso no sistema"
+            messages.ERROR,
+            "Exclusão não permitida, Terceiro em uso no sistema",
         )
         return redirect(f"/edita_terceiro/{id}")
 
@@ -598,7 +608,7 @@ def cria_und_medida(request):
 
             if form.is_valid():
                 form.save()
-
+                messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
                 return redirect("/unidade_medida/")
 
         contexto = {"usuario_logado": request.session.get("usuario"), "form": form}
@@ -616,7 +626,7 @@ def edita_und_medida(request, id):
             form = UndMedidaForm(request.POST, instance=und)
             if form.is_valid():
                 form.save()
-
+                messages.add_message(request, messages.SUCCESS, "Edição realizada!")
                 return redirect("/unidade_medida/")
 
         contexto = {
@@ -632,6 +642,7 @@ def edita_und_medida(request, id):
 def excluir_und_medida(request, id):
     try:
         UnidadeMedida.objects.get(id=id).delete()
+        messages.add_message(request, messages.SUCCESS, "Exclusão realizada!")
         return redirect("/unidade_medida")
     except:
         messages.add_message(
@@ -732,6 +743,7 @@ def cria_orcamento(request):
                 form_item_servico.instance = orcamento
                 form_item.save()
                 form_item_servico.save()
+                messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
                 return redirect("/orcamentos/")
 
             else:
@@ -778,6 +790,7 @@ def edita_orcamento(request, id):
                 "form": form,
                 "form_item": form_item,
                 "form_item_servico": form_item_servico,
+                "orcamento": orcamento,
             }
 
             return render(request, "edita_orcamento.html", context)
@@ -801,7 +814,7 @@ def edita_orcamento(request, id):
                 form.save()
                 form_item.save()
                 form_item_servico.save()
-
+                messages.add_message(request, messages.SUCCESS, "Edição realizada!")
                 return redirect(reverse("orcamentos"))
 
             context = {
@@ -814,3 +827,17 @@ def edita_orcamento(request, id):
             return render(request, "edita_orcamento.html", context)
 
     return redirect("/login/?status=2")
+
+
+def excluir_orcamento(request, id):
+    try:
+        Orcamentos.objects.get(id=id).delete()
+        messages.add_message(request, messages.SUCCESS, "Exclusão realizada!")
+        return redirect("/orcamentos")
+    except:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "Exclusão não permitida, Orçamento em uso no sistema",
+        )
+        return redirect(f"/edita_orcamento/{id}")
