@@ -401,6 +401,7 @@ def clientes(request):
                 Q(razao_social__icontains=termo)
                 | Q(cnpj__icontains=termo)
                 | Q(cpf__icontains=termo)
+                | Q(nome_completo__icontains=termo)
             )
         else:
             clientes = Clientes.objects.order_by("-id")
@@ -492,6 +493,7 @@ def terceiros(request):
                 Q(razao_social__icontains=termo)
                 | Q(cnpj__icontains=termo)
                 | Q(cpf__icontains=termo)
+                | Q(nome_completo__icontains=termo)
             )
         else:
             terceiros = Terceiros.objects.order_by("-id")
@@ -691,6 +693,7 @@ def cria_orcamento(request):
                 Q(razao_social__icontains=busca_cliente)
                 | Q(cnpj__icontains=busca_cliente)
                 | Q(cpf__icontains=busca_cliente)
+                | Q(nome_completo__icontains=busca_cliente)
             ).first()
             form["cliente"].value = cliente
 
@@ -699,6 +702,7 @@ def cria_orcamento(request):
                 Q(razao_social__icontains=busca_terceiro)
                 | Q(cnpj__icontains=busca_terceiro)
                 | Q(cpf__icontains=busca_terceiro)
+                | Q(nome_completo__icontains=busca_terceiro)
             ).first()
             form["terceiro"].value = terceiro
 

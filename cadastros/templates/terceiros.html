@@ -23,7 +23,7 @@
             <form action="" method="GET">
                 <div class="form-group row">
                     <input class="form-control" type="search" id="search-input" placeholder="Pesquisar" name="termo"
-                      value="{{ request.GET.termo }}" title="CNPJ, CPF ou Razão Social">
+                      value="{{ request.GET.termo }}" title="CNPJ, CPF ou Descrição">
                 </div>
             </form>
         </div>
@@ -50,7 +50,7 @@
         <tbody>
           {% for i in terceiros %}
               <tr>
-                <td>{{ i.razao_social }}</td>
+                <td>{% if i.razao_social %}{{ i.razao_social }}{% else %}{{ i.nome_completo }}{% endif %}</td>
                 <td>{{ i.cnpj }}</td>
                 <td>{{ i.nome_completo }}</td>
                 <td>{{ i.cpf }}</td>
