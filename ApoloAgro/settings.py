@@ -138,7 +138,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "templates")]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Messages
+# Menssagens
 
 MESSAGE_TAGS = {
     constants.DEBUG: "alert-primary",
@@ -147,3 +147,15 @@ MESSAGE_TAGS = {
     constants.INFO: "alert-info",
     constants.WARNING: "alert-warning",
 }
+
+# Sessions
+
+SESSION_COOKIE_AGE = 3600  # 1 hora em segundos
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # A sessão não expira quando o navegador é fechado
+
+# Configuração para limpar sessões expiradas automaticamente
+SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Armazenar sessões no banco de dados
+SESSION_COOKIE_SECURE = True  # Use cookies seguros para a sessão (se estiver usando HTTPS)
+SESSION_SAVE_EVERY_REQUEST = True  # Salvar a sessão a cada requisição
+SESSION_EXPIRE_SECONDS = 3600  # Tempo para expirar sessões inativas (mesmo valor que SESSION_COOKIE_AGE)
+
