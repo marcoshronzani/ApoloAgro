@@ -5,15 +5,18 @@
 {% block 'conteudo' %}
 
 <div class="container">
-      <div class="row">
-        <div class="col-md-4">
+    <div style="text-align: center">
+        <br>
 
-        </div>
-        <div class="col-md">
-            <br>
-            <h2>Produtos</h2>
-        </div>
-      </div>
+        <h2>Produtos</h2>
+
+        {% if messages %}
+          {% for message in messages %}
+              <div class="alert {{message.tags}}">{{message}}</div>
+          {% endfor %}
+        {% endif %}
+
+    </div>
     <br>
         <div class="row">
             <div class="col-md-6">
@@ -26,7 +29,7 @@
             </div>
             <div class="col-md"></div>
             <div class="col-md">
-                <a href="{% url 'cria_produto' %}" type="button" class="btn btn-success">Cadastrar novo Produto</a>
+                <a href="{% url 'cria_produto' %}" type="button" class="btn btn-success">Cadastrar Produto</a>
             </div>
         </div>
     <div class="row">

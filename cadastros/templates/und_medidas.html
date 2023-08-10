@@ -5,15 +5,18 @@
 {% block 'conteudo' %}
 
 <div class="container">
-    <div class="row">
-      <div class="col-md-4">
+  <div style="text-align: center">
+    <br>
 
-      </div>
-      <div class="col-md">
-          <br>
-          <h2>Unidade de Medidas</h2>
-      </div>
-    </div>
+    <h2>Unidades de Medida</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+          <div class="alert {{message.tags}}">{{message}}</div>
+      {% endfor %}
+    {% endif %}
+
+  </div>  
     <br>
     <div class="row">
         <div class="col-md-6">

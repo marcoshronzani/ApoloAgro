@@ -5,10 +5,18 @@
 {% block 'conteudo' %}
 
 <div class="container">
-    <div style="text-align: enter">
-        <h2> Criar Unidade Medida </h2>
+    <div style="text-align: center">
+        <br>
+
+        <h2> Cadastrar Unidade Medida </h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+
     </div>
-    <br>
     <br>
     <form method='POST'>{% csrf_token %}
 

@@ -5,10 +5,20 @@
 {% block 'conteudo' %}
 
 <div class="container">
-    <div class="col-md">
+    <div style="text-align: center">
+        <br>
+
         <h2>Orçamentos</h2>
+
+        {% if messages %}
+          {% for message in messages %}
+              <div class="alert {{message.tags}}">{{message}}</div>
+          {% endfor %}
+        {% endif %}
+
     </div>
-    <a href="{% url 'cria_orcamento' %}" type="button" class="btn btn-success">Novo Orçamento</a>
+    <br>
+    <a href="{% url 'cria_orcamento' %}" type="button" class="btn btn-success">Cadastrar Orçamento</a>
     <br>
     <br>
     <hr>

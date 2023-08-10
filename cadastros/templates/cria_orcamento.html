@@ -6,9 +6,16 @@
 <div class="container">
     <div style="text-align: center">
         <br>
-        <h2>Cadastro de Orçamento</h2>
+
+        <h2>Cadastrar Orçamento</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+
     </div>
-    <br>
     <br>
     <div class="form row form.group col-md-2" >
         <p>Criado em: {{ form.data_criacao }}</p>
@@ -95,7 +102,7 @@
         <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp 
         <a href="{% url 'cria_orcamento' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
-<div>
+</div>
 {% endblock %}
 
 {% block 'scripts' %}

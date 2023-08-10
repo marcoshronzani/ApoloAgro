@@ -5,28 +5,31 @@
 {% block 'conteudo' %}
 
 <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-  
-      </div>
-      <div class="col-md">
-          <br>
-          <h2>Terceiros</h2>
-      </div>
+    <div style="text-align: center">
+        <br>
+
+        <h2>Terceiros</h2>
+
+        {% if messages %}
+          {% for message in messages %}
+              <div class="alert {{message.tags}}">{{message}}</div>
+          {% endfor %}
+        {% endif %}
+
     </div>
     <br>
     <div class="row">
         <div class="col-md-6">
             <form action="" method="GET">
                 <div class="form-group row">
-                    <input class="form-control" type="search" id="search-input" placeholder="Buscar (Razão Social, CNPJ ou CPF)" name="termo"
-                      value="{{ request.GET.termo }}">
+                    <input class="form-control" type="search" id="search-input" placeholder="Pesquisar" name="termo"
+                      value="{{ request.GET.termo }}" title="CNPJ, CPF ou Razão Social">
                 </div>
             </form>
         </div>
         <div class="col-md"></div>
         <div class="col-md">
-            <a href="{% url 'cria_terceiro' %}" type="button" class="btn btn-success">Cadastrar novo Terceiro</a>
+            <a href="{% url 'cria_terceiro' %}" type="button" class="btn btn-success">Cadastrar Terceiro</a>
         </div>
     </div>
     <div class="row">

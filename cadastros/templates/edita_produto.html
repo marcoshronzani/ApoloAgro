@@ -23,9 +23,16 @@
 <div class="container">
     <div style="text-align: center">
         <br>
+
         <h2>Editar Produto</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+
     </div>
-    <br>
     <br>
     <form method="POST" action="{% url 'edita_produto' produto.id %}">{% csrf_token %}
         <label>Descrição:</label>

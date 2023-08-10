@@ -7,11 +7,17 @@
 <div class="container">
     <div style="text-align: center">
         <br>
-        <h2>Cadastro de Terceiros</h2>
+        
+        <h2>Cadastrar Terceiro</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+
     </div>
     <br>
-    <br>
-
     <form method="POST">{% csrf_token %}
         <div class="form-row">
             <div class="form.group col-md-2">
@@ -153,6 +159,6 @@
         <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp 
         <a href="{% url 'terceiros' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
-<div>
+</div>
 
 {% endblock %}

@@ -22,9 +22,16 @@
 <div class="container">
     <div style="text-align: center">
         <br>
+
         <h2>Editar Serviço</h2>
+
+        {% if messages %}
+          {% for message in messages %}
+              <div class="alert {{message.tags}}">{{message}}</div>
+          {% endfor %}
+        {% endif %}
+        
     </div>
-    <br>
     <br>
     <form action="{% url 'edita_servico' servico.id %}" method="POST" >{% csrf_token %}
         <label>Descrição:</label>

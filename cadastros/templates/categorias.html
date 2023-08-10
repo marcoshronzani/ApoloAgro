@@ -5,30 +5,33 @@
 {% block 'conteudo' %}
 
 <div class="container">
+    <div style="text-align: center">
+        <br>
+        
+        <h2>Categorias</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    <br>
     <div class="row">
-        <div class="col-md-4">
-    
+        <div class="col-md-6">
+            <form action="{% url 'categorias' %}" method="GET">
+                <div class="form-group row">
+                    <input class="form-control" type="search" id="search-input" placeholder="Pesquisar" name="termo"
+                    value="{{ request.GET.termo }}">
+                </div>
+            </form>
         </div>
+        <div class="col-md"></div>
         <div class="col-md">
-            <br>
-            <h2>Categorias</h2>
+            <a href="{% url 'cria_categoria' %}" type="button" class="btn btn-success">Cadastrar Categoria</a>
         </div>
-      </div>
-      <br>
-      <div class="row">
-          <div class="col-md-6">
-              <form action="{% url 'categorias' %}" method="GET">
-                  <div class="form-group row">
-                      <input class="form-control" type="search" id="search-input" placeholder="Buscar" name="termo"
-                        value="{{ request.GET.termo }}">
-                  </div>
-              </form>
-          </div>
-          <div class="col-md"></div>
-          <div class="col-md">
-              <a href="{% url 'cria_categoria' %}" type="button" class="btn btn-success">Cadastrar nova Categoria</a>
-          </div>
-      </div>
+    </div>
     <div class="row">
         <table class="table table-striped table-sm">
           <thead>

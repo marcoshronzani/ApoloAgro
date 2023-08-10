@@ -6,9 +6,17 @@
 
 <div class="container">
     <div style="text-align: center">
-        <h2>Cadastro de Categoria</h2>
+        <br>
+
+        <h2>Cadastrar Categoria</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+
     </div>
-    <br>
     <br>
     <form method="POST">
         {% csrf_token %}

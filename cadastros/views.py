@@ -77,6 +77,7 @@ def criar_categoria(request):
 
             if form.is_valid():
                 form.save()
+                messages.add_message(request, messages.SUCCESS, "Categoria cadastrada com Sucesso!")
 
                 return redirect("/categorias/")
 
