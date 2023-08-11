@@ -706,7 +706,6 @@ def cria_orcamento(request):
             ).first()
             form["terceiro"].value = terceiro
 
-        print(form.data)
         usuario = Usuario.objects.filter(id=usuario_logado).first()
         form["usuario"].value = usuario
 
