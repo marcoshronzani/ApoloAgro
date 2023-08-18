@@ -724,14 +724,20 @@ def cria_orcamento(request):
             i = 0
             valor_total_item = 0
             valor_total_servico = 0
+            print (type(total_form))
 
             while i < int(total_form):
-                valor_total_item += float(form_item[i]["item_valor"].value()) * float(
-                    form_item[i]["quantidade"].value()
-                )
-                valor_total_servico += float(
-                    form_item_servico[i]["item_valor_servico"].value()
-                ) * float(form_item_servico[i]["quantidade"].value())
+                print("entrou no While")
+                if form_item[i]["item_valor"].value():
+                    print("Entrou no IF Produto")
+                    valor_total_item += float(form_item[i]["item_valor"].value()) * float(
+                        form_item[i]["quantidade"].value()
+                    )
+                if form_item_servico[i]["item_valor_servico"].value():
+                    print("Entrou no IF Serviço")
+                    valor_total_servico += float(
+                        form_item_servico[i]["item_valor_servico"].value()
+                    ) * float(form_item_servico[i]["quantidade"].value())
                 i += 1
 
             if (
