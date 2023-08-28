@@ -724,7 +724,6 @@ def cria_orcamento(request):
             i = 0
             valor_total_item = 0
             valor_total_servico = 0
-            print (type(total_form))
 
             while i < int(total_form):
                 print("entrou no While")

@@ -114,5 +114,21 @@
       </nav>
     </div>
 </div>
-
+<script>
+    $(document).ready(function() {
+        $('#search-input').on('input', function() {
+            const termoBusca = $(this).val();
+            
+            $.ajax({
+                url: '/produtos/',  // Sua URL de busca
+                data: {
+                    'termo_busca': termoBusca,
+                },
+                success: function(data) {
+                    $('#resultados-busca').html(data);
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
