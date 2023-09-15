@@ -1,11 +1,12 @@
 from django.forms import inlineformset_factory
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 from django.contrib import messages
+
 
 from usuarios.models import Usuario
 from .forms import (
@@ -688,6 +689,9 @@ def cria_orcamento(request):
         form_item = form_item_factory()
         form_item_servico = form_item_serv_factory()
 
+        resultado_cliente = {}
+        resultado_terceiro = {}
+
         if busca_cliente:
             cliente = Clientes.objects.filter(
                 Q(razao_social__icontains=busca_cliente)
@@ -695,7 +699,21 @@ def cria_orcamento(request):
                 | Q(cpf__icontains=busca_cliente)
                 | Q(nome_completo__icontains=busca_cliente)
             ).first()
-            form["cliente"].value = cliente
+            #form["cliente"].value = cliente
+            if cliente:
+                form.fields['cliente'].initial = cliente.id
+
+                if cliente.nome_completo:
+                    resultado_cliente['cliente_encontrado'] = cliente.nome_completo
+                    resultado_cliente['cliente_id'] = cliente.id
+
+                else:
+                    resultado_cliente['cliente_encontrado'] = cliente.razao_social
+
+            else:
+                resultado_cliente['cliente_encontrado'] = None
+            
+            return JsonResponse(resultado_cliente)
 
         if busca_terceiro:
             terceiro = Terceiros.objects.filter(
@@ -704,7 +722,20 @@ def cria_orcamento(request):
                 | Q(cpf__icontains=busca_terceiro)
                 | Q(nome_completo__icontains=busca_terceiro)
             ).first()
-            form["terceiro"].value = terceiro
+            #form["terceiro"].value = terceiro
+            if terceiro:
+                form.fields['terceiro'].initial = terceiro.id
+
+                if terceiro.nome_completo:
+                    resultado_terceiro['terceiro_encontrado'] = terceiro.nome_completo
+
+                else:    
+                    resultado_terceiro['terceiro_encontrado'] = terceiro.razao_social
+
+            else:
+                resultado_terceiro['terceiro_encontrado'] = None
+  
+            return JsonResponse(resultado_terceiro)
 
         usuario = Usuario.objects.filter(id=usuario_logado).first()
         form["usuario"].value = usuario

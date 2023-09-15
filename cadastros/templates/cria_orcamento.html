@@ -21,21 +21,26 @@
         <p>Criado em: {{ form.data_criacao }}</p>
     </div>
     <br>
-    <form action="" method="GET">
-        <div class="form row">
-            <div class="form-group col-md-4">
+    <div class="form row">
+        <div class="form-group col-md-5">
+  
                 <label for="{{form.cliente.id_for_label}}">{{form.cliente.label}}</label>
                 <input class="form-control" type="search" placeholder="Digite o Cliente" name="busca_cliente"
-                  value="{% if form.cliente.value %} {{ form.cliente.value}} {% endif %}">
-            </div>
-            <div class="form-group col-md-4">
+                id="busca_cliente" value="{% if form.cliente.value %} {{ form.cliente.value}} {% endif %}" autofocus>
+                <br>
+                <input class="btn btn-success btn-sm" type="Submit" value="Buscar" id="btn-busca_cliente">
+
+        </div>
+        <div class="form-group col-md-5">
+            <form action="" method="GET">
                 <label for="{{form.terceiro.id_for_label}}">{{form.terceiro.label}}</label>
                 <input class="form-control" type="search" placeholder="Digite o Terceiro" name="busca_terceiro"
-                  value="{% if form.terceiro.value %} {{ form.terceiro.value}} {% endif %}">
-            </div>
-            <input class="btn btn-success btn-sm" type="Submit" value="Buscar">
+                id="busca_terceiro" value="{% if form.terceiro.value %} {{ form.terceiro.value}} {% endif %}">
+                <br>
+                <input class="btn btn-success btn-sm" type="Submit" value="Buscar" id="btn-busca_terceiro">
+            </form>
         </div>
-    </form>
+    </div>  
 
     <form method="POST">{% csrf_token %}
         <div hidden class="form.group col-md-2" >
@@ -52,12 +57,11 @@
         <div class="form-row">
         </div>
         <br>
-        <br>
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-10">
                 <label for="{{ form.observacao.id_for_label }}">{{ form.observacao.label }}</label>
                 <textarea class="form-control" id="{{ form.observacao.id_for_label }}" name="{{ form.observacao.html_name }}"
-                    rows="5"></textarea>
+                    rows="3"></textarea>
             </div>
         </div>
 
@@ -127,6 +131,66 @@
             
         });
     })
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#btn-busca_cliente').click(function(event) {
+            event.preventDefault();
+
+            var buscaCliente = $('#busca_cliente').val();
+
+            $.ajax({
+                url: '/cria_orcamento/',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    busca_cliente: buscaCliente
+                },
+                success: function(data) {
+                    if (data.cliente_encontrado) {
+                        document.getElementById('busca_cliente').value = data.cliente_encontrado;
+                        document.getElementById('id_cliente').value = data.cliente_id;
+                        
+                    } else {
+                        alert('Cliente não encontrado.');
+                    }
+                },
+                error: function() {
+                    alert('Ocorreu um erro ao processar a solicitação.');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#btn-busca_terceiro').click(function(event) {
+            event.preventDefault();
+
+            var buscaTerceiro = $('#busca_terceiro').val();
+
+            $.ajax({
+                url: '/cria_orcamento/',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    busca_terceiro: buscaTerceiro
+                },
+                success: function(data) {
+                    if (data.terceiro_encontrado) {
+                        document.getElementById('busca_terceiro').value = data.terceiro_encontrado;
+                    } else {
+                        alert('Terceiro não encontrado.');
+                    }
+                },
+                error: function() {
+                    alert('Ocorreu um erro ao processar a solicitação.');
+                }
+            });
+        });
+    });
 </script>
 
 {% endblock %}
