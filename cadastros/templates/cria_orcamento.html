@@ -16,117 +16,76 @@
         {% endif %}
 
     </div>
-    <br>
-    <div class="form row form.group col-md-2" >
-        <p>Criado em: {{ form.data_criacao }}</p>
-    </div>
-    <br>
-    <form action="" method="GET">
+    <form method="POST" action="{% url 'cria_orcamento' %}">{% csrf_token %}
+        <br>
         <div class="form row">
-            <div class="form-group col-md-4">
-                <label for="{{form.cliente.id_for_label}}">{{form.cliente.label}}</label>
-                <input class="form-control" type="search" placeholder="Digite o Cliente" name="busca_cliente"
-                  value="{% if form.cliente.value %} {{ form.cliente.value}} {% endif %}">
+            <div class="form-group col-md-5">
+                <label for="situacao">Situação:</label>
+                <select name="situacao" class="form-control" id="situacao">
+                    <option selected>Escolher...</option>
+                    {% for orc in orcamento.choice %}
+                        <option value="{{orc.0}}">{{ orc.1 }}</option>
+                    {% endfor %}
+                </select>
             </div>
-            <div class="form-group col-md-4">
-                <label for="{{form.terceiro.id_for_label}}">{{form.terceiro.label}}</label>
-                <input class="form-control" type="search" placeholder="Digite o Terceiro" name="busca_terceiro"
-                  value="{% if form.terceiro.value %} {{ form.terceiro.value}} {% endif %}">
+            <div class="form row form.group col-md-3" >
+                <p>Criado em: {{orcamento.data_criacao}}</p>
             </div>
-            <input class="btn btn-success btn-sm" type="Submit" value="Buscar">
         </div>
-    </form>
-
-    <form method="POST">{% csrf_token %}
-        <div hidden class="form.group col-md-2" >
-            <p>Criado em: {{ form.data_criacao }}</p>
+        <br>
+        <div class="form row">
+            <div class="form-group col-md-5">
+                <label for="cliente">Cliente:</label>
+                <select name="cliente" class="form-control" id="cliente">
+                    <option selected>Escolher...</option>
+                    {% for cli in clientes %}
+                        <option value="{{cli.id}}">{% if cli.razao_social %}{{ cli.razao_social }}{% else %}{{ cli.nome_completo }}{% endif %}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-5">
+                <label for="terceiro">Terceiro:</label>
+                <select name="terceiro" class="form-control" id="terceiro">
+                    <option selected>Escolher...</option>
+                    {% for terc in terceiros %}
+                        <option value="{{terc.id}}">{% if terc.razao_social %}{{ terc.razao_social }}{% else %}{{ terc.nome_completo }}{% endif %}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
-        <input hidden id="{{ form.cliente.id_for_label }}" name="{{ form.cliente.html_name }}"
-                  value="{% if form.cliente.value %} {{ form.cliente.value.id}} {% endif %}">
-        
-        <input hidden id="{{ form.terceiro.id_for_label }}" name="{{ form.terceiro.html_name }}"
-                  value="{% if form.terceiro.value %} {{ form.terceiro.value.id}} {% endif %}">
-
-        <input hidden id="{{ form.usuario.id_for_label }}" name="{{ form.usuario.html_name }}"
-                  value="{% if form.usuario.value %} {{ form.usuario.value.id}} {% endif %}">
+        <br>
         <div class="form-row">
+            <div class="form-group col-md-10">
+                <label for="observacao">Observação:</label>
+                <textarea class="form-control" id="observacao" name="observacao"
+                    rows="3"></textarea>
+            </div>
+        </div>
+        <br>
+        <div class="inlineform form-inline">
+            <div class="form-group col-md-3">
+                <label form="valorTotal">Valor Total:</label>&nbsp
+                <input class="form-control" type="text" id="valorTotal" name="valorTotal" style="width: 40%" value="">
+            </div>
+            <div class="form-group col-md-2">
+                <label form="desconto">Desconto:</label>&nbsp
+                <input class="form-control" type="text" id="desconto" name="desconto" style="width: 40%" value="">
+            </div>
+            <div class="form-group col-md-3">
+                <label form="valorDesconto">Valor com Desconto:</label>&nbsp
+                <input class="form-control" type="text" id="valorDesconto" name="valorDesconto" style="width: 35%" value="">
+            </div>
+            <div class="form-group col-md-2">
+            </div>
         </div>
         <br>
         <br>
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="{{ form.observacao.id_for_label }}">{{ form.observacao.label }}</label>
-                <textarea class="form-control" id="{{ form.observacao.id_for_label }}" name="{{ form.observacao.html_name }}"
-                    rows="5"></textarea>
-            </div>
-        </div>
-
-                <label hidden for="{{ form.valor.id_for_label }}">{{ form.valor.label }}</label>
-                <input hidden class="form-control" type="number" name="{{ form.valor.html_name }}" id="{{ form.valor.id_for_label }}"
-                    value="{{ form.valor.value }}">
-        
-        <br>
-
-        <h5 style="text-align: center">Adicionar Produtos</h5>
-
-        <br>
-
-
-        {{ form_item.management_form }}
-            {% for fi in form_item %}
-            <div class="inlineform form-inline">
-               {{fi}}
-            </div>
-
-   
-            {% endfor %}
-        
-        <br>
-        <br>
-        <hr>
-        <br>
-        <h5 style="text-align: center">Adicionar Serviços</h5>
-        <br>
-        {{ form_item_servico.management_form }}
-            {% for fis in form_item_servico %}
-            <div class="inlineformservico form-inline">
-               {{fis}}
-            </div>
-
-   
-            {% endfor %}
-        
-        <br>
-        <br>
-        <br>
-        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp 
-        <a href="{% url 'cria_orcamento' %}" class="btn btn-primary btn-sm">Cancelar</a>
+        <input class="btn btn-success btn-sm" type="Submit" value="Adicionar Produto">&nbsp&nbsp&nbsp 
+        <a href="{% url 'orcamentos' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
 </div>
 {% endblock %}
 
 {% block 'scripts' %}
-
-<script type="text/javascript">
-    $(function() {
-        $('.inlineform').formset({
-            prefix: '{{ form_item.prefix }}',
-            addText: 'Adicionar Item',
-            deleteText: 'Remover Item',
-            
-        });
-    })
-</script>
-
-<script type="text/javascript">
-    $(function() {
-        $('.inlineformservico').formset({
-            prefix: '{{ form_item.prefix }}',
-            addText: 'Adicionar Item',
-            deleteText: 'Remover Item',
-            
-        });
-    })
-</script>
 
 {% endblock %}
