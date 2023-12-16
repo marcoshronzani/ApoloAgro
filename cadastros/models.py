@@ -123,9 +123,19 @@ class Terceiros(models.Model):
 
 
 class Orcamentos(models.Model):
+    choice = (
+        ('AB', 'Aberto'),
+        ('AN', 'Em Andamento'),
+        ('PA', 'Pausado'),
+        ('AR', 'Aguardando Retorno'),
+        ('FN', 'Finalizado')
+    )
     data_criacao = models.DateField(default=date.today)
+    situacao = models.CharField(max_length=2, choices=choice)
     observacao = models.TextField(null=True, blank=True)
-    valor = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    desconto = models.FloatField(null=True, blank=True)
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    valor_desconto = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
     cliente = models.ForeignKey(Clientes, on_delete=models.DO_NOTHING)
     terceiro = models.ForeignKey(Terceiros, on_delete=models.DO_NOTHING)
@@ -142,14 +152,16 @@ class ItemOrcamento(models.Model):
         Orcamentos, on_delete=models.CASCADE, related_name="itens"
     )
     item_produto = models.ForeignKey(Produtos, on_delete=models.DO_NOTHING)
-    item_valor = models.DecimalField(max_digits=10, decimal_places=2)
+    item_valor = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     quantidade = models.IntegerField()
+    desconto = models.DecimalField(null=True, blank=True, max_digits=5, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = "itemOrcamento"
 
     def __str__(self):
         return f"Orçamento: {self.orcamento.id} | Valor: {self.item_valor}"
+
 
 
 class ItemOrcamentoServico(models.Model):
@@ -159,6 +171,7 @@ class ItemOrcamentoServico(models.Model):
     item_servico = models.ForeignKey(Servicos, on_delete=models.DO_NOTHING)
     item_valor_servico = models.DecimalField(max_digits=10, decimal_places=2)
     quantidade = models.IntegerField()
+    desconto = models.FloatField(null=True, blank=True)
 
     class Meta:
         verbose_name = "itemOrcamentoServico"

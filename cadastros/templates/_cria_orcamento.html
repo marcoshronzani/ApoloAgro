@@ -1,0 +1,194 @@
+{% extends 'base.html'%}
+
+{% block 'titulo' %} Cria Orcamento {% endblock %}
+
+{%block 'conteudo' %}
+<div class="container">
+    <div style="text-align: center">
+        <br>
+
+        <h2>Cadastrar Orçamento</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{message.tags}}">{{message}}</div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+    <br>
+    <div class="form row form.group col-md-2" >
+        <p>Criado em: {{ form.data_criacao }}</p>
+    </div>
+    <br>
+    <div class="form row">
+        <div class="form-group col-md-5">
+  
+                <label for="{{form.cliente.id_for_label}}">{{form.cliente.label}}</label>
+                <input class="form-control" type="search" placeholder="Digite o Cliente" name="busca_cliente"
+                id="busca_cliente" value="{% if form.cliente.value %} {{ form.cliente.value}} {% endif %}" autofocus>
+                <br>
+                <input class="btn btn-success btn-sm" type="Submit" value="Buscar" id="btn-busca_cliente">
+
+        </div>
+        <div class="form-group col-md-5">
+            <form action="" method="GET">
+                <label for="{{form.terceiro.id_for_label}}">{{form.terceiro.label}}</label>
+                <input class="form-control" type="search" placeholder="Digite o Terceiro" name="busca_terceiro"
+                id="busca_terceiro" value="{% if form.terceiro.value %} {{ form.terceiro.value}} {% endif %}">
+                <br>
+                <input class="btn btn-success btn-sm" type="Submit" value="Buscar" id="btn-busca_terceiro">
+            </form>
+        </div>
+    </div>  
+
+    <form method="POST">{% csrf_token %}
+        <div hidden class="form.group col-md-2" >
+            <p>Criado em: {{ form.data_criacao }}</p>
+        </div>
+        <input hidden id="{{ form.cliente.id_for_label }}" name="{{ form.cliente.html_name }}"
+                  value="{% if form.cliente.value %} {{ form.cliente.value.id}} {% endif %}">
+        
+        <input hidden id="{{ form.terceiro.id_for_label }}" name="{{ form.terceiro.html_name }}"
+                  value="{% if form.terceiro.value %} {{ form.terceiro.value.id}} {% endif %}">
+
+        <input hidden id="{{ form.usuario.id_for_label }}" name="{{ form.usuario.html_name }}"
+                  value="{% if form.usuario.value %} {{ form.usuario.value.id}} {% endif %}">
+        <div class="form-row">
+        </div>
+        <br>
+        <div class="form-row">
+            <div class="form-group col-md-10">
+                <label for="{{ form.observacao.id_for_label }}">{{ form.observacao.label }}</label>
+                <textarea class="form-control" id="{{ form.observacao.id_for_label }}" name="{{ form.observacao.html_name }}"
+                    rows="3"></textarea>
+            </div>
+        </div>
+                <label hidden for="{{ form.valor.id_for_label }}">{{ form.valor.label }}</label>
+                <input hidden class="form-control" type="number" name="{{ form.valor.html_name }}" id="{{ form.valor.id_for_label }}"
+                    value="{{ form.valor.value }}">
+        <br>
+
+        <h5 style="text-align: center">Adicionar Produtos</h5>
+
+        <br>
+
+
+        {{ form_item.management_form }}
+            {% for fi in form_item %}
+            <div class="inlineform form-inline">
+               {{fi}}
+            </div>
+
+   
+            {% endfor %}
+        
+        <br>
+        <br>
+        <hr>
+        <br>
+        <h5 style="text-align: center">Adicionar Serviços</h5>
+        <br>
+        {{ form_item_servico.management_form }}
+            {% for fis in form_item_servico %}
+            <div class="inlineformservico form-inline">
+               {{fis}}
+            </div>
+
+   
+            {% endfor %}
+        
+        <br>
+        <br>
+        <br>
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp 
+        <a href="{% url 'cria_orcamento' %}" class="btn btn-primary btn-sm">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
+
+{% block 'scripts' %}
+
+<script type="text/javascript">
+    $(function() {
+        $('.inlineform').formset({
+            prefix: '{{ form_item.prefix }}',
+            addText: 'Adicionar Item',
+            deleteText: 'Remover Item',
+            
+        });
+    })
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        $('.inlineformservico').formset({
+            prefix: '{{ form_item.prefix }}',
+            addText: 'Adicionar Item',
+            deleteText: 'Remover Item',
+            
+        });
+    })
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#btn-busca_cliente').click(function(event) {
+            event.preventDefault();
+
+            var buscaCliente = $('#busca_cliente').val();
+
+            $.ajax({
+                url: '/cria_orcamento/',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    busca_cliente: buscaCliente
+                },
+                success: function(data) {
+                    if (data.cliente_encontrado) {
+                        document.getElementById('busca_cliente').value = data.cliente_encontrado;
+                        document.getElementById('id_cliente').value = data.cliente_id;
+                        
+                    } else {
+                        alert('Cliente não encontrado.');
+                    }
+                },
+                error: function() {
+                    alert('Ocorreu um erro ao processar a solicitação.');
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#btn-busca_terceiro').click(function(event) {
+            event.preventDefault();
+
+            var buscaTerceiro = $('#busca_terceiro').val();
+
+            $.ajax({
+                url: '/cria_orcamento/',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    busca_terceiro: buscaTerceiro
+                },
+                success: function(data) {
+                    if (data.terceiro_encontrado) {
+                        document.getElementById('busca_terceiro').value = data.terceiro_encontrado;
+                    } else {
+                        alert('Terceiro não encontrado.');
+                    }
+                },
+                error: function() {
+                    alert('Ocorreu um erro ao processar a solicitação.');
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

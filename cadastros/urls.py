@@ -36,4 +36,6 @@ urlpatterns = [
     path("cria_orcamento/", views.cria_orcamento, name="cria_orcamento"),
     path("edita_orcamento/<int:id>", views.edita_orcamento, name="edita_orcamento"),
     path("excluir_orcamento/<int:id>", views.excluir_orcamento, name="excluir_orcamento"),
+    path("adicionar_item/<int:id>", views.adicionar_item, name="adicionar_item"),
+    path("adicionar_itens", views.adicionar_item, name="adicionar_itens")
 ]
