@@ -1,13 +1,12 @@
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.forms import inlineformset_factory
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
-from django.db.models import Q
-from django.core.exceptions import ValidationError
 from django.urls import reverse
-from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-
 
 from usuarios.models import Usuario
 from .forms import (
@@ -672,9 +671,31 @@ def orcamentos(request):
     return redirect("/login/?status=2")
 
 
+# Views
+
+# - Listar orçamentos
+# Mostrar todos os orçamentos já criados e botão para criar orçamento
+
+# - Cadastrar orçamento
+# Cadastrar orçamento vinculando cliente, terceiro e situação e redireciona para a view Edita orçamento
+
+# - Editar orçamento
+# Mostrar todo o orçamento
+# Cliente, terceiro, situação, data, descrição
+# Lista de itens do orçamento
+
+# - Excluir orçamento
+# Recebe o id do orçamento, deleta o orçamento e retorna a view Listar orçamentos
+
+# - Adicionar item ao orçamento
+# Recebe id do orçamento e o produto (quantidade, desconto e valor do item) e redireciona para a view Editar orçamento
+
+# Excluir item do orçamento
+# Recebe o id do orçamento e o id do item, deleta o item do orçamento e rediciona para a view do Editar orçamento
+
 def cria_orcamento(request):
     usuario_logado = request.session.get("usuario")
-    
+
     if usuario_logado:
         orcamento = Orcamentos()
         clientes = Clientes.objects.all()
@@ -703,8 +724,9 @@ def cria_orcamento(request):
                 orcamento.terceiro_id = terceiro
                 orcamento.usuario_id = usuario
                 orcamento.save()
-                return redirect(f'/adicionar_item/{orcamento.id}')
-            
+                url = reverse('editar_orcamento', kwargs={'id': orcamento.id})
+                return redirect(url)
+
             except Exception as e:
                 return HttpResponse(f'Erro: {e}')
 
@@ -713,201 +735,195 @@ def cria_orcamento(request):
                    'terceiros': terceiros,
                    'usuario_logado': usuario_logado
                    }
-        
+
         return render(request, 'cria_orcamento.html', context)
 
+
 @csrf_exempt
-def adicionar_item(request, id=None):
+def editar_orcamento(request, id=None):
     usuario_logado = request.session.get('usuario')
-    if id is None:
-        id = request.GET.get('id_orcamento')
+
     if usuario_logado:
-        busca = request.GET.get('termo')
         orcamento = Orcamentos.objects.get(id=id)
         clientes = Clientes.objects.all()
         terceiros = Terceiros.objects.all()
 
-        if busca:
-            produtos = Produtos.objects.filter(descricao__icontains=busca)
-        
-        else:
-            produtos = Produtos.objects.all()
-
-        if request.method == "POST":
-            produto = request.POST.get('produto')
-            quantidade = request.POST.get('quantidade')
-            desconto = request.POST.get('itemDesconto').replace(',', '.')
-            valor = request.POST.get('itemValor').replace(',', '.')
-
-            valor = int(quantidade) * float(valor)
-            if desconto:
-                valor_desconto = float(valor) * (float(desconto) / 100)
-                valor = valor - valor_desconto
-            
-            item = ItemOrcamento(orcamento=orcamento,
-                                 item_produto_id=produto,
-                                 item_valor=valor,
-                                 quantidade=quantidade,
-                                 desconto=desconto)
-            
-            item.save()
-            orcamento.valor_total = item.item_valor
-            orcamento.save()
-
-            itens = ItemOrcamento.objects.filter(orcamento=orcamento)
-
-            context = {'orcamento': orcamento,
-            'clientes': clientes,
-            'terceiros': terceiros,
-            'produtos': produtos,
-            'usuario_logado': usuario_logado,
-            'itens': itens
-            }
-            
-            return render(request, 'adicionar_item.html', context)
-            #return redirect(reverse('adicionar_item', kwargs={'id': orcamento.id}))
-            #return HttpResponse(f'{produto} - {quantidade} - {desconto} - {valor} ')
+        produtos_orcamento = ItemOrcamento.objects.filter(orcamento=orcamento)
 
         context = {'orcamento': orcamento,
                    'clientes': clientes,
                    'terceiros': terceiros,
-                   'produtos': produtos,
+                   'produtos': produtos_orcamento,
                    'usuario_logado': usuario_logado
                    }
 
         return render(request, 'adicionar_item.html', context)
 
-    return HttpResponse(f'item {id} adicionado')
 
-#def cria_orcamento(request):
-    #usuario_logado = request.session.get("usuario")
+def adicionar_item_orcamento(request, id_orcamento):
+    busca_produto = request.GET.get('busca_produto')
+
+    produtos = []
+    if busca_produto:
+        produtos = Produtos.objects.filter(descricao__icontains=busca_produto)
+
+    if request.method == 'POST':
+        id_produto = request.POST.get('id_produto')
+        produto = Produtos.objects.get(id=id_produto)
+
+        orcamento = Orcamentos.objects.get(id=id_orcamento)
+        item = ItemOrcamento(
+            orcamento=orcamento,
+            item_produto=produto,
+            quantidade=1,
+            item_valor=produto.preco_venda,
+            desconto=0
+        )
+        item.save()
+
+        orcamento.valor_total = item.item_valor
+        orcamento.save()
+
+        url = reverse('editar_orcamento', kwargs={'id': id_orcamento})
+        return redirect(url)
+
+    contexto = {
+        'produtos': produtos,
+        'id_orcamento': id_orcamento
+    }
+
+    return render(request, 'adicionar_item_orcamento.html', context=contexto)
+
+
+# def cria_orcamento(request):
+# usuario_logado = request.session.get("usuario")
 #
-    #if usuario_logado:
-    #    busca_cliente = request.GET.get("busca_cliente")
-    #    busca_terceiro = request.GET.get("busca_terceiro")
-    #    form = OrcamentoForm()
-    #    form_item_factory = inlineformset_factory(
-    #        Orcamentos, ItemOrcamento, form=ItemOrcaForm, extra=1, can_delete=True
-    #    )
-    #    form_item_serv_factory = inlineformset_factory(
-    #        Orcamentos,
-    #        ItemOrcamentoServico,
-    #        form=ItemOrcaServForm,
-    #        extra=1,
-    #        can_delete=True,
-    #    )
-    #    form_item = form_item_factory()
-    #    form_item_servico = form_item_serv_factory()
+# if usuario_logado:
+#    busca_cliente = request.GET.get("busca_cliente")
+#    busca_terceiro = request.GET.get("busca_terceiro")
+#    form = OrcamentoForm()
+#    form_item_factory = inlineformset_factory(
+#        Orcamentos, ItemOrcamento, form=ItemOrcaForm, extra=1, can_delete=True
+#    )
+#    form_item_serv_factory = inlineformset_factory(
+#        Orcamentos,
+#        ItemOrcamentoServico,
+#        form=ItemOrcaServForm,
+#        extra=1,
+#        can_delete=True,
+#    )
+#    form_item = form_item_factory()
+#    form_item_servico = form_item_serv_factory()
 #
-    #    resultado_cliente = {}
-    #    resultado_terceiro = {}
+#    resultado_cliente = {}
+#    resultado_terceiro = {}
 #
-    #    if busca_cliente:
-    #        cliente = Clientes.objects.filter(
-    #            Q(razao_social__icontains=busca_cliente)
-    #            | Q(cnpj__icontains=busca_cliente)
-    #            | Q(cpf__icontains=busca_cliente)
-    #            | Q(nome_completo__icontains=busca_cliente)
-    #        ).first()
-    #        #form["cliente"].value = cliente
-    #        if cliente:
-    #            form.fields['cliente'].initial = cliente.id
+#    if busca_cliente:
+#        cliente = Clientes.objects.filter(
+#            Q(razao_social__icontains=busca_cliente)
+#            | Q(cnpj__icontains=busca_cliente)
+#            | Q(cpf__icontains=busca_cliente)
+#            | Q(nome_completo__icontains=busca_cliente)
+#        ).first()
+#        #form["cliente"].value = cliente
+#        if cliente:
+#            form.fields['cliente'].initial = cliente.id
 #
-    #            if cliente.nome_completo:
-    #                resultado_cliente['cliente_encontrado'] = cliente.nome_completo
-    #                resultado_cliente['cliente_id'] = cliente.id
+#            if cliente.nome_completo:
+#                resultado_cliente['cliente_encontrado'] = cliente.nome_completo
+#                resultado_cliente['cliente_id'] = cliente.id
 #
-    #            else:
-    #                resultado_cliente['cliente_encontrado'] = cliente.razao_social
+#            else:
+#                resultado_cliente['cliente_encontrado'] = cliente.razao_social
 #
-    #        else:
-    #            resultado_cliente['cliente_encontrado'] = None
-    #        
-    #        return JsonResponse(resultado_cliente)
+#        else:
+#            resultado_cliente['cliente_encontrado'] = None
 #
-    #    if busca_terceiro:
-    #        terceiro = Terceiros.objects.filter(
-    #            Q(razao_social__icontains=busca_terceiro)
-    #            | Q(cnpj__icontains=busca_terceiro)
-    #            | Q(cpf__icontains=busca_terceiro)
-    #            | Q(nome_completo__icontains=busca_terceiro)
-    #        ).first()
-    #        #form["terceiro"].value = terceiro
-    #        if terceiro:
-    #            form.fields['terceiro'].initial = terceiro.id
+#        return JsonResponse(resultado_cliente)
 #
-    #            if terceiro.nome_completo:
-    #                resultado_terceiro['terceiro_encontrado'] = terceiro.nome_completo
+#    if busca_terceiro:
+#        terceiro = Terceiros.objects.filter(
+#            Q(razao_social__icontains=busca_terceiro)
+#            | Q(cnpj__icontains=busca_terceiro)
+#            | Q(cpf__icontains=busca_terceiro)
+#            | Q(nome_completo__icontains=busca_terceiro)
+#        ).first()
+#        #form["terceiro"].value = terceiro
+#        if terceiro:
+#            form.fields['terceiro'].initial = terceiro.id
 #
-    #            else:    
-    #                resultado_terceiro['terceiro_encontrado'] = terceiro.razao_social
+#            if terceiro.nome_completo:
+#                resultado_terceiro['terceiro_encontrado'] = terceiro.nome_completo
 #
-    #        else:
-    #            resultado_terceiro['terceiro_encontrado'] = None
-  #
-    #        return JsonResponse(resultado_terceiro)
+#            else:
+#                resultado_terceiro['terceiro_encontrado'] = terceiro.razao_social
 #
-    #    usuario = Usuario.objects.filter(id=usuario_logado).first()
-    #    form["usuario"].value = usuario
+#        else:
+#            resultado_terceiro['terceiro_encontrado'] = None
 #
-    #    if request.method == "POST":
-    #        form = OrcamentoForm(request.POST)
-    #        form_item_factory = inlineformset_factory(
-    #            Orcamentos, ItemOrcamento, form=ItemOrcaForm
-    #        )
-    #        form_item_serv_factory = inlineformset_factory(
-    #            Orcamentos, ItemOrcamentoServico, form=ItemOrcaServForm
-    #        )
-    #        form_item = form_item_factory(request.POST)
-    #        form_item_servico = form_item_serv_factory(request.POST)
+#        return JsonResponse(resultado_terceiro)
 #
-    #        total_form = request.POST.get("itens-TOTAL_FORMS")
-    #        i = 0
-    #        valor_total_item = 0
-    #        valor_total_servico = 0
+#    usuario = Usuario.objects.filter(id=usuario_logado).first()
+#    form["usuario"].value = usuario
 #
-    #        while i < int(total_form):
-    #            print("entrou no While")
-    #            if form_item[i]["item_valor"].value():
-    #                print("Entrou no IF Produto")
-    #                valor_total_item += float(form_item[i]["item_valor"].value()) * float(
-    #                    form_item[i]["quantidade"].value()
-    #                )
-    #            if form_item_servico[i]["item_valor_servico"].value():
-    #                print("Entrou no IF Serviço")
-    #                valor_total_servico += float(
-    #                    form_item_servico[i]["item_valor_servico"].value()
-    #                ) * float(form_item_servico[i]["quantidade"].value())
-    #            i += 1
+#    if request.method == "POST":
+#        form = OrcamentoForm(request.POST)
+#        form_item_factory = inlineformset_factory(
+#            Orcamentos, ItemOrcamento, form=ItemOrcaForm
+#        )
+#        form_item_serv_factory = inlineformset_factory(
+#            Orcamentos, ItemOrcamentoServico, form=ItemOrcaServForm
+#        )
+#        form_item = form_item_factory(request.POST)
+#        form_item_servico = form_item_serv_factory(request.POST)
 #
-    #        if (
-    #            form.is_valid()
-    #            and form_item.is_valid()
-    #            and form_item_servico.is_valid()
-    #        ):
-    #            orcamento = form.save(commit=False)
-    #            orcamento.valor = valor_total_item + valor_total_servico
-    #            orcamento.save()
-    #            form_item.instance = orcamento
-    #            form_item_servico.instance = orcamento
-    #            form_item.save()
-    #            form_item_servico.save()
-    #            messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
-    #            return redirect("/orcamentos/")
+#        total_form = request.POST.get("itens-TOTAL_FORMS")
+#        i = 0
+#        valor_total_item = 0
+#        valor_total_servico = 0
 #
-    #        else:
-    #            print(form.errors)
-    #            print(form_item.errors)
+#        while i < int(total_form):
+#            print("entrou no While")
+#            if form_item[i]["item_valor"].value():
+#                print("Entrou no IF Produto")
+#                valor_total_item += float(form_item[i]["item_valor"].value()) * float(
+#                    form_item[i]["quantidade"].value()
+#                )
+#            if form_item_servico[i]["item_valor_servico"].value():
+#                print("Entrou no IF Serviço")
+#                valor_total_servico += float(
+#                    form_item_servico[i]["item_valor_servico"].value()
+#                ) * float(form_item_servico[i]["quantidade"].value())
+#            i += 1
 #
-    #    contexto = {
-    #        "usuario_logado": usuario_logado,
-    #        "form": form,
-    #        "form_item": form_item,
-    #        "form_item_servico": form_item_servico,
-    #    }
-    #    return render(request, "cria_orcamento.html", context=contexto)
+#        if (
+#            form.is_valid()
+#            and form_item.is_valid()
+#            and form_item_servico.is_valid()
+#        ):
+#            orcamento = form.save(commit=False)
+#            orcamento.valor = valor_total_item + valor_total_servico
+#            orcamento.save()
+#            form_item.instance = orcamento
+#            form_item_servico.instance = orcamento
+#            form_item.save()
+#            form_item_servico.save()
+#            messages.add_message(request, messages.SUCCESS, "Cadastro Realizado!")
+#            return redirect("/orcamentos/")
 #
-    #return redirect("/login/?status=2")
+#        else:
+#            print(form.errors)
+#            print(form_item.errors)
+#
+#    contexto = {
+#        "usuario_logado": usuario_logado,
+#        "form": form,
+#        "form_item": form_item,
+#        "form_item_servico": form_item_servico,
+#    }
+#    return render(request, "cria_orcamento.html", context=contexto)
+#
+# return redirect("/login/?status=2")
 
 def edita_orcamento(request, id):
     usuario_logado = request.session.get("usuario")
@@ -955,9 +971,9 @@ def edita_orcamento(request, id):
             form_item_servico = form_item_serv_factory(request.POST, instance=orcamento)
 
             if (
-                form.is_valid()
-                and form_item.is_valid()
-                and form_item_servico.is_valid()
+                    form.is_valid()
+                    and form_item.is_valid()
+                    and form_item_servico.is_valid()
             ):
                 form.save()
                 form_item.save()

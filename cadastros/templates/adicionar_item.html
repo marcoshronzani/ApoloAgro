@@ -1,22 +1,22 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block 'titulo' %} Adiciona Item {% endblock %}
 
-{%block 'conteudo' %}
-<div class="container">
-    <div style="text-align: center">
-        <br>
+{% block 'conteudo' %}
+    <div class="container">
+        <div style="text-align: center">
+            <br>
 
-        <h2>Cadastrar Orçamento</h2>
+            <h2>Cadastrar Orçamento</h2>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert {{message.tags}}">{{message}}</div>
-            {% endfor %}
-        {% endif %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
 
-    </div>
-    
+        </div>
+
         <br>
         <div class="form row">
             <div class="form-group col-md-5">
@@ -24,13 +24,13 @@
                 <select name="situacao" class="form-control" id="situacao" readonly>
                     {% for orc in orcamento.choice %}
                         {% if orcamento.situacao == orc.0 %}
-                            <option value="{{orc.0}}" selected>{{ orc.1 }}</option>
+                            <option value="{{ orc.0 }}" selected>{{ orc.1 }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
             </div>
-            <div class="form row form.group col-md-3" >
-                <p>Criado em: {{orcamento.data_criacao}}</p>
+            <div class="form row form.group col-md-3">
+                <p>Criado em: {{ orcamento.data_criacao }}</p>
             </div>
         </div>
         <br>
@@ -40,7 +40,8 @@
                 <select name="cliente" class="form-control" id="cliente" readonly>
                     {% for cli in clientes %}
                         {% if orcamento.cliente == cli %}
-                            <option value="{{cli.id}}">{% if cli.razao_social %}{{ cli.razao_social }}{% else %}{{ cli.nome_completo }}{% endif %}</option>
+                            <option value="{{ cli.id }}">{% if cli.razao_social %}{{ cli.razao_social }}{% else %}
+                                {{ cli.nome_completo }}{% endif %}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
@@ -50,7 +51,8 @@
                 <select name="terceiro" class="form-control" id="terceiro" readonly>
                     {% for terc in terceiros %}
                         {% if orcamento.terceiro == terc %}
-                            <option value="{{terc.id}}">{% if terc.razao_social %}{{ terc.razao_social }}{% else %}{{ terc.nome_completo }}{% endif %}</option>
+                            <option value="{{ terc.id }}">{% if terc.razao_social %}{{ terc.razao_social }}{% else %}
+                                {{ terc.nome_completo }}{% endif %}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
@@ -61,22 +63,25 @@
             <div class="form-group col-md-10">
                 <label for="observacao">Observação:</label>
                 <textarea class="form-control" id="observacao" name="observacao"
-                    rows="3" readonly>{{ orcamento.observacao }}</textarea>
+                          rows="3" readonly>{{ orcamento.observacao }}</textarea>
             </div>
         </div>
         <br>
         <div class="form-inline">
             <div class="form-group col-md-3">
                 <label form="valorTotal">Valor Total:</label>&nbsp
-                <input class="form-control" type="text" id="valorTotal" name="valorTotal" style="width: 40%" value="{{ orcamento.valor_total }}" readonly>
+                <input class="form-control" type="text" id="valorTotal" name="valorTotal" style="width: 40%"
+                       value="{{ orcamento.valor_total_orcamento }}" readonly>
             </div>
             <div class="form-group col-md-2">
                 <label form="desconto">Desconto:</label>&nbsp
-                <input class="form-control" type="text" id="desconto" name="desconto" style="width: 40%" value="{{ orcamento.desconto }}" readonly>
+                <input class="form-control" type="text" id="desconto" name="desconto" style="width: 40%"
+                       value="{{ orcamento.desconto }}" readonly>
             </div>
             <div class="form-group col-md-3">
                 <label form="valorDesconto">Valor com Desconto:</label>&nbsp
-                <input class="form-control" type="text" id="valorDesconto" name="valorDesconto" style="width: 35%" value="{{ orcamento.valor_desconto }}" readonly>
+                <input class="form-control" type="text" id="valorDesconto" name="valorDesconto" style="width: 35%"
+                       value="{{ orcamento.valor_desconto }}" readonly>
             </div>
             <div class="form-group col-md-2">
             </div>
@@ -89,46 +94,74 @@
         </div>
         <br>
 
-        <div class="form-row">
-            <form action="" method="GET">
-                <div class="form-group col-md-10">
-                    <input class="form-control-sm" type="search" id="search-input" placeholder="Pesquisar" name="termo"
-                    value="{{ request.GET.termo }}" title="Digite o produto">
+{#        <div class="form-row">#}
+{#            <form action="" method="GET">#}
+{#                <div class="form-group col-md-10">#}
+{#                    <input class="form-control-sm" type="search" id="search-input" placeholder="Pesquisar" name="termo"#}
+{#                           value="{{ request.GET.termo }}" title="Digite o produto">#}
+{##}
+{#                    <input hidden name="id_orcamento" value="{{ orcamento.id }}">#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
 
-                    <input hidden name="id_orcamento" value="{{orcamento.id}}">
-                </div>
-            </form>
-        </div>
-                            <!-- Botão para acionar modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalLongoExemplo">
-                                Abrir modal de demonstração
-                           </button>
+        <!-- Botão para acionar modal -->
+{#        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalLongoExemplo">#}
+{#            Abrir modal de demonstração#}
+{#        </button>#}
 
-    <form method="POST">{% csrf_token %}
-        <table class="table table-sm">
-            <thead>
-              <tr>
-                <th scope="col">Descrição</th></th>
-                <th scope="col">Quantidade</th>
-                <th scope="col">Desconto</th>
-                <th scope="col">Valor</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for produto in produtos %}
-              <tr>
-                <th scope="row">{{ produto.descricao }}</th>
-                <td>{{ produto.quantidade }}</td>
-                <td>{{ produto.desconto }}</td>
-                <td>{{ produto.valor }}</td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        <br>
-        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp 
-        <a href="{% url 'orcamentos' %}" class="btn btn-primary btn-sm">Cancelar</a>
-    </form>
-</div>
+    <a href="{% url 'adicionar_item_orcamento' orcamento.id %}" class="btn btn-primary btn-sm">Add Produto</a>
+
+        <form method="POST">{% csrf_token %}
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th scope="col">Descrição</th>
+                    </th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Desconto</th>
+                    <th scope="col">Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for produto in produtos %}
+                    <tr>
+                        <th scope="row">{{ produto.descricao }}</th>
+                        <td>{{ produto.quantidade }}</td>
+                        <td>{{ produto.desconto }}</td>
+                        <td>{{ produto.valor }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp
+            <a href="{% url 'orcamentos' %}" class="btn btn-primary btn-sm">Cancelar</a>
+        </form>
+    </div>
+
+    <!-- Modal -->
+{#    <div class="modal fade" id="ModalLongoExemplo" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo"#}
+{#         aria-hidden="true">#}
+{#        <div class="modal-dialog" role="document">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-header">#}
+{#                    <h5 class="modal-title" id="TituloModalLongoExemplo">Título do modal</h5>#}
+{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">#}
+{#                        <span aria-hidden="true">&times;</span>#}
+{#                    </button>#}
+{#                </div>#}
+{#                <div class="modal-body">#}
+{#                    <h1>#}
+{#                        Add Produto#}
+{#                    </h1>#}
+{#                </div>#}
+{#                <div class="modal-footer">#}
+{#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>#}
+{#                    <button type="button" class="btn btn-primary">Salvar mudanças</button>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
 {% endblock %}

@@ -146,6 +146,13 @@ class Orcamentos(models.Model):
     def __str__(self):
         return f"Orçamento: {self.id}"
 
+    @property
+    def valor_total_orcamento(self):
+        total = 0
+        for item in self.itens.all():
+            total += item.item_valor
+        return total
+
 
 class ItemOrcamento(models.Model):
     orcamento = models.ForeignKey(
