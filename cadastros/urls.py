@@ -36,10 +36,11 @@ urlpatterns = [
     path("cria_orcamento/", views.cria_orcamento, name="cria_orcamento"),
     path("edita_orcamento/<int:id>", views.edita_orcamento, name="edita_orcamento"),
     path("excluir_orcamento/<int:id>", views.excluir_orcamento, name="excluir_orcamento"),
-    path("editar_orcamento/<int:id>", views.editar_orcamento, name="editar_orcamento"),
+    path("item_orcamento/<int:id>", views.item_orcamento, name="item_orcamento"),
     path(
         'adicionar_item_orcamento/<int:id_orcamento>',
         views.adicionar_item_orcamento,
         name='adicionar_item_orcamento'
-    )
+    ),
+    path("excluir_item/<int:id>", views.excluir_item_orcamento, name="excluir_item"),
 ]

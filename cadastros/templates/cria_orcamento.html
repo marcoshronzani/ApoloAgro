@@ -22,7 +22,6 @@
             <div class="form-group col-md-5">
                 <label for="situacao">Situação:</label>
                 <select name="situacao" class="form-control" id="situacao">
-                    <option selected>Escolher...</option>
                     {% for orc in orcamento.choice %}
                         <option value="{{orc.0}}">{{ orc.1 }}</option>
                     {% endfor %}
@@ -80,7 +79,7 @@
         </div>
         <br>
         <br>
-        <input class="btn btn-success btn-sm" type="Submit" value="Adicionar Produto">&nbsp&nbsp&nbsp
+        <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp
         <a href="{% url 'orcamentos' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
 </div>

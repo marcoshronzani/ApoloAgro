@@ -724,7 +724,7 @@ def cria_orcamento(request):
                 orcamento.terceiro_id = terceiro
                 orcamento.usuario_id = usuario
                 orcamento.save()
-                url = reverse('editar_orcamento', kwargs={'id': orcamento.id})
+                url = reverse('item_orcamento', kwargs={'id': orcamento.id})
                 return redirect(url)
 
             except Exception as e:
@@ -739,25 +739,34 @@ def cria_orcamento(request):
         return render(request, 'cria_orcamento.html', context)
 
 
-@csrf_exempt
-def editar_orcamento(request, id=None):
+
+def item_orcamento(request, id=None):
     usuario_logado = request.session.get('usuario')
 
     if usuario_logado:
         orcamento = Orcamentos.objects.get(id=id)
         clientes = Clientes.objects.all()
         terceiros = Terceiros.objects.all()
+        itens_orcamento = ItemOrcamento.objects.filter(orcamento=orcamento)
 
-        produtos_orcamento = ItemOrcamento.objects.filter(orcamento=orcamento)
+        if request.method == "POST":
+            observacao = request.POST.get('observacao')
+            terceiro = request.POST.get('terceiro')
+
+            orcamento.observacao = observacao
+            orcamento.terceiro_id = terceiro
+            orcamento.save()
+
+            return redirect('/orcamentos/')
 
         context = {'orcamento': orcamento,
                    'clientes': clientes,
                    'terceiros': terceiros,
-                   'produtos': produtos_orcamento,
+                   'produtos': itens_orcamento,
                    'usuario_logado': usuario_logado
                    }
 
-        return render(request, 'adicionar_item.html', context)
+        return render(request, 'item_orcamento.html', context)
 
 
 def adicionar_item_orcamento(request, id_orcamento):
@@ -769,22 +778,28 @@ def adicionar_item_orcamento(request, id_orcamento):
 
     if request.method == 'POST':
         id_produto = request.POST.get('id_produto')
+        quantidade = request.POST.get('quantidade')
+        desconto = request.POST.get('desconto')
+        desconto = float(desconto) if desconto != '' else 0
         produto = Produtos.objects.get(id=id_produto)
 
         orcamento = Orcamentos.objects.get(id=id_orcamento)
         item = ItemOrcamento(
             orcamento=orcamento,
             item_produto=produto,
-            quantidade=1,
+            quantidade=quantidade,
             item_valor=produto.preco_venda,
-            desconto=0
+            desconto=desconto
         )
+        item.item_valor = float(item.item_valor)*int(quantidade)
+        valor_desconto = item.item_valor * (desconto / 100)
+        item.item_valor -= valor_desconto
         item.save()
 
         orcamento.valor_total = item.item_valor
         orcamento.save()
 
-        url = reverse('editar_orcamento', kwargs={'id': id_orcamento})
+        url = reverse('item_orcamento', kwargs={'id': id_orcamento})
         return redirect(url)
 
     contexto = {
@@ -793,6 +808,22 @@ def adicionar_item_orcamento(request, id_orcamento):
     }
 
     return render(request, 'adicionar_item_orcamento.html', context=contexto)
+
+
+def excluir_item_orcamento(request, id):
+    try:
+        item = ItemOrcamento.objects.get(id=id)
+        id_orcamento = item.orcamento.id
+        item.delete()
+        messages.add_message(request, messages.SUCCESS, "Exclusão realizada!")
+        return redirect(f'/item_orcamento/{id_orcamento}')
+    except:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "Exclusão não permitida, Orçamento em uso no sistema",
+        )
+        return redirect(f'/item_orcamento/{id_orcamento}')
 
 
 # def cria_orcamento(request):

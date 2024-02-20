@@ -111,48 +111,50 @@
             </div>
         </div>
         <br>
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                <label for="{{ form.cep.id_for_label }}">{{ form.cep.label }}</label>
-                <input class="form-control" type="text" id="{{ form.cep.id_for_label }}" name="{{ form.cep.html_name }}"
-                    value="{% if form.cep.value %} {{ form.cep.value }} {% endif %}">
+        
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="{{ form.cep.id_for_label }}">{{ form.cep.label }}</label>
+                    <input class="form-control" type="text" id="{{ form.cep.id_for_label }}" name="{{ form.cep.html_name }}"
+                        value="{% if form.cep.value %} {{ form.cep.value }} {% endif %}" onblur="pesquisacep(this.value)">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="{{ form.logradouro.id_for_label }}">{{ form.logradouro.label }}</label>
+                    <input class="form-control" type="text" id="{{ form.logradouro.id_for_label }}" name="{{ form.logradouro.html_name }}"
+                        value="{% if form.logradouro.value %}{{ form.logradouro.value}} {% endif %}">
+                </div>
+                <div class="form-group col-md-1">
+                    <label for="{{ form.numero.id_for_label}}">{{ form.numero.label }}</label>
+                    <input class="form-control" type="text" id="{{ form.numero.id_for_label}}" name="{{ form.numero.html_name }}"
+                        value="{% if form.numero.value %} {{ form.numero.value }} {% endif %}">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="{{ form.complemento.id_for_label }}">{{ form.complemento.label }}</label>
+                    <input class="form-control" type="text" id="{{ form.complemento.id_for_label }}" name="{{ form.complemento.html_name }}"
+                        value="{% if form.complemento.value %} {{ form.complemento.value }} {% endif %}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="{{ form.bairro.id_for_label }}">{{ form.bairro.label }}</label>
+                    <input class="form-control" type="text" id="{{ form.bairro.id_for_label }}" name="{{ form.bairro.html_name }}"
+                        value="{% if form.bairro.value %} {{ form.bairro.value }} {% endif %}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="{{ form.cidade.id_for_label}}">{{ form.cidade.label }}</label>
+                    <input class="form-control" type="text" id="{{ form.cidade.id_for_label }}" name="{{ form.cidade.html_name }}"
+                        value="{% if form.cidade.value %} {{ form.cidade.value }} {% endif %}">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
+                    <select id="id_estado" name="estado" class="form-control">
+                            <option>
+                                {% for est in form.estado %}
+                                    {{est}}
+                                {% endfor %}
+                            </option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                <label for="{{ form.logradouro.id_for_label }}">{{ form.logradouro.label }}</label>
-                <input class="form-control" type="text" id="{{ form.logradouro.id_for_label }}" name="{{ form.logradouro.html_name }}"
-                    value="{% if form.logradouro.value %}{{ form.logradouro.value}} {% endif %}">
-            </div>
-            <div class="form-group col-md-1">
-                <label for="{{ form.numero.id_for_label}}">{{ form.numero.label }}</label>
-                <input class="form-control" type="text" id="{{ form.numero.id_for_label}}" name="{{ form.numero.html_name }}"
-                    value="{% if form.numero.value %} {{ form.numero.value }} {% endif %}">
-            </div>
-            <div class="form-group col-md-3">
-                <label for="{{ form.complemento.id_for_label }}">{{ form.complemento.label }}</label>
-                <input class="form-control" type="text" id="{{ form.complemento.id_for_label }}" name="{{ form.complemento.html_name }}"
-                    value="{% if form.complemento.value %} {{ form.complemento.value }} {% endif %}">
-            </div>
-            <div class="form-group col-md-6">
-                <label for="{{ form.bairro.id_for_label }}">{{ form.bairro.label }}</label>
-                <input class="form-control" type="text" id="{{ form.bairro.id_for_label }}" name="{{ form.bairro.html_name }}"
-                    value="{% if form.bairro.value %} {{ form.bairro.value }} {% endif %}">
-            </div>
-            <div class="form-group col-md-4">
-                <label for="{{ form.cidade.id_for_label}}">{{ form.cidade.label }}</label>
-                <input class="form-control" type="text" id="{{ form.cidade.id_for_label }}" name="{{ form.cidade.html_name }}"
-                    value="{% if form.cidade.value %} {{ form.cidade.value }} {% endif %}">
-            </div>
-            <div class="form-group col-md-2">
-                <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
-                <select id="id_estado" name="estado" class="form-control">
-                        <option>
-                            {% for est in form.estado %}
-                                {{est}}
-                            {% endfor %}
-                        </option>
-                </select>
-            </div>
-        </div>
+
         <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp 
         <a href="{% url 'clientes' %}" class="btn btn-primary btn-sm">Cancelar</a>
     </form>
@@ -161,5 +163,72 @@
 {% endblock%}
 
 {% block 'scripts' %}
+<script>
+    
+    function limpa_formulário_cep() {
+            //Limpa valores do formulário de cep.
+            document.getElementById('id_logradouro').value=("");
+            document.getElementById('id_bairro').value=("");
+            document.getElementById('id_cidade').value=("");
+            document.getElementById('id_estado').value=("");
+    }
 
+    function meu_callback(conteudo) {
+        if (!("erro" in conteudo)) {
+            //Atualiza os campos com os valores.
+            document.getElementById('id_logradouro').value=(conteudo.logradouro);
+            document.getElementById('id_bairro').value=(conteudo.bairro);
+            document.getElementById('id_cidade').value=(conteudo.localidade);
+            document.getElementById('id_estado').value=(conteudo.uf);
+        } //end if.
+        else {
+            //CEP não Encontrado.
+            limpa_formulário_cep();
+            alert("CEP não encontrado.");
+        }
+    }
+        
+    function pesquisacep(valor) {
+
+        //Nova variável "cep" somente com dígitos.
+        var cep = valor.replace(/\D/g, '');
+
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if(validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                document.getElementById('id_logradouro').value="...";
+                document.getElementById('id_bairro').value="...";
+                document.getElementById('id_cidade').value="...";
+                document.getElementById('id_estado').value="...";
+
+                //Cria um elemento javascript.
+                var script = document.createElement('script');
+
+                //Sincroniza com o callback.
+                script.src = 'https://viacep.com.br/ws/'+ cep + '/json/?callback=meu_callback';
+
+                //Insere script no documento e carrega o conteúdo.
+                document.body.appendChild(script);
+
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulário_cep();
+                alert("Formato de CEP inválido.");
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulário_cep();
+        }
+    };
+
+    </script>
 {% endblock %}

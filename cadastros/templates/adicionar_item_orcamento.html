@@ -1,31 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-Busca produto
-<form method="GET">
-    <input name="busca_produto">
-    <input type="submit" value="Buscar">
-</form>
-<table>
-    <th>
-    <td>Nome</td>
-    </th>
-    {% for p in produtos %}
-        <form method="POST">
-{% csrf_token %}
-            <tr>
-                <td>{{ p.descricao }}</td>
-            </tr>
-            <input hidden name="id_produto" value="{{ p.id }}">
-                    <input type="submit" value="Adicionar">
-        </form>
-    {% endfor %}
-</table>
+{% block 'titulo' %} Adiciona Item {% endblock %}
 
-</body>
-</html>
+{% block 'conteudo' %}
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="form-group col-sm form-inline">
+            <form method="GET">
+                <input class="form-control form-control-sm" name="busca_produto" placeholder="Digite o Produto">
+                <input class="form-control form-control-sm" type="submit" value="Buscar">
+            </form>
+        </div>
+    </div>    
+    <a href="{% url 'item_orcamento' id_orcamento %}" class="btn btn-primary btn-sm">Cancelar</a>
+ 
+    {% if produtos %}
+    <hr>
+        {% for p in produtos %}
+            <form action="" method="POST">{% csrf_token %}
+                <div class="form row">
+                    <input hidden name="id_produto" value="{{ p.id }}">
+                    <div class="form-group col-md-4">
+                        <label for="descricao">Descrição</label>
+                        <input class="form-control form-control-sm" name="descricao" value="{{ p.descricao }}" readonly>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <label for="quantidade">Quantidade</label>
+                        <input class="form-control form-control-sm" name="quantidade" type="number" id="quantidade" required>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="desconto">Desconto</label>
+                        <div class="form-inline">
+                            <input class="form-control form-control-sm" name="desconto" type="text" id="desconto" style="width: 30%">&nbsp;&nbsp;&nbsp;
+                            <input class="form-control form-control-sm" type="submit" value="Adicionar" style="width: 50%">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {% endfor %}    
+    {% endif %}
+
+</div>
+{% endblock %}

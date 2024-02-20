@@ -29,7 +29,8 @@
                 <td>
                     {{ i }} -
                     {{i.cliente}} - 
-                    Valor Total: {{i.valor}}
+                    Valor Total: {{i.valor}} - 
+                    {{i.observacao}}
                     <ul>
                         {% for j in i.itens.all %}
                             <li>{{j.item_produto}} | Quantidade: {{j.quantidade}} | Valor: {{j.item_valor}}</li>
@@ -43,7 +44,7 @@
                         
                     </ul>
                 </td>
-                <td><a href="{% url 'edita_orcamento' i.id %}" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
+                <td><a href="{% url 'item_orcamento' i.id %}" type="button" class="btn btn-info btn-sm">Editar/Excluir</a></td>
             </tr>
 
         {% endfor %}

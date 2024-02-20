@@ -3,6 +3,21 @@
 {% block 'titulo' %} Adiciona Item {% endblock %}
 
 {% block 'conteudo' %}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirma a Exclusão ?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div style="text-align: center" class="modal-body">
+            <a class="btn btn-danger btn-sm" href="{% url 'excluir_orcamento' orcamento.id %}">Excluir</a>
+        </div>
+      </div>
+    </div>
+</div>
     <div class="container">
         <div style="text-align: center">
             <br>
@@ -18,10 +33,11 @@
         </div>
 
         <br>
+    <form method="POST" action="{% url 'item_orcamento' orcamento.id %}">{% csrf_token %}
         <div class="form row">
             <div class="form-group col-md-5">
                 <label for="situacao">Situação:</label>
-                <select name="situacao" class="form-control" id="situacao" readonly>
+                <select name="situacao" class="form-control" id="situacao">
                     {% for orc in orcamento.choice %}
                         {% if orcamento.situacao == orc.0 %}
                             <option value="{{ orc.0 }}" selected>{{ orc.1 }}</option>
@@ -48,7 +64,7 @@
             </div>
             <div class="form-group col-md-5">
                 <label for="terceiro">Terceiro:</label>
-                <select name="terceiro" class="form-control" id="terceiro" readonly>
+                <select name="terceiro" class="form-control" id="terceiro">
                     {% for terc in terceiros %}
                         {% if orcamento.terceiro == terc %}
                             <option value="{{ terc.id }}">{% if terc.razao_social %}{{ terc.razao_social }}{% else %}
@@ -61,9 +77,8 @@
         <br>
         <div class="form-row">
             <div class="form-group col-md-10">
-                <label for="observacao">Observação:</label>
-                <textarea class="form-control" id="observacao" name="observacao"
-                          rows="3" readonly>{{ orcamento.observacao }}</textarea>
+                <label>Observação:</label>
+                <textarea style="width: 50%" class="form-control" name="observacao" rows="5">{{orcamento.observacao}}</textarea>
             </div>
         </div>
         <br>
@@ -89,30 +104,10 @@
         <br>
         <hr>
 
-        <div style="text-align: center">
-            <h3>Adiciona Itens</h3>
-        </div>
+        <a href="{% url 'adicionar_item_orcamento' orcamento.id %}" class="btn btn-primary btn-sm">Adicionar Produto</a>
         <br>
-
-{#        <div class="form-row">#}
-{#            <form action="" method="GET">#}
-{#                <div class="form-group col-md-10">#}
-{#                    <input class="form-control-sm" type="search" id="search-input" placeholder="Pesquisar" name="termo"#}
-{#                           value="{{ request.GET.termo }}" title="Digite o produto">#}
-{##}
-{#                    <input hidden name="id_orcamento" value="{{ orcamento.id }}">#}
-{#                </div>#}
-{#            </form>#}
-{#        </div>#}
-
-        <!-- Botão para acionar modal -->
-{#        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalLongoExemplo">#}
-{#            Abrir modal de demonstração#}
-{#        </button>#}
-
-    <a href="{% url 'adicionar_item_orcamento' orcamento.id %}" class="btn btn-primary btn-sm">Add Produto</a>
-
-        <form method="POST">{% csrf_token %}
+        <br>
+        {% if produtos %}
             <table class="table table-sm">
                 <thead>
                 <tr>
@@ -126,42 +121,21 @@
                 <tbody>
                 {% for produto in produtos %}
                     <tr>
-                        <th scope="row">{{ produto.descricao }}</th>
+                        <th>{{ produto.item_produto.descricao }}</th>
                         <td>{{ produto.quantidade }}</td>
-                        <td>{{ produto.desconto }}</td>
-                        <td>{{ produto.valor }}</td>
+                        <td>{{ produto.desconto}}</td>
+                        <td>{{ produto.item_valor }}</td>
+                        <td><a href="{% url 'excluir_item' produto.id %}" class="btn btn-danger btn-sm">Excluir</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-            <br>
-            <input class="btn btn-success btn-sm" type="Submit" value="Salvar">&nbsp&nbsp&nbsp
-            <a href="{% url 'orcamentos' %}" class="btn btn-primary btn-sm">Cancelar</a>
-        </form>
+        {% endif %}
+        <br>
+        <input class="btn btn-success btn-sm" type="Submit" value="Finalizar">
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal">
+            Excluir
+        </button>
+    </form>
     </div>
-
-    <!-- Modal -->
-{#    <div class="modal fade" id="ModalLongoExemplo" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo"#}
-{#         aria-hidden="true">#}
-{#        <div class="modal-dialog" role="document">#}
-{#            <div class="modal-content">#}
-{#                <div class="modal-header">#}
-{#                    <h5 class="modal-title" id="TituloModalLongoExemplo">Título do modal</h5>#}
-{#                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">#}
-{#                        <span aria-hidden="true">&times;</span>#}
-{#                    </button>#}
-{#                </div>#}
-{#                <div class="modal-body">#}
-{#                    <h1>#}
-{#                        Add Produto#}
-{#                    </h1>#}
-{#                </div>#}
-{#                <div class="modal-footer">#}
-{#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>#}
-{#                    <button type="button" class="btn btn-primary">Salvar mudanças</button>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-
 {% endblock %}
